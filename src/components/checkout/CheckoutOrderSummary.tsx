@@ -1,4 +1,5 @@
 import { Check, Lock } from "lucide-react";
+import Link from "next/link";
 
 interface CheckoutOrderSummaryProps {
     subtotal: number;
@@ -64,10 +65,10 @@ export function CheckoutOrderSummary({ subtotal, shipping, discount, total, item
             </div>
 
             {/* Place Order Button */}
-            <button className="w-full mt-6 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+            <Link href="/order-confirmation" className="w-full mt-6 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
                 Place Order
                 <Check className="w-4 h-4" />
-            </button>
+            </Link>
 
             <p className="text-xs text-center text-subtext-light dark:text-subtext-dark mt-4 flex items-center justify-center gap-1">
                 <Lock className="w-4 h-4" /> Secure Checkout
