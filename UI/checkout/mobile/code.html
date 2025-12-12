@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout - Organia</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#20C533", 
+                        "primary-dark": "#189E29",
+                        "primary-light": "#E8F9EA",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#121212",
+                        "surface-light": "#F9FAFB",
+                        "surface-dark": "#1E1E1E",
+                        "text-light": "#1F2937",
+                        "text-dark": "#E5E7EB",
+                        "text-muted-light": "#6B7280",
+                        "text-muted-dark": "#9CA3AF",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                    },
+                    boxShadow: {
+                        'sticky-footer': '0 -4px 6px -1px rgba(0, 0, 0, 0.05), 0 -2px 4px -1px rgba(0, 0, 0, 0.03)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased h-screen flex flex-col overflow-hidden">
+<header class="flex-none bg-white dark:bg-surface-dark px-4 py-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 z-20">
+<button class="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark text-2xl">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold text-text-light dark:text-text-dark absolute left-1/2 transform -translate-x-1/2">Checkout</h1>
+<div class="w-10"></div>
+</header>
+<main class="flex-1 overflow-y-auto no-scrollbar p-5 space-y-8 pb-32">
+<section>
+<h2 class="text-lg font-bold text-text-light dark:text-text-dark mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">location_on</span>
+                Delivery Details
+            </h2>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" for="name">Full Name</label>
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400" id="name" placeholder="Enter your full name" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" for="mobile">Mobile Number</label>
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400" id="mobile" placeholder="017xxxxxxxx" type="tel"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" for="address">Address</label>
+<textarea class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400" id="address" placeholder="House no, Road no, Area..." rows="3"></textarea>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-lg font-bold text-text-light dark:text-text-dark mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+                Shipping Method
+            </h2>
+<div class="space-y-3">
+<label class="relative flex items-center justify-between p-4 rounded-xl border-2 border-primary bg-primary-light/30 cursor-pointer transition-all">
+<div class="flex items-center gap-3">
+<input checked="" class="w-5 h-5 text-primary border-gray-300 focus:ring-primary" name="shipping" type="radio" value="inside"/>
+<span class="font-medium text-text-light dark:text-text-dark">Inside Dhaka</span>
+</div>
+<span class="font-bold text-primary">৳60</span>
+</label>
+<label class="relative flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark hover:border-primary/50 cursor-pointer transition-all">
+<div class="flex items-center gap-3">
+<input class="w-5 h-5 text-primary border-gray-300 focus:ring-primary" name="shipping" type="radio" value="outside"/>
+<span class="font-medium text-text-light dark:text-text-dark">Outside Dhaka</span>
+</div>
+<span class="font-semibold text-text-light dark:text-text-dark">৳120</span>
+</label>
+</div>
+</section>
+<section>
+<h2 class="text-lg font-bold text-text-light dark:text-text-dark mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">payments</span>
+                Payment Method
+            </h2>
+<div class="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">money</span>
+</div>
+<div>
+<p class="font-medium text-text-light dark:text-text-dark">Cash on Delivery</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark">Pay when you receive</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+</section>
+</main>
+<div class="flex-none bg-white dark:bg-surface-dark rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.08)] border-t border-gray-100 dark:border-gray-800 z-30 fixed bottom-0 left-0 right-0">
+<div class="px-5 py-4 safe-area-bottom">
+<div class="flex justify-between items-end mb-4 px-1">
+<div class="text-sm text-text-muted-light dark:text-text-muted-dark">
+<p>Total Amount</p>
+<p class="text-xs text-green-600 font-medium">Incl. Shipping</p>
+</div>
+<div class="text-2xl font-bold text-text-light dark:text-text-dark">
+                    ৳1223.00
+                </div>
+</div>
+<button class="w-full bg-primary hover:bg-primary-dark transition-colors text-white rounded-full py-4 px-6 shadow-lg shadow-green-200/50 dark:shadow-none flex items-center justify-center gap-2 group active:scale-[0.98] transform duration-100">
+<span class="font-bold text-lg">Place Order</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

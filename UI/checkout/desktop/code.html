@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Organico - Checkout Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#20C533",
+            "background-light": "#FFFFFF",
+            "background-dark": "#0D1117",
+            "surface-light": "#F8F8F8",
+            "surface-dark": "#161B22",
+            "text-light": "#1A1A1A",
+            "text-dark": "#E6EDF3",
+            "subtext-light": "#666666",
+            "subtext-dark": "#8B949E",
+          },
+          fontFamily: {
+            display: ["Poppins", "sans-serif"],
+            sans: ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "12px",
+          },
+        },
+      },
+    };
+  </script>
+<style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+<div class="mx-auto max-w-screen-xl">
+<header class="py-4 px-4 md:px-8">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary text-3xl">eco</span>
+<span class="text-2xl font-bold">Organico</span>
+</div>
+<nav class="hidden md:flex items-center gap-6 text-base font-sans">
+<a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary" href="#">Home</a>
+<a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary" href="#">Shop</a>
+<a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary" href="#">New Arrivals</a>
+<a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary" href="#">Offers</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark">search</span>
+<input class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Search products..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full">
+<span class="material-icons">person_outline</span>
+</button>
+<button class="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full">
+<span class="material-icons">favorite_border</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="relative p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full">
+<span class="material-icons text-primary">shopping_bag</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-primary ring-2 ring-white dark:ring-background-dark"></span>
+</button>
+<div class="text-sm">
+<span class="text-xs text-subtext-light dark:text-subtext-dark">2 items</span>
+<p class="font-semibold">৳30.48</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="px-4 md:px-8 py-8">
+<h1 class="text-3xl font-bold mb-8 font-display">Checkout</h1>
+<div class="flex flex-col lg:flex-row gap-8 items-start">
+<div class="w-full lg:w-2/3">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 mb-8">
+<h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-icons text-primary">local_shipping</span>
+                Delivery Information
+              </h2>
+<form class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-2" for="name">Full Name</label>
+<input class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent" id="name" placeholder="John Doe" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-2" for="mobile">Mobile Number</label>
+<input class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent" id="mobile" placeholder="+880 1XXX XXXXXX" type="tel"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-2" for="address">Delivery Address</label>
+<textarea class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent" id="address" placeholder="House no, Road no, Area, City" rows="3"></textarea>
+</div>
+<div class="pt-4">
+<label class="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-3">Shipping Method</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="relative flex cursor-pointer rounded-lg border bg-white dark:bg-background-dark p-4 shadow-sm focus:outline-none ring-2 ring-primary border-transparent">
+<input checked="" class="sr-only" name="shipping-option" type="radio" value="inside-dhaka"/>
+<span class="flex flex-1">
+<span class="flex flex-col">
+<span class="block text-sm font-medium text-text-light dark:text-text-dark">Inside Dhaka</span>
+<span class="mt-1 flex items-center text-sm text-subtext-light dark:text-subtext-dark">2-3 Days Delivery</span>
+<span class="mt-6 text-sm font-medium text-text-light dark:text-text-dark">৳60</span>
+</span>
+</span>
+<span aria-hidden="true" class="material-icons text-primary absolute top-4 right-4">check_circle</span>
+</label>
+<label class="relative flex cursor-pointer rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-4 shadow-sm focus:outline-none">
+<input class="sr-only" name="shipping-option" type="radio" value="outside-dhaka"/>
+<span class="flex flex-1">
+<span class="flex flex-col">
+<span class="block text-sm font-medium text-text-light dark:text-text-dark">Outside Dhaka</span>
+<span class="mt-1 flex items-center text-sm text-subtext-light dark:text-subtext-dark">3-5 Days Delivery</span>
+<span class="mt-6 text-sm font-medium text-text-light dark:text-text-dark">৳120</span>
+</span>
+</span>
+<span aria-hidden="true" class="material-icons text-gray-300 dark:text-gray-600 absolute top-4 right-4">circle</span>
+</label>
+</div>
+</div>
+</form>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6">
+<h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-icons text-primary">payments</span>
+                Payment Method
+              </h2>
+<div class="space-y-4">
+<label class="relative flex cursor-pointer rounded-lg border bg-white dark:bg-background-dark p-4 shadow-sm focus:outline-none ring-2 ring-primary border-transparent">
+<input checked="" class="sr-only" name="payment-method" type="radio" value="cod"/>
+<span class="flex flex-1 items-center gap-4">
+<span class="material-icons text-primary text-3xl">local_atm</span>
+<span class="flex flex-col">
+<span class="block text-sm font-medium text-text-light dark:text-text-dark">Cash on Delivery (COD)</span>
+<span class="mt-1 flex items-center text-sm text-subtext-light dark:text-subtext-dark">Pay with cash upon delivery.</span>
+</span>
+</span>
+<span aria-hidden="true" class="material-icons text-primary">check_circle</span>
+</label>
+</div>
+</div>
+</div>
+<div class="w-full lg:w-1/3">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 sticky top-8">
+<h2 class="text-xl font-bold mb-6">Order Summary</h2>
+<div class="mb-6 space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+<div class="flex items-center gap-4">
+<div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
+<img alt="Organic Avocados" class="h-full w-full object-cover object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo"/>
+</div>
+<div class="flex flex-1 flex-col">
+<div>
+<div class="flex justify-between text-sm font-medium text-text-light dark:text-text-dark">
+<h3><a href="#">Organic Avocados</a></h3>
+<p class="ml-4">৳9.98</p>
+</div>
+<p class="mt-1 text-xs text-subtext-light dark:text-subtext-dark">500g</p>
+</div>
+<div class="flex flex-1 items-end justify-between text-xs">
+<p class="text-subtext-light dark:text-subtext-dark">Qty 2</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
+<img alt="Sourdough Bread" class="h-full w-full object-cover object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC3A-a4UULzqh-2SPbYejiaLkHE3RubV6okQS4ojcHCRPhJ_paUEKrXruRD5erHtgxWLXoQfc4z_c5xWUQMkczARbRsyNYdrwnR8j9PGiAxI8d1uBSlKD743u-NkXnxtMB9EnhyXGqbvE35qt7CLdn1-XWOxfulSdRjhidkms4oXRjNzO5r438VVLu10PF_rb2FgIPLvhWiF6r7e09nRXea6m6hUufATKbH-achi-5RFKf6ogP2j35Z7m7prz58IulwJpUyMdVlc4"/>
+</div>
+<div class="flex flex-1 flex-col">
+<div>
+<div class="flex justify-between text-sm font-medium text-text-light dark:text-text-dark">
+<h3><a href="#">Sourdough Bread</a></h3>
+<p class="ml-4">৳6.50</p>
+</div>
+<p class="mt-1 text-xs text-subtext-light dark:text-subtext-dark">500g</p>
+</div>
+<div class="flex flex-1 items-end justify-between text-xs">
+<p class="text-subtext-light dark:text-subtext-dark">Qty 1</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
+<img alt="Wild Salmon" class="h-full w-full object-cover object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMpbXKMQJF9FLP_tSEiqFMxcBfGIA2thlOXd4f9YcbQT10Wuk2j13tsBCrQyzYrqEZFDCeo-fDUhy6Ujs6l6wG0QL4FeNSkaPQnRRVvD8Htx22Hg5M-ZPu1hUOpgYmJix1z_h5fe5uGTapm77FUCOvWKsEx0SHERUw6XCm7g3WCaWoV126ePVB3NYt0H1jDsq1k881XFGjIzCKD2_Z5Qs6eHJYLJIPs_ivhpQYwTELBBa8Dc90-ILG6vRzWpWqquMtUzgpJq2tZc4"/>
+</div>
+<div class="flex flex-1 flex-col">
+<div>
+<div class="flex justify-between text-sm font-medium text-text-light dark:text-text-dark">
+<h3><a href="#">Wild-Caught Salmon</a></h3>
+<p class="ml-4">৳12.99</p>
+</div>
+<p class="mt-1 text-xs text-subtext-light dark:text-subtext-dark">200g</p>
+</div>
+<div class="flex flex-1 items-end justify-between text-xs">
+<p class="text-subtext-light dark:text-subtext-dark">Qty 1</p>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-4 text-sm border-t border-gray-200 dark:border-gray-700 pt-6">
+<div class="flex justify-between text-subtext-light dark:text-subtext-dark">
+<span>Subtotal</span>
+<span class="font-medium text-text-light dark:text-text-dark">৳29.47</span>
+</div>
+<div class="flex justify-between text-subtext-light dark:text-subtext-dark">
+<span>Shipping</span>
+<span class="font-medium text-text-light dark:text-text-dark">৳60.00</span>
+</div>
+<div class="flex justify-between text-primary font-semibold">
+<span>Discount</span>
+<span>-৳3.50</span>
+</div>
+<div class="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between items-center">
+<span class="font-bold text-lg">Total</span>
+<span class="font-bold text-xl text-primary">৳85.97</span>
+</div>
+</div>
+<button class="w-full mt-6 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+                  Place Order
+                  <span class="material-icons text-sm">check</span>
+</button>
+<p class="text-xs text-center text-subtext-light dark:text-subtext-dark mt-4 flex items-center justify-center gap-1">
+<span class="material-icons text-base">lock</span> Secure Checkout
+              </p>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-surface-light dark:bg-surface-dark pt-16 pb-8 px-4 md:px-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary text-3xl">eco</span>
+<span class="text-2xl font-bold">Organico</span>
+</div>
+<p class="text-sm text-subtext-light dark:text-subtext-dark mt-4">Freshness you can taste. Values you can trust.</p>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Shop</h4>
+<ul class="space-y-2 text-sm text-subtext-light dark:text-subtext-dark">
+<li><a class="hover:text-primary" href="#">New Arrivals</a></li>
+<li><a class="hover:text-primary" href="#">Offers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Categories</h4>
+<ul class="space-y-2 text-sm text-subtext-light dark:text-subtext-dark">
+<li><a class="hover:text-primary" href="#">Fruits</a></li>
+<li><a class="hover:text-primary" href="#">Vegetables</a></li>
+<li><a class="hover:text-primary" href="#">Dairy &amp; Eggs</a></li>
+<li><a class="hover:text-primary" href="#">Bakery</a></li>
+<li><a class="hover:text-primary" href="#">Meat &amp; Seafood</a></li>
+<li><a class="hover:text-primary" href="#">Drinks</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Get Fresh Updates</h4>
+<p class="text-sm text-subtext-light dark:text-subtext-dark">Sign up for our newsletter to get the latest on new products and sales.</p>
+<div class="flex mt-4">
+<input class="w-full text-sm rounded-l-lg border-gray-200 dark:border-gray-700 bg-background-light dark:bg-background-dark focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your email" type="email"/>
+<button class="bg-primary text-white font-semibold py-2 px-4 rounded-r-lg text-sm hover:bg-opacity-90">Subscribe</button>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-sm text-subtext-light dark:text-subtext-dark">
+<p>© 2025 Pleasure. All rights reserved.</p>
+</div>
+</footer>
+</div>
+
+</body></html>
