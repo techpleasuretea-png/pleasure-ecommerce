@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Organico - Homepage</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#20C533",
+            "background-light": "#FFFFFF",
+            "background-dark": "#0D1117",
+            "surface-light": "#F8F8F8",
+            "surface-dark": "#161B22",
+            "text-light": "#1A1A1A",
+            "text-dark": "#E6EDF3",
+            "subtext-light": "#666666",
+            "subtext-dark": "#8B949E",
+          },
+          fontFamily: {
+            display: ["Poppins", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "12px",
+          },
+        },
+      },
+    };
+  </script>
+<style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+<div class="mx-auto max-w-screen-xl">
+<header class="py-4 px-4 md:px-8">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary text-3xl">eco</span>
+<span class="text-2xl font-bold">Organico</span>
+</div>
+<nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+<a class="text-primary font-semibold" href="#">Home</a>
+<a class="hover:text-primary" href="#">Shop</a>
+<a class="hover:text-primary" href="#">New Arrivals</a>
+<a class="hover:text-primary" href="#">Offers</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark">search</span>
+<input class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Search products..." type="text"/>
+</div>
+<div class="hidden lg:flex flex-col items-end text-sm">
+<span class="text-subtext-light dark:text-subtext-dark text-xs">Call for Order</span>
+<span class="font-bold text-primary">01914532441</span>
+</div>
+<button class="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full">
+<span class="material-icons">person_outline</span>
+</button>
+<button class="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full">
+<span class="material-icons">favorite_border</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full">
+<span class="material-icons">shopping_bag</span>
+</button>
+<div class="text-sm">
+<span class="text-xs text-subtext-light dark:text-subtext-dark">2 items</span>
+<p class="font-semibold">৳30.48</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="px-4 md:px-8">
+<section class="relative mt-4 h-[500px] rounded-2xl overflow-hidden flex items-center justify-center text-center">
+<img alt="A variety of fresh organic vegetables including cabbage, zucchini, and bell peppers" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjTeh_QrSiK3wT_ZtH7stPOxNVi2qSQhO2xlHQ-tZ6Nxbkqu0oXpkw4c6_aRsYzV91peHo-KSvpH_ZVQNP-9wghi7BtmGxfZIXhOeaH-Hv96hfBx_yBuKk_zRsPtxKQD_WAzjKJxLzOW6lAXm4Ns_-Xs9jFe9x3W5LU5GpUOKyfx1tUGr9XWlmB9Ws6SaxF4xG_BHAHpwEJaihwUoXvx398JL7lGEe5AUnQG95yqJpf9K6K1te3DBGKCGo7xDk2C5NHt91GAXfEVA"/>
+<div class="absolute inset-0 bg-black/60"></div>
+<div class="relative text-white px-4">
+<h1 class="text-4xl md:text-6xl font-bold">Purely Organic, <br/> Perfectly Fresh.</h1>
+<p class="mt-4 max-w-xl mx-auto">Experience the best of nature with our curated selection of certified organic produce and pantry staples, delivered to your door.</p>
+<button class="mt-8 bg-primary text-white font-semibold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-colors">
+            Shop All Products
+          </button>
+</div>
+</section>
+<section class="py-16">
+<div class="flex justify-between items-center mb-8">
+<h2 class="text-2xl font-bold">Shop by Category</h2>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 md:gap-12">
+<div class="text-center group">
+<div class="bg-[#FFF2E5] dark:bg-[#5C3A20] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Fruits category icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBcX85-91UkwI6MotWoVLOOFhhr-0d01diNJ7Af0Jy2d_-TbZie6Z1ziUefsWifKhDswRqar8C8Ja5gdn7P-qbru8tVvt4ift3a84HxgnKqslU01g6H8x6rzaHSQKlkvdeP7N7R8SzYzCUIGLEd8Y1vzVS6f8RuHmsXlkAzHQzfpWw8wrIgKOI26c975kYpBr_wMmBK-L0AbZuOISjRHgeQDdqx91esZtHNkmGPDyjUTajSH2FxVqcCCDs1R8H64YrakG0xI65bBw"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Fruits</p>
+</div>
+<div class="text-center group">
+<div class="bg-[#EAF3E6] dark:bg-[#2B4022] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Vegetables category icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRx-4QwsXykjPs5Tts-g4GZiHo50DJwkK_aIQ7N9MmAMLk1aLCu1t-oKyOulv4ejMLLETDUQMDmHz_vafcKe390Jg_n65dhQ8NbSqlzmdGgFNDbK5q0ksfKMNA5Ts_nXFQpmh5A3QneTqxVDJUzXFsce98SDrJsdWnUsnXDacP8MSRqv-1FkbgQKf78HHNzqhQHKQnr1jou4Ab2txZBndedALPizc-FOBSZOnsFxafzGpBZDgA8SqC7N29rJpsRYsOXOSdbGu_aME"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Vegetables</p>
+</div>
+<div class="text-center group">
+<div class="bg-[#E6F4FF] dark:bg-[#1E435F] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Dairy category icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtUIriRHMO78Lha6iwa0djf40KrA7NUKzm65pZn7NmyUTbERKiDAsYeidSD_j3nyKWQf3KGxcIQQfDrA7BsrbKfzORwZUv8Gz4H9tY3FFL489kPbsurGIdMPxYiVbcsW3UiuFAcVOvpK1nAWgGTdg0mXv1YFHQMpZADGc0yqyhaO4w1vcPGg0xjrGrFUxS-B84PNsvXB7P1l-_MQ17WFgbZEK7YoKYGSwmWQyqKHLqHKjJZsPfTe6HwEchNm8M6d864DJGIUFmfJ8"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Dairy</p>
+</div>
+<div class="text-center group">
+<div class="bg-[#FEF5E5] dark:bg-[#5C4520] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Bakery category icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmQg-_Gd3SblUtpgIPlLhi2WGjhUFr7Xy6oMtKXkQQkYc26LuF9Kp_Jpjvxp2Qi2Iiag7uyUg_IQGyLCoowbLKRr5AwP0YI8fmFka7UNBnCIjF3fendBO35CPiULR7b9LjXCgEWBkv8ztIJEgatVdZUp8Y9zFxA4Yr3FiR4Pc6LcCPYtRJNWND6LKXeSlqx-ZiIDuiz10l07ckwiDbrXEs_W47pTSzvVg1KnMmEfexcB3Ep8hryMz_-KSn9dSfi-6CbGja3wbor8A"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Bakery</p>
+</div>
+<div class="text-center group">
+<div class="bg-[#FBE8E5] dark:bg-[#5C2B20] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Meat category icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVcIACWS6ZpZUfhWI-bBwVt0Q5o2iPj7XZERwhAwQ4VcYKlW6aWJ3J6m_seGZ8r1irhe3OA8pNTIL1SHTrylZIVvZP51G26X8ZiP3T_Hb_OrCl_djBvzriHt5SWupL1CXzys6D1Vyxe7ml0KudNiaj8xoV2hRRpjEQBCIVJpg_AJVjxMfKxgFvyekkarrw7jkgDliM-rZh5C6-9d-UYe5G7Fo6Q2TLr8ciS5UYETqufqZJxUfyAqzUdtkS3TFhTg2jy4XRzAokEVE"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Meat</p>
+</div>
+<div class="text-center group">
+<div class="bg-[#E7F6F0] dark:bg-[#205C41] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Drinks category icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_Tw5oCz4OpfVN-GmZ7msIRDshk2lfU9-EwjoolQjOXwkFVXh4wn8fmrMAlMVbxRtMlmJXU-oL4kDfT9P9vt_LUtb0fgrmhW_QSePDKqVOdPvS4eVQi1Itk83rrHZ1odbkjcMkP34E4ov_3tgMUOUsWwvfOSwuRFSpO1O0rqgTjQFNtZmfO9efNoICCcalJVxBh1bocXQKpWgh5e-4aoPN2o3wjbH3FLB8B8blgOyl2qTQ6hNJng_wXF5Wy-_MTfbWA3GvcFyE0DE"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Drinks</p>
+</div>
+<div class="text-center group">
+<div class="bg-[#F0F0F0] dark:bg-[#4A4A4A] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Snacks category icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwF0Uj3nlFW_1885PINPJFCV5Q8RucF_iM6xdAPw7q6zIPl2SKIMwiaMnk6j6TJUSDYBn6AfdAlcjLCFLVnnhTnIDpbVOEJDZHZSy5Oxw-UchQMzM_kNsAfnavGcJLSPNzhNbFJGMJgG-pyjhGDNjlI1tm0yfqb_PRfecYI6KO5a7CTCCyrM5gkb6DqEDPvYA9nJrfBEeNBJyl7EfkTWTPVOAm9iuRa_V8q2UHQblxVmaGVeeBKgHiIiwNpFh2GjOnsMIevV9tZJk"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Snacks</p>
+</div>
+<div class="text-center group">
+<div class="bg-[#E5F5FA] dark:bg-[#1F5466] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Seafood category icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMpbXKMQJF9FLP_tSEiqFMxcBfGIA2thlOXd4f9YcbQT10Wuk2j13tsBCrQyzYrqEZFDCeo-fDUhy6Ujs6l6wG0QL4FeNSkaPQnRRVvD8Htx22Hg5M-ZPu1hUOpgYmJix1z_h5fe5uGTapm77FUCOvWKsEx0SHERUw6XCm7g3WCaWoV126ePVB3NYt0H1jDsq1k881XFGjIzCKD2_Z5Qs6eHJYLJIPs_ivhpQYwTELBBa8Dc90-ILG6vRzWpWqquMtUzgpJq2tZc4"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Seafood</p>
+</div>
+<div class="text-center group">
+<div class="bg-[#FFF8E1] dark:bg-[#5C5320] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Pantry category icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhw-ep0DP6vqt8HrMWo9ISO864Z7XPW2hJgNiXc56CR8KfQDcmsEHVQBxXkKtKyA7RLxSCCTLrFRRmAS67gX1_EQxNlXKS4dt5bYkVTQYPhql10NCm2Z4lh0GXOW2tEZDd8J-9ox_yZOJQkrS5MOzDzB0hE6F4aiZDZLK1ue1bK3BUAcW8GrF6pBQ0EPjAkNkdApYZUmF_H45rnZlG7-sEzMdaxlwwDORNVa26ufIrTBNWBLdqe3He6lGa8FQ1iFar1yhGBWpdBCI"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Pantry</p>
+</div>
+<div class="text-center group">
+<div class="bg-[#F3E5F5] dark:bg-[#4A205C] w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-transform">
+<img alt="Organic Spices icon" class="w-12 h-12 md:w-20 md:h-20 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADCTr5Cd1o-G-kiU8luTyrX-12MWgWtYC8u4mylL0gwRZe-eD5xuGUkwEvuNBr3vL0gZaFnFA9sSjT-zHzzvS3OSFKFcJMoV_Si_bFUKOQNVvKjUQZ6K8_yhA2Ror3ub5JFaI3k3hrN9CAx-yB7X7_olNF82574PIHB6PJvyR4kTNc4eFw9rJiEY5Aj4pKgP7PBTu2iaySZCOMtXnM_5HBmnOUHk3CEH6iZAXHDZuv9VLbs3pb5xfz4UsGwa8Q0GggyP82g0VQh2s"/>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium">Spices</p>
+</div>
+<a class="text-center group flex flex-col items-center" href="#">
+<div class="bg-gray-100 dark:bg-gray-800 w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-1 transition-all group-hover:bg-primary/10 dark:group-hover:bg-primary/20 group-hover:shadow-lg">
+<span class="material-icons text-3xl md:text-5xl text-gray-400 group-hover:text-primary transition-colors">arrow_forward</span>
+</div>
+<p class="mt-3 md:mt-4 text-sm md:text-base font-medium group-hover:text-primary transition-colors">See All</p>
+</a>
+</div>
+</section>
+<section class="py-16">
+<div class="flex justify-between items-center mb-8">
+<h2 class="text-2xl font-bold">Featured Products</h2>
+<a class="bg-primary/20 text-primary font-semibold py-2 px-4 rounded-lg text-sm hover:bg-primary/30" href="#">See All</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group">
+<div class="relative">
+<img alt="Organic Avocados" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo"/>
+<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">20% OFF</span>
+</div>
+<div class="p-4">
+<h3 class="font-semibold">Organic Avocados - 500g</h3>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-primary font-bold text-lg">৳4.99</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm line-through">৳6.24</p>
+</div>
+<div class="flex gap-2 mt-4">
+<button class="w-full bg-primary/20 text-primary font-semibold py-2 rounded-lg text-sm hover:bg-primary/30">Add to Cart</button>
+<button class="w-full bg-primary text-white font-semibold py-2 rounded-lg text-sm hover:bg-opacity-90">Buy Now</button>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group">
+<div class="relative">
+<img alt="Sourdough Bread" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC3A-a4UULzqh-2SPbYejiaLkHE3RubV6okQS4ojcHCRPhJ_paUEKrXruRD5erHtgxWLXoQfc4z_c5xWUQMkczARbRsyNYdrwnR8j9PGiAxI8d1uBSlKD743u-NkXnxtMB9EnhyXGqbvE35qt7CLdn1-XWOxfulSdRjhidkms4oXRjNzO5r438VVLu10PF_rb2FgIPLvhWiF6r7e09nRXea6m6hUufATKbH-achi-5RFKf6ogP2j35Z7m7prz58IulwJpUyMdVlc4"/>
+<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">15% OFF</span>
+</div>
+<div class="p-4">
+<h3 class="font-semibold">Sourdough Bread - 500g</h3>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-primary font-bold text-lg">৳6.50</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm line-through">৳7.65</p>
+</div>
+<div class="flex gap-2 mt-4">
+<button class="w-full bg-primary/20 text-primary font-semibold py-2 rounded-lg text-sm hover:bg-primary/30">Add to Cart</button>
+<button class="w-full bg-primary text-white font-semibold py-2 rounded-lg text-sm hover:bg-opacity-90">Buy Now</button>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group">
+<div class="relative">
+<img alt="Free-Range Eggs" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCxbKs9pCH2Ka4kHpk_m1Ivt1Ou2krDDLnEjLgXZZAtFxIoUcoLbhLqzVOxEiVjcalpJNdWs5h8zpWqzsBDih-S2cqmQsZ6DF8G16d3CDH1xdZ6IFD3XVHruE5GcRG_WQ5-OJfN6kDfffgYenXPI4VRhDUgLkHiG7sCD3hyM4SVrzH2jyM0r2I5CuhtCnTSf7fji7fJ6mg-iLrNWUCrHxu4YHWejJcXrkx6nm2i934phwbc5PLqpNh_a28u7s0vAgucRx-clxI5_w"/>
+<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">10% OFF</span>
+</div>
+<div class="p-4">
+<h3 class="font-semibold">Free-Range Eggs - 1 dozen</h3>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-primary font-bold text-lg">৳7.99</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm line-through">৳8.88</p>
+</div>
+<div class="flex gap-2 mt-4">
+<button class="w-full bg-primary/20 text-primary font-semibold py-2 rounded-lg text-sm hover:bg-primary/30">Add to Cart</button>
+<button class="w-full bg-primary text-white font-semibold py-2 rounded-lg text-sm hover:bg-opacity-90">Buy Now</button>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group">
+<div class="relative">
+<img alt="Juicy Strawberries" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0Yri64ddnMB4myFp2Wrj5j7BZYIGSlBUI9X7BqnfXktqTHEopk7TEXYMDSZtvYSFzPHg4jdjCOpHj9tyiymxQIqhi6hAgsqmxPPi12uFcfBQXaC2P6SuaPuL4cRtsctqUPvDN8l1yrBgYILYbf17OhrZW9WmFYUtc5kO_Msc5wO7ijnrRjCvxkF1oD3xp-GPwU4fsFnm6cOypprDiVFbOKIx0wLATKoLDv_NzfP6qVzpHl2ikDu5Giff3XvAsT6vg21knuzQqQA8"/>
+<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">25% OFF</span>
+</div>
+<div class="p-4">
+<h3 class="font-semibold">Juicy Strawberries - 500g</h3>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-primary font-bold text-lg">৳5.50</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm line-through">৳7.33</p>
+</div>
+<div class="flex gap-2 mt-4">
+<button class="w-full bg-primary/20 text-primary font-semibold py-2 rounded-lg text-sm hover:bg-primary/30">Add to Cart</button>
+<button class="w-full bg-primary text-white font-semibold py-2 rounded-lg text-sm hover:bg-opacity-90">Buy Now</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-primary/10 dark:bg-primary/20 rounded-2xl p-8 md:p-12 my-16">
+<div class="grid md:grid-cols-3 gap-8 text-center">
+<div>
+<div class="bg-primary text-white w-16 h-16 rounded-full mx-auto flex items-center justify-center">
+<span class="material-icons text-3xl">verified</span>
+</div>
+<h3 class="font-bold text-lg mt-4">100% Organic Certified</h3>
+<p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">All our products are certified organic, ensuring no harmful pesticides or chemicals.</p>
+</div>
+<div>
+<div class="bg-primary text-white w-16 h-16 rounded-full mx-auto flex items-center justify-center">
+<span class="material-icons text-3xl">local_shipping</span>
+</div>
+<h3 class="font-bold text-lg mt-4">Farm-to-Table Freshness</h3>
+<p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">We partner with local farms to bring you the freshest produce possible, often within days of harvest.</p>
+</div>
+<div>
+<div class="bg-primary text-white w-16 h-16 rounded-full mx-auto flex items-center justify-center">
+<span class="material-icons text-3xl">recycling</span>
+</div>
+<h3 class="font-bold text-lg mt-4">Sustainable Packaging</h3>
+<p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">Our commitment to the planet extends to our packaging, which is recyclable or compostable.</p>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-surface-light dark:bg-surface-dark pt-16 pb-8 px-4 md:px-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary text-3xl">eco</span>
+<span class="text-2xl font-bold">Organico</span>
+</div>
+<p class="text-sm text-subtext-light dark:text-subtext-dark mt-4">Freshness you can taste. Values you can trust.</p>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Shop</h4>
+<ul class="space-y-2 text-sm text-subtext-light dark:text-subtext-dark">
+<li><a class="hover:text-primary" href="#">New Arrivals</a></li>
+<li><a class="hover:text-primary" href="#">Offers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Categories</h4>
+<ul class="space-y-2 text-sm text-subtext-light dark:text-subtext-dark">
+<li><a class="hover:text-primary" href="#">Fruits</a></li>
+<li><a class="hover:text-primary" href="#">Vegetables</a></li>
+<li><a class="hover:text-primary" href="#">Dairy</a></li>
+<li><a class="hover:text-primary" href="#">Bakery</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Get Fresh Updates</h4>
+<p class="text-sm text-subtext-light dark:text-subtext-dark">Sign up for our newsletter to get the latest on new products and sales.</p>
+<div class="flex mt-4">
+<input class="w-full text-sm rounded-l-lg border-gray-200 dark:border-gray-700 bg-background-light dark:bg-background-dark focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your email" type="email"/>
+<button class="bg-primary text-white font-semibold py-2 px-4 rounded-r-lg text-sm hover:bg-opacity-90">Subscribe</button>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-sm text-subtext-light dark:text-subtext-dark">
+<p>© 2025 Pleasure. All rights reserved.</p>
+</div>
+</footer>
+</div>
+</body></html>
