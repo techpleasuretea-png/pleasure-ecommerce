@@ -2,7 +2,7 @@ import { ShieldCheck, Truck, Recycle } from "lucide-react";
 
 export function Features() {
     return (
-        <section className="hidden md:block mx-4 md:mx-8 max-w-screen-xl lg:mx-auto bg-primary/5 dark:bg-primary/10 rounded-3xl p-8 md:p-12 my-16">
+        <section className="hidden md:block mx-4 md:mx-8 bg-primary/5 dark:bg-primary/10 rounded-3xl p-8 md:p-12 my-16">
             <div className="grid md:grid-cols-3 gap-8 text-center">
                 <div className="flex flex-col items-center">
                     <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 mb-4">
