@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 interface CartSummaryProps {
     subtotal: number;
@@ -29,10 +30,10 @@ export function CartSummary({ subtotal, shipping, discount, total }: CartSummary
                     <span className="font-bold text-xl text-primary">৳{total.toFixed(2)}</span>
                 </div>
             </div>
-            <button className="w-full mt-6 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+            <Link href="/checkout" className="w-full mt-6 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
                 Proceed to Checkout
                 <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
 
             {/* Payment Icons Placeholder */}
             <div className="mt-6 flex justify-center gap-4 opacity-50 grayscale">

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Confirmation - Organia</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#20C533", 
+                        "primary-dark": "#189E29",
+                        "primary-light": "#E8F9EA",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#121212",
+                        "surface-light": "#F9FAFB",
+                        "surface-dark": "#1E1E1E",
+                        "text-light": "#1F2937",
+                        "text-dark": "#E5E7EB",
+                        "text-muted-light": "#6B7280",
+                        "text-muted-dark": "#9CA3AF",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased h-screen flex flex-col overflow-hidden">
+<header class="flex-none bg-white dark:bg-surface-dark px-4 py-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 z-20">
+<button class="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark text-2xl">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold text-text-light dark:text-text-dark absolute left-1/2 transform -translate-x-1/2">Organia</h1>
+<div class="w-10"></div>
+</header>
+<main class="flex-1 overflow-y-auto no-scrollbar p-6 flex flex-col items-center justify-center space-y-8">
+<div class="relative flex items-center justify-center">
+<div class="absolute inset-0 bg-primary/20 rounded-full blur-xl scale-150 animate-pulse"></div>
+<div class="relative w-24 h-24 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-green-200 dark:shadow-none">
+<span class="material-symbols-outlined text-white text-5xl">check</span>
+</div>
+</div>
+<div class="text-center space-y-2">
+<h2 class="text-2xl font-bold text-text-light dark:text-text-dark">Order Placed Successfully!</h2>
+<p class="text-text-muted-light dark:text-text-muted-dark">Your order <span class="text-text-light dark:text-text-dark font-semibold">#ORG-28492</span> has been placed.</p>
+</div>
+<div class="w-full bg-surface-light dark:bg-surface-dark border border-gray-100 dark:border-gray-800 rounded-2xl p-6 space-y-6 shadow-sm">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div>
+<p class="text-xs uppercase font-bold text-text-muted-light dark:text-text-muted-dark tracking-wide">Estimated Delivery</p>
+<p class="text-sm font-semibold text-text-light dark:text-text-dark mt-1">Tomorrow, 10:00 AM - 2:00 PM</p>
+</div>
+</div>
+<div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+<div class="flex justify-between items-start">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="text-xs uppercase font-bold text-text-muted-light dark:text-text-muted-dark tracking-wide">Payment Method</p>
+<p class="text-sm font-semibold text-text-light dark:text-text-dark mt-1">Cash on Delivery</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs uppercase font-bold text-text-muted-light dark:text-text-muted-dark tracking-wide">Total Amount</p>
+<p class="text-lg font-bold text-primary mt-1">৳1223.00</p>
+</div>
+</div>
+</div>
+<div class="w-full space-y-4 pt-4">
+<button class="w-full bg-white dark:bg-transparent border-2 border-primary text-primary hover:bg-green-50 dark:hover:bg-green-900/20 font-bold rounded-2xl py-4 px-6 transition-colors duration-200">
+                View Order Details
+            </button>
+<button class="w-full bg-primary hover:bg-primary-dark text-white font-bold rounded-2xl py-4 px-6 shadow-lg shadow-green-200/50 dark:shadow-none transition-all duration-200 transform active:scale-[0.98]">
+                Continue Shopping
+            </button>
+</div>
+</main>
+</body></html>

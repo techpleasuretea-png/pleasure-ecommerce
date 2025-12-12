@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create Account - Organia</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#20C533", 
+                        "primary-dark": "#189E29",
+                        "primary-light": "#E8F9EA",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#121212",
+                        "surface-light": "#F9FAFB",
+                        "surface-dark": "#1E1E1E",
+                        "text-light": "#1F2937",
+                        "text-dark": "#E5E7EB",
+                        "text-muted-light": "#6B7280",
+                        "text-muted-dark": "#9CA3AF",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                    },
+                    boxShadow: {
+                        'sticky-footer': '0 -4px 6px -1px rgba(0, 0, 0, 0.05), 0 -2px 4px -1px rgba(0, 0, 0, 0.03)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased h-screen flex flex-col overflow-hidden">
+<header class="flex-none bg-white dark:bg-surface-dark px-4 py-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 z-20">
+<button class="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark text-2xl">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold text-text-light dark:text-text-dark absolute left-1/2 transform -translate-x-1/2">Organia</h1>
+<div class="w-10"></div>
+</header>
+<main class="flex-1 overflow-y-auto no-scrollbar p-6">
+<div class="max-w-md mx-auto h-full flex flex-col">
+<div class="mt-4 mb-8">
+<h2 class="text-2xl font-bold text-text-light dark:text-text-dark">Create Account</h2>
+<p class="text-text-muted-light dark:text-text-muted-dark mt-2">Enter your details to sign up for a new account</p>
+</div>
+<form class="space-y-5">
+<div>
+<label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" for="email">Email</label>
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400" id="email" placeholder="example@email.com" type="email"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" for="mobile">Mobile Number</label>
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400" id="mobile" placeholder="017xxxxxxxx" type="tel"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" for="password">Password</label>
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400" id="password" placeholder="••••••••" type="password"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" for="confirm-password">Confirm Password</label>
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400" id="confirm-password" placeholder="••••••••" type="password"/>
+</div>
+<div class="pt-4">
+<button class="w-full bg-primary hover:bg-primary-dark transition-colors text-white rounded-full py-4 px-6 shadow-lg shadow-green-200/50 dark:shadow-none flex items-center justify-center gap-2 group active:scale-[0.98] transform duration-100" type="button">
+<span class="font-bold text-lg">Create Account</span>
+</button>
+</div>
+</form>
+<div class="mt-auto py-8 text-center">
+<p class="text-text-muted-light dark:text-text-muted-dark">
+                Already have an account? 
+                <button class="text-primary font-bold hover:text-primary-dark transition-colors ml-1">Log in</button>
+</p>
+</div>
+</div>
+</main>
+</body></html>

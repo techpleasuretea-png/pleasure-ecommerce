@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ShoppingBag, Search, ChevronUp, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -10,6 +11,7 @@ interface CartMobileCheckoutProps {
     total: number;
     count: number;
 }
+
 
 export function CartMobileCheckout({ subtotal, shipping, discount, total, count }: CartMobileCheckoutProps) {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -51,7 +53,7 @@ export function CartMobileCheckout({ subtotal, shipping, discount, total, count 
 
             <div className="px-4 pb-4 bg-surface-light dark:bg-surface-dark">
                 <div className="flex items-center gap-4">
-                    <button className="flex-1 bg-primary hover:bg-primary-dark transition-colors text-white rounded-full py-3.5 px-6 shadow-lg shadow-green-200/50 dark:shadow-none flex items-center justify-between group">
+                    <Link href="/checkout" className="flex-1 bg-primary hover:bg-primary-dark transition-colors text-white rounded-full py-3.5 px-6 shadow-lg shadow-green-200/50 dark:shadow-none flex items-center justify-between group">
                         <div className="flex items-center gap-3">
                             <div className="relative">
                                 <ShoppingBag className="w-6 h-6" />
@@ -60,7 +62,7 @@ export function CartMobileCheckout({ subtotal, shipping, discount, total, count 
                             <span className="font-semibold text-lg">Checkout</span>
                         </div>
                         <span className="font-medium bg-white/20 px-2 py-0.5 rounded text-sm group-hover:bg-white/30 transition-colors">৳{total.toFixed(2)}</span>
-                    </button>
+                    </Link>
                     <button className="flex flex-col items-center justify-center w-12 h-12 text-text-muted-light dark:text-text-muted-dark hover:text-primary transition-colors">
                         <Search className="w-6 h-6" />
                         <span className="text-[10px] mt-0.5">Search</span>
