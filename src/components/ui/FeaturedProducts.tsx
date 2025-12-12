@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { ProductCard } from "./ProductCard";
 
 const products = [
     {
@@ -47,36 +48,7 @@ export function FeaturedProducts() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {products.map((product, idx) => (
-                    <div key={idx} className="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group border border-transparent hover:border-gray-100 dark:hover:border-gray-800 hover:shadow-lg transition-all duration-300">
-                        <div className="relative overflow-hidden">
-                            <img
-                                src={product.image}
-                                alt={product.name}
-                                className="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500"
-                            />
-                            {product.discount && (
-                                <div className="absolute top-2 left-2 z-10 flex h-6 items-center justify-center rounded-full bg-red-500 px-2.5">
-                                    <p className="text-xs font-bold text-white">{product.discount}</p>
-                                </div>
-                            )}
-                            <button className="absolute bottom-3 right-3 bg-white dark:bg-surface-dark p-2 rounded-full shadow-md translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:text-white">
-                                <Plus className="w-5 h-5" />
-                            </button>
-                        </div>
-                        <div className="p-4">
-                            <h3 className="font-semibold text-lg">{product.name} <span className="text-subtext-light dark:text-subtext-dark text-sm font-normal">- {product.weight}</span></h3>
-                            <div className="flex items-baseline gap-2 mt-2">
-                                <p className="text-primary font-bold text-xl">৳{product.price.toFixed(2)}</p>
-                                {product.originalPrice && (
-                                    <p className="text-subtext-light dark:text-subtext-dark text-sm line-through">৳{product.originalPrice.toFixed(2)}</p>
-                                )}
-                            </div>
-                            <div className="flex gap-3 mt-4">
-                                <button className="w-full bg-primary/10 text-primary font-semibold py-2.5 rounded-lg text-sm hover:bg-primary hover:text-white transition-all duration-300">Add to Cart</button>
-                                <button className="w-full bg-primary text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-opacity-90 shadow-md shadow-primary/20 transition-all active:scale-95">Buy Now</button>
-                            </div>
-                        </div>
-                    </div>
+                    <ProductCard key={idx} {...product} />
                 ))}
             </div>
         </section>

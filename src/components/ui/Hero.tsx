@@ -23,10 +23,11 @@ export function Hero() {
                     <p className="mt-4 max-w-xl mx-auto text-lg text-gray-200">
                         Experience the best of nature with our curated selection of certified organic produce and pantry staples, delivered to your door.
                     </p>
-                    <Link href="/shop">
-                        <button className="mt-8 bg-primary text-white font-semibold py-3 px-8 rounded-lg hover:opacity-90 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/30">
-                            Shop All Products
-                        </button>
+                    <Link
+                        href="/shop"
+                        className="mt-8 inline-block bg-primary text-white font-semibold py-3 px-8 rounded-lg hover:opacity-90 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/30"
+                    >
+                        Shop All Products
                     </Link>
                 </div>
             </section>
