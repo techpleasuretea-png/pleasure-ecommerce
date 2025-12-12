@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Organico - Product Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#20C533",
+            "background-light": "#FFFFFF",
+            "background-dark": "#0D1117",
+            "surface-light": "#F8F8F8",
+            "surface-dark": "#161B22",
+            "text-light": "#1A1A1A",
+            "text-dark": "#E6EDF3",
+            "subtext-light": "#666666",
+            "subtext-dark": "#8B949E",
+          },
+          fontFamily: {
+            display: ["Poppins", "sans-serif"],
+            sans: ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "12px",
+          },
+        },
+      },
+    };
+  </script>
+<style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+<div class="mx-auto max-w-screen-xl">
+<header class="py-4 px-4 md:px-8 border-b border-transparent">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary text-3xl">eco</span>
+<span class="text-2xl font-bold">Organico</span>
+</div>
+<nav class="hidden md:flex items-center gap-6 text-base font-sans">
+<a class="text-primary font-semibold" href="#">Home</a>
+<a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary" href="#">Shop</a>
+<a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary" href="#">New Arrivals</a>
+<a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary" href="#">Offers</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark">search</span>
+<input class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Search products..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full">
+<span class="material-icons">person_outline</span>
+</button>
+<button class="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full">
+<span class="material-icons">favorite_border</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="relative p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full">
+<span class="material-icons">shopping_bag</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-primary ring-2 ring-white dark:ring-background-dark"></span>
+</button>
+<div class="text-sm">
+<span class="text-xs text-subtext-light dark:text-subtext-dark">2 items</span>
+<p class="font-semibold">৳30.48</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="px-4 md:px-8 py-8">
+<nav class="flex text-sm text-subtext-light dark:text-subtext-dark mb-8">
+<a class="hover:text-primary" href="#">Home</a>
+<span class="mx-2">/</span>
+<a class="hover:text-primary" href="#">Shop</a>
+<span class="mx-2">/</span>
+<a class="hover:text-primary" href="#">Fruits</a>
+<span class="mx-2">/</span>
+<span class="text-text-light dark:text-text-dark font-medium">Organic Avocados</span>
+</nav>
+<div class="flex flex-col lg:flex-row gap-12 mb-16">
+<div class="w-full lg:w-1/2">
+<div class="aspect-square bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden mb-4 relative group">
+<img alt="Organic Avocados" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo"/>
+<span class="absolute top-4 left-4 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">20% OFF</span>
+<button class="absolute right-4 top-4 p-2 bg-white/80 dark:bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-icons text-xl">zoom_in</span>
+</button>
+<button class="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 dark:bg-black/50 rounded-full hover:bg-white dark:hover:bg-black transition shadow-sm">
+<span class="material-icons">chevron_left</span>
+</button>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 dark:bg-black/50 rounded-full hover:bg-white dark:hover:bg-black transition shadow-sm">
+<span class="material-icons">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<button class="aspect-square rounded-lg border-2 border-primary overflow-hidden">
+<img alt="Thumbnail 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo"/>
+</button>
+<button class="aspect-square rounded-lg border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden bg-surface-light dark:bg-surface-dark">
+<img alt="Thumbnail 2" class="w-full h-full object-cover opacity-70" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo"/>
+</button>
+<button class="aspect-square rounded-lg border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden bg-surface-light dark:bg-surface-dark">
+<img alt="Thumbnail 3" class="w-full h-full object-cover opacity-70" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo"/>
+</button>
+<button class="aspect-square rounded-lg border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden bg-surface-light dark:bg-surface-dark flex items-center justify-center text-subtext-light">
+<span class="material-icons">play_circle_outline</span>
+</button>
+</div>
+</div>
+<div class="w-full lg:w-1/2">
+<h1 class="text-3xl md:text-4xl font-bold mb-3 font-display">Organic Avocados - 500g</h1>
+<div class="flex items-center gap-4 mb-6">
+<div class="flex text-yellow-400 text-lg">
+<span class="material-icons text-base">star</span>
+<span class="material-icons text-base">star</span>
+<span class="material-icons text-base">star</span>
+<span class="material-icons text-base">star</span>
+<span class="material-icons text-base">star_half</span>
+</div>
+<span class="text-subtext-light dark:text-subtext-dark text-sm hover:text-primary cursor-pointer">(124 Customer reviews)</span>
+</div>
+<div class="flex items-baseline gap-3 mb-6">
+<span class="text-3xl font-bold text-primary">৳4.99</span>
+<span class="text-xl text-subtext-light dark:text-subtext-dark line-through">৳6.24</span>
+</div>
+<p class="text-subtext-light dark:text-subtext-dark mb-8 leading-relaxed">
+              Creamy, rich, and harvested at the peak of freshness. Our organic avocados are perfect for guacamole, toast, or slicing into salads. Grown without synthetic pesticides for a pure, natural taste.
+            </p>
+<div class="flex flex-col sm:flex-row gap-4 mb-8">
+<div class="flex items-center border border-gray-200 dark:border-gray-700 rounded-xl w-max">
+<button class="px-4 py-3 hover:text-primary transition-colors">
+<span class="material-icons text-sm">remove</span>
+</button>
+<input class="w-12 text-center bg-transparent border-none focus:ring-0 p-0 text-text-light dark:text-text-dark font-semibold" min="1" type="number" value="1"/>
+<button class="px-4 py-3 hover:text-primary transition-colors">
+<span class="material-icons text-sm">add</span>
+</button>
+</div>
+<button class="flex-1 bg-primary text-white font-semibold py-3 px-8 rounded-xl hover:bg-opacity-90 flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all">
+<span class="material-icons">shopping_bag</span> Add to Cart
+              </button>
+<button class="flex-1 border-2 border-primary text-primary font-semibold py-3 px-8 rounded-xl hover:bg-primary hover:text-white transition-all flex items-center justify-center">
+                Buy Now
+              </button>
+</div>
+<div class="space-y-3 text-sm text-subtext-light dark:text-subtext-dark border-t border-gray-100 dark:border-gray-800 pt-6">
+<div class="flex gap-2">
+<span class="font-semibold text-text-light dark:text-text-dark min-w-[80px]">SKU:</span>
+<span>AVO-500-ORG</span>
+</div>
+<div class="flex gap-2">
+<span class="font-semibold text-text-light dark:text-text-dark min-w-[80px]">Category:</span>
+<a class="hover:text-primary transition-colors" href="#">Fruits</a>, 
+                <a class="hover:text-primary transition-colors" href="#">Organic</a>
+</div>
+<div class="flex gap-2">
+<span class="font-semibold text-text-light dark:text-text-dark min-w-[80px]">Tags:</span>
+<span>Fresh, Healthy, Keto, Vegan</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<div class="border-b border-gray-200 dark:border-gray-700 mb-8 flex flex-wrap gap-x-8 gap-y-2">
+<button class="pb-4 border-b-2 border-primary text-primary font-semibold text-lg">Description</button>
+<button class="pb-4 border-b-2 border-transparent text-subtext-light dark:text-subtext-dark hover:text-primary transition-colors text-lg">Reviews (124)</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="md:col-span-2 space-y-6 text-subtext-light dark:text-subtext-dark leading-relaxed">
+<p>
+                Our organic avocados are sourced directly from sustainable farms where they are allowed to ripen naturally on the tree. This process ensures a higher oil content, resulting in a creamier texture and richer flavor compared to conventionally grown varieties.
+              </p>
+<p>
+                Packed with heart-healthy monounsaturated fats, fiber, and potassium, these avocados are a nutritional powerhouse. Whether you're making a classic guacamole, adding slices to your morning toast, or blending them into a smoothie for extra creaminess, you can taste the quality in every bite.
+              </p>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mt-6">Why Choose Organico Avocados?</h3>
+<ul class="list-disc pl-5 space-y-2">
+<li>100% Organic &amp; Non-GMO</li>
+<li>Sustainably farmed</li>
+<li>Hand-picked for quality</li>
+<li>Rich in Vitamins C, E, K, and B-6</li>
+</ul>
+<div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Origin</h3>
+<div class="flex items-start gap-4 p-4 bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800">
+<div class="bg-white dark:bg-black/20 p-3 rounded-lg text-primary">
+<span class="material-icons text-2xl">public</span>
+</div>
+<div>
+<p class="font-bold text-text-light dark:text-text-dark text-lg">Michoacán, Mexico</p>
+<p class="text-sm mt-1">Sourced from certified organic family orchards in the volcanic highlands, ensuring optimal climate for creamy texture and rich flavor.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl h-fit">
+<h3 class="font-bold text-lg mb-4">Nutrition Facts</h3>
+<p class="text-xs text-subtext-light dark:text-subtext-dark mb-4">Per 100g serving</p>
+<div class="space-y-3 text-sm">
+<div class="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2">
+<span>Calories</span>
+<span class="font-semibold">160</span>
+</div>
+<div class="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2">
+<span>Total Fat</span>
+<span class="font-semibold">15g</span>
+</div>
+<div class="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2 pl-4 text-subtext-light dark:text-subtext-dark">
+<span>Saturated Fat</span>
+<span>2.1g</span>
+</div>
+<div class="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2">
+<span>Cholesterol</span>
+<span class="font-semibold">0mg</span>
+</div>
+<div class="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2">
+<span>Sodium</span>
+<span class="font-semibold">7mg</span>
+</div>
+<div class="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2">
+<span>Total Carbohydrates</span>
+<span class="font-semibold">9g</span>
+</div>
+<div class="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2 pl-4 text-subtext-light dark:text-subtext-dark">
+<span>Dietary Fiber</span>
+<span>7g</span>
+</div>
+<div class="flex justify-between pt-2">
+<span>Protein</span>
+<span class="font-semibold">2g</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section>
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold font-display">You May Also Like</h2>
+<a class="text-primary font-semibold hover:underline flex items-center gap-1" href="#">
+            View All <span class="material-icons text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all flex flex-col">
+<div class="relative">
+<img alt="Sourdough Bread" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC3A-a4UULzqh-2SPbYejiaLkHE3RubV6okQS4ojcHCRPhJ_paUEKrXruRD5erHtgxWLXoQfc4z_c5xWUQMkczARbRsyNYdrwnR8j9PGiAxI8d1uBSlKD743u-NkXnxtMB9EnhyXGqbvE35qt7CLdn1-XWOxfulSdRjhidkms4oXRjNzO5r438VVLu10PF_rb2FgIPLvhWiF6r7e09nRXea6m6hUufATKbH-achi-5RFKf6ogP2j35Z7m7prz58IulwJpUyMdVlc4"/>
+<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">15% OFF</span>
+<button class="absolute top-3 right-3 p-2 bg-white rounded-full shadow-sm text-subtext-light hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-icons text-sm">favorite</span>
+</button>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<h3 class="font-semibold truncate">Sourdough Bread - 500g</h3>
+<div class="flex items-baseline gap-2 mt-1 mb-4">
+<p class="text-primary font-bold text-lg">৳6.50</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm line-through">৳7.65</p>
+</div>
+<div class="flex gap-2 mt-auto w-full">
+<button class="flex-1 bg-primary text-white font-semibold py-2 px-2 rounded-lg text-xs hover:bg-opacity-90 flex items-center justify-center gap-1 whitespace-nowrap shadow-md shadow-primary/20">
+<span class="material-icons text-sm">shopping_bag</span> Add to Cart
+              </button>
+<button class="flex-1 border border-primary text-primary font-semibold py-2 px-2 rounded-lg text-xs hover:bg-primary hover:text-white transition-colors whitespace-nowrap">
+                Buy Now
+              </button>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all flex flex-col">
+<div class="relative">
+<img alt="Free-Range Eggs" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCxbKs9pCH2Ka4kHpk_m1Ivt1Ou2krDDLnEjLgXZZAtFxIoUcoLbhLqzVOxEiVjcalpJNdWs5h8zpWqzsBDih-S2cqmQsZ6DF8G16d3CDH1xdZ6IFD3XVHruE5GcRG_WQ5-OJfN6kDfffgYenXPI4VRhDUgLkHiG7sCD3hyM4SVrzH2jyM0r2I5CuhtCnTSf7fji7fJ6mg-iLrNWUCrHxu4YHWejJcXrkx6nm2i934phwbc5PLqpNh_a28u7s0vAgucRx-clxI5_w"/>
+<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">10% OFF</span>
+<button class="absolute top-3 right-3 p-2 bg-white rounded-full shadow-sm text-subtext-light hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-icons text-sm">favorite</span>
+</button>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<h3 class="font-semibold truncate">Free-Range Eggs - 1 dozen</h3>
+<div class="flex items-baseline gap-2 mt-1 mb-4">
+<p class="text-primary font-bold text-lg">৳7.99</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm line-through">৳8.88</p>
+</div>
+<div class="flex gap-2 mt-auto w-full">
+<button class="flex-1 bg-primary text-white font-semibold py-2 px-2 rounded-lg text-xs hover:bg-opacity-90 flex items-center justify-center gap-1 whitespace-nowrap shadow-md shadow-primary/20">
+<span class="material-icons text-sm">shopping_bag</span> Add to Cart
+              </button>
+<button class="flex-1 border border-primary text-primary font-semibold py-2 px-2 rounded-lg text-xs hover:bg-primary hover:text-white transition-colors whitespace-nowrap">
+                Buy Now
+              </button>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all flex flex-col">
+<div class="relative">
+<img alt="Juicy Strawberries" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0Yri64ddnMB4myFp2Wrj5j7BZYIGSlBUI9X7BqnfXktqTHEopk7TEXYMDSZtvYSFzPHg4jdjCOpHj9tyiymxQIqhi6hAgsqmxPPi12uFcfBQXaC2P6SuaPuL4cRtsctqUPvDN8l1yrBgYILYbf17OhrZW9WmFYUtc5kO_Msc5wO7ijnrRjCvxkF1oD3xp-GPwU4fsFnm6cOypprDiVFbOKIx0wLATKoLDv_NzfP6qVzpHl2ikDu5Giff3XvAsT6vg21knuzQqQA8"/>
+<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">25% OFF</span>
+<button class="absolute top-3 right-3 p-2 bg-white rounded-full shadow-sm text-subtext-light hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-icons text-sm">favorite</span>
+</button>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<h3 class="font-semibold truncate">Juicy Strawberries - 500g</h3>
+<div class="flex items-baseline gap-2 mt-1 mb-4">
+<p class="text-primary font-bold text-lg">৳5.50</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm line-through">৳7.33</p>
+</div>
+<div class="flex gap-2 mt-auto w-full">
+<button class="flex-1 bg-primary text-white font-semibold py-2 px-2 rounded-lg text-xs hover:bg-opacity-90 flex items-center justify-center gap-1 whitespace-nowrap shadow-md shadow-primary/20">
+<span class="material-icons text-sm">shopping_bag</span> Add to Cart
+              </button>
+<button class="flex-1 border border-primary text-primary font-semibold py-2 px-2 rounded-lg text-xs hover:bg-primary hover:text-white transition-colors whitespace-nowrap">
+                Buy Now
+              </button>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all flex flex-col">
+<div class="relative">
+<img alt="Organic Milk" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtUIriRHMO78Lha6iwa0djf40KrA7NUKzm65pZn7NmyUTbERKiDAsYeidSD_j3nyKWQf3KGxcIQQfDrA7BsrbKfzORwZUv8Gz4H9tY3FFL489kPbsurGIdMPxYiVbcsW3UiuFAcVOvpK1nAWgGTdg0mXv1YFHQMpZADGc0yqyhaO4w1vcPGg0xjrGrFUxS-B84PNsvXB7P1l-_MQ17WFgbZEK7YoKYGSwmWQyqKHLqHKjJZsPfTe6HwEchNm8M6d864DJGIUFmfJ8"/>
+<button class="absolute top-3 right-3 p-2 bg-white rounded-full shadow-sm text-subtext-light hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-icons text-sm">favorite</span>
+</button>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<h3 class="font-semibold truncate">Organic Whole Milk - 1L</h3>
+<div class="flex items-baseline gap-2 mt-1 mb-4">
+<p class="text-primary font-bold text-lg">৳3.99</p>
+</div>
+<div class="flex gap-2 mt-auto w-full">
+<button class="flex-1 bg-primary text-white font-semibold py-2 px-2 rounded-lg text-xs hover:bg-opacity-90 flex items-center justify-center gap-1 whitespace-nowrap shadow-md shadow-primary/20">
+<span class="material-icons text-sm">shopping_bag</span> Add to Cart
+              </button>
+<button class="flex-1 border border-primary text-primary font-semibold py-2 px-2 rounded-lg text-xs hover:bg-primary hover:text-white transition-colors whitespace-nowrap">
+                Buy Now
+              </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-surface-light dark:bg-surface-dark pt-16 pb-8 px-4 md:px-8 mt-12">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary text-3xl">eco</span>
+<span class="text-2xl font-bold">Organico</span>
+</div>
+<p class="text-sm text-subtext-light dark:text-subtext-dark mt-4">Freshness you can taste. Values you can trust.</p>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Shop</h4>
+<ul class="space-y-2 text-sm text-subtext-light dark:text-subtext-dark">
+<li><a class="hover:text-primary" href="#">New Arrivals</a></li>
+<li><a class="hover:text-primary" href="#">Offers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Categories</h4>
+<ul class="space-y-2 text-sm text-subtext-light dark:text-subtext-dark">
+<li><a class="hover:text-primary" href="#">Fruits</a></li>
+<li><a class="hover:text-primary" href="#">Vegetables</a></li>
+<li><a class="hover:text-primary" href="#">Dairy &amp; Eggs</a></li>
+<li><a class="hover:text-primary" href="#">Bakery</a></li>
+<li><a class="hover:text-primary" href="#">Meat &amp; Seafood</a></li>
+<li><a class="hover:text-primary" href="#">Drinks</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Get Fresh Updates</h4>
+<p class="text-sm text-subtext-light dark:text-subtext-dark">Sign up for our newsletter to get the latest on new products and sales.</p>
+<div class="flex mt-4">
+<input class="w-full text-sm rounded-l-lg border-gray-200 dark:border-gray-700 bg-background-light dark:bg-background-dark focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your email" type="email"/>
+<button class="bg-primary text-white font-semibold py-2 px-4 rounded-r-lg text-sm hover:bg-opacity-90">Subscribe</button>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-sm text-subtext-light dark:text-subtext-dark">
+<p>© 2025 Pleasure. All rights reserved.</p>
+</div>
+</footer>
+</div>
+</body></html>
