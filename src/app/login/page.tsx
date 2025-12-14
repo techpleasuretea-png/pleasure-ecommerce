@@ -1,96 +1,106 @@
 "use client";
 
-import { Header } from "@/components/ui/Header";
-import { Footer } from "@/components/ui/Footer";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Leaf, User, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
 
     return (
-        <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
-            <Header />
+        <div className="bg-background-light dark:bg-background-dark min-h-[max(884px,100dvh)] flex flex-col font-display overflow-hidden">
+            <header className="flex-none bg-white dark:bg-surface-dark px-4 py-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 z-20">
+                <button
+                    onClick={() => router.back()}
+                    className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                    <ArrowLeft className="text-text-light dark:text-text-dark w-6 h-6" />
+                </button>
+                <h1 className="text-xl font-bold text-text-light dark:text-text-dark absolute left-1/2 transform -translate-x-1/2">
+                    Organia
+                </h1>
+                <div className="w-10"></div>
+            </header>
 
-            <main className="flex-grow flex items-center justify-center px-4 md:px-8 py-16">
-                <div className="w-full max-w-md bg-white dark:bg-surface-dark p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
-                    <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold font-display mb-2">Welcome Back</h1>
-                        <p className="text-subtext-light dark:text-subtext-dark text-sm">
-                            Login to access your account and organic favorites.
-                        </p>
+            <main className="flex-1 overflow-y-auto no-scrollbar p-6 flex flex-col justify-center">
+                <div className="w-full max-w-sm mx-auto space-y-8">
+                    <div className="text-center space-y-2 mb-8">
+                        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-4">
+                            <Leaf className="w-10 h-10 text-primary" fill="currentColor" />
+                        </div>
+                        <h2 className="text-3xl font-bold text-text-light dark:text-text-dark">Welcome Back!</h2>
+                        <p className="text-subtext-light dark:text-subtext-dark">Sign in to continue your healthy journey</p>
                     </div>
 
                     <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                        <div>
-                            <label className="block text-sm font-medium mb-2 text-subtext-light dark:text-subtext-dark" htmlFor="email">
+                        <div className="space-y-1.5">
+                            <label className="block text-sm font-medium text-text-light dark:text-text-dark" htmlFor="identity">
                                 Email or Mobile Number
                             </label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark w-5 h-5" />
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <User className="text-subtext-light dark:text-subtext-dark w-5 h-5" />
+                                </div>
                                 <input
-                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-black/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                                    id="email"
+                                    className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl pl-11 pr-4 py-4 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400 shadow-sm"
+                                    id="identity"
+                                    placeholder="example@mail.com or 017xxxxxxxx"
                                     type="text"
-                                    placeholder="example@mail.com"
                                 />
                             </div>
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium mb-2 text-subtext-light dark:text-subtext-dark" htmlFor="password">
+                        <div className="space-y-1.5">
+                            <label className="block text-sm font-medium text-text-light dark:text-text-dark" htmlFor="password">
                                 Password
                             </label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark w-5 h-5" />
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <Lock className="text-subtext-light dark:text-subtext-dark w-5 h-5" />
+                                </div>
                                 <input
-                                    className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-black/20 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                    className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl pl-11 pr-12 py-4 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400 shadow-sm"
                                     id="password"
-                                    type={showPassword ? "text" : "password"}
                                     placeholder="••••••••"
+                                    type={showPassword ? "text" : "password"}
                                 />
                                 <button
+                                    className="absolute inset-y-0 right-0 pr-4 flex items-center"
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark"
                                 >
-                                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    {showPassword ? (
+                                        <EyeOff className="text-subtext-light dark:text-subtext-dark hover:text-primary transition-colors w-5 h-5" />
+                                    ) : (
+                                        <Eye className="text-subtext-light dark:text-subtext-dark hover:text-primary transition-colors w-5 h-5" />
+                                    )}
                                 </button>
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between text-sm">
-                            <div className="flex items-center gap-2">
-                                <input
-                                    className="rounded border-gray-300 text-primary focus:ring-primary"
-                                    id="remember"
-                                    type="checkbox"
-                                />
-                                <label className="text-subtext-light dark:text-subtext-dark cursor-pointer select-none" htmlFor="remember">
-                                    Remember me
-                                </label>
-                            </div>
-                            <Link href="/forgot-password" className="text-primary font-medium hover:underline">
+                        <div className="flex justify-end">
+                            <Link className="text-sm font-semibold text-primary hover:text-green-600 transition-colors" href="/forgot-password">
                                 Forgot Password?
                             </Link>
                         </div>
 
-                        <button className="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-primary/30 text-base">
+                        <button className="w-full bg-primary hover:bg-green-600 transition-colors text-white rounded-full py-4 px-6 shadow-lg shadow-green-200/50 dark:shadow-none flex items-center justify-center gap-2 group active:scale-[0.98] transform duration-100 text-lg font-bold mt-4">
                             Login
                         </button>
+                    </form>
 
-                        <p className="text-center mt-8 text-sm text-subtext-light dark:text-subtext-dark">
-                            Don&apos;t have an account?{" "}
-                            <Link href="/signup" className="text-primary font-bold hover:underline">
+                    <div className="pt-4 text-center">
+                        <p className="text-subtext-light dark:text-subtext-dark">
+                            Don't have an account?
+                            <Link className="text-primary font-bold hover:underline ml-1" href="/create-account">
                                 Create Account
                             </Link>
                         </p>
-                    </form>
+                    </div>
                 </div>
             </main>
-
-            <Footer />
         </div>
     );
 }
