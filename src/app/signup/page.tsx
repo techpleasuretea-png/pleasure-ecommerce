@@ -1,118 +1,108 @@
 "use client";
 
-import { Header } from "@/components/ui/Header";
-import { Footer } from "@/components/ui/Footer";
-import { Mail, Lock, Phone, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const router = useRouter();
 
     return (
-        <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
-            <Header />
+        <div className="bg-background-light dark:bg-background-dark min-h-[max(884px,100dvh)] flex flex-col font-display overflow-hidden">
+            <header className="flex-none bg-white dark:bg-surface-dark px-4 py-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 z-20">
+                <button
+                    onClick={() => router.back()}
+                    className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                    <ArrowLeft className="text-text-light dark:text-text-dark w-6 h-6" />
+                </button>
+                <h1 className="text-xl font-bold text-text-light dark:text-text-dark absolute left-1/2 transform -translate-x-1/2">
+                    Organia
+                </h1>
+                <div className="w-10"></div>
+            </header>
 
-            <main className="flex-grow flex items-center justify-center px-4 md:px-8 py-16">
-                <div className="w-full max-w-[480px]">
-                    <div className="bg-white dark:bg-surface-dark rounded-2xl p-6 md:p-10 shadow-xl border border-gray-100 dark:border-gray-800">
-                        <div className="text-center mb-8">
-                            <h1 className="text-3xl font-bold font-display mb-2 text-text-light dark:text-text-dark">Create Account</h1>
-                            <p className="text-subtext-light dark:text-subtext-dark mt-2">Join us for a fresh start</p>
+            <main className="flex-1 overflow-y-auto no-scrollbar p-6">
+                <div className="max-w-md mx-auto h-full flex flex-col">
+                    <div className="mt-4 mb-8">
+                        <h2 className="text-2xl font-bold text-text-light dark:text-text-dark">Create Account</h2>
+                        <p className="text-text-muted-light dark:text-text-muted-dark mt-2">
+                            Enter your details to sign up for a new account
+                        </p>
+                    </div>
+
+                    <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+                        <div>
+                            <label className="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" htmlFor="email">
+                                Email
+                            </label>
+                            <input
+                                className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
+                                id="email"
+                                placeholder="example@email.com"
+                                type="email"
+                            />
                         </div>
 
-                        <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-                            <div>
-                                <label className="block text-sm font-medium mb-2 text-text-light dark:text-text-dark" htmlFor="email">
-                                    Email
-                                </label>
-                                <div className="relative">
-                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark w-5 h-5" />
-                                    <input
-                                        className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-black/20 pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-gray-400 dark:placeholder-gray-600"
-                                        id="email"
-                                        type="email"
-                                        placeholder="name@example.com"
-                                    />
-                                </div>
-                            </div>
+                        <div>
+                            <label className="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" htmlFor="mobile">
+                                Mobile Number
+                            </label>
+                            <input
+                                className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
+                                id="mobile"
+                                placeholder="017xxxxxxxx"
+                                type="tel"
+                            />
+                        </div>
 
-                            <div>
-                                <label className="block text-sm font-medium mb-2 text-text-light dark:text-text-dark" htmlFor="mobile">
-                                    Mobile
-                                </label>
-                                <div className="relative">
-                                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark w-5 h-5" />
-                                    <input
-                                        className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-black/20 pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-gray-400 dark:placeholder-gray-600"
-                                        id="mobile"
-                                        type="tel"
-                                        placeholder="017 12 34 56 78"
-                                    />
-                                </div>
-                            </div>
+                        <div>
+                            <label className="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" htmlFor="password">
+                                Password
+                            </label>
+                            <input
+                                className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
+                                id="password"
+                                placeholder="••••••••"
+                                type="password"
+                            />
+                        </div>
 
-                            <div>
-                                <label className="block text-sm font-medium mb-2 text-text-light dark:text-text-dark" htmlFor="password">
-                                    Password
-                                </label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark w-5 h-5" />
-                                    <input
-                                        className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-black/20 pl-10 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-gray-400 dark:placeholder-gray-600"
-                                        id="password"
-                                        type={showPassword ? "text" : "password"}
-                                        placeholder="••••••••"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark"
-                                    >
-                                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                                    </button>
-                                </div>
-                            </div>
+                        <div>
+                            <label className="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" htmlFor="confirm-password">
+                                Confirm Password
+                            </label>
+                            <input
+                                className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
+                                id="confirm-password"
+                                placeholder="••••••••"
+                                type="password"
+                            />
+                        </div>
 
-                            <div>
-                                <label className="block text-sm font-medium mb-2 text-text-light dark:text-text-dark" htmlFor="confirm_password">
-                                    Confirm Password
-                                </label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark w-5 h-5" />
-                                    <input
-                                        className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-black/20 pl-10 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-gray-400 dark:placeholder-gray-600"
-                                        id="confirm_password"
-                                        type={showConfirmPassword ? "text" : "password"}
-                                        placeholder="••••••••"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark"
-                                    >
-                                        {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <button className="w-full mt-2 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center gap-2 text-base">
-                                Create Account
+                        <div className="pt-4">
+                            <button
+                                className="w-full bg-primary hover:bg-primary-dark transition-colors text-white rounded-full py-4 px-6 shadow-lg shadow-green-200/50 dark:shadow-none flex items-center justify-center gap-2 group active:scale-[0.98] transform duration-100"
+                                type="submit"
+                            >
+                                <span className="font-bold text-lg">Create Account</span>
                             </button>
-                        </form>
-
-                        <div className="mt-8 text-center text-sm text-subtext-light dark:text-subtext-dark">
-                            Already have an account?{" "}
-                            <Link href="/login" className="text-primary font-bold hover:underline">
-                                Login
-                            </Link>
                         </div>
+                    </form>
+
+                    <div className="mt-auto py-8 text-center">
+                        <p className="text-text-muted-light dark:text-text-muted-dark">
+                            Already have an account?
+                            <Link href="/login" className="text-primary font-bold hover:text-primary-dark transition-colors ml-1">
+                                Log in
+                            </Link>
+                        </p>
                     </div>
                 </div>
             </main>
-
-            <Footer />
         </div>
     );
 }
