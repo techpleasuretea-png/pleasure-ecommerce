@@ -1,4 +1,5 @@
 import { Trash2, Plus, Minus } from "lucide-react";
+import Image from "next/image";
 
 interface CartItemProps {
     id: number;
@@ -20,8 +21,8 @@ export function CartItem({ id, name, weight, price, originalPrice, savings, imag
             {/* Desktop View (Grid Row) */}
             <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-gray-200 dark:border-gray-700 items-center last:border-0 bg-surface-light dark:bg-surface-dark">
                 <div className="col-span-6 flex items-center gap-4">
-                    <div className="w-20 h-20 flex-shrink-0 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                        <img src={image} alt={name} className="w-full h-full object-cover" />
+                    <div className="relative w-20 h-20 flex-shrink-0 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                        <Image src={image} alt={name} fill className="object-cover" />
                     </div>
                     <div>
                         <h3 className="font-semibold text-text-light dark:text-text-dark">{name} - {weight}</h3>
@@ -58,8 +59,8 @@ export function CartItem({ id, name, weight, price, originalPrice, savings, imag
 
             {/* Mobile View (Card) */}
             <div className="md:hidden bg-surface-light dark:bg-surface-dark rounded-xl p-3 shadow-sm flex gap-4 items-center mb-4">
-                <div className="w-20 h-20 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-                    <img src={image} alt={name} className="w-full h-full object-cover" />
+                <div className="relative w-20 h-20 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                    <Image src={image} alt={name} fill className="object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">

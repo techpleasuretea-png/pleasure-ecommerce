@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Search Results - Organia</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#20C533",
+                        "background-light": "#ffffff",
+                        "background-dark": "#122013"
+                    },
+                    fontFamily: {
+                        display: "Plus Jakarta Sans"
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#333333] dark:text-white">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden pb-32">
+<header class="sticky top-0 z-20 bg-white/95 dark:bg-background-dark/95 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-between px-4 py-3">
+<button class="flex items-center justify-center text-[#333333] dark:text-white p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+<h1 class="text-xl font-extrabold tracking-tight text-[#333333] dark:text-white absolute left-1/2 -translate-x-1/2">Organia</h1>
+<div class="flex items-center gap-2 sm:gap-3">
+<a class="hidden sm:flex items-center gap-1.5 bg-green-50 text-primary border border-primary/20 rounded-full pl-3 pr-4 py-1.5 hover:bg-primary hover:text-white transition-all group" href="tel:+8801914532441">
+<span class="material-symbols-outlined text-lg group-hover:text-white">call</span>
+<span class="text-xs font-bold whitespace-nowrap">+8801914532441</span>
+</a>
+<a class="flex sm:hidden items-center justify-center bg-green-50 text-primary rounded-full w-9 h-9 border border-primary/20 hover:bg-primary hover:text-white transition-all" href="tel:+8801914532441">
+<span class="material-symbols-outlined text-xl">call</span>
+</a>
+<button class="flex items-center justify-center text-[#333333] dark:text-white p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-3xl">account_circle</span>
+</button>
+</div>
+</div>
+<div class="px-4 pb-4">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="block w-full rounded-xl border-gray-200 bg-gray-50 py-3 pl-10 pr-10 text-sm text-gray-900 focus:border-primary focus:ring-primary dark:bg-gray-800 dark:border-gray-700 dark:text-white font-bold" placeholder="Search products..." type="text" value="Organic Fruits"/>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-gray-400 hover:text-gray-600">
+<span class="material-symbols-outlined text-xl">cancel</span>
+</div>
+</div>
+</div>
+</header>
+<div class="sticky top-[134px] z-10 bg-white/95 dark:bg-background-dark/95 backdrop-blur-sm px-4 py-3 flex justify-between items-center border-b border-gray-50 dark:border-gray-800">
+<p class="text-sm font-bold text-gray-500">24 Results Found</p>
+<div class="flex gap-2">
+<button class="flex items-center gap-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-1.5 text-xs font-bold text-gray-700 dark:text-gray-300 shadow-sm active:bg-gray-50">
+<span class="material-symbols-outlined text-lg">tune</span>
+<span>Filter</span>
+</button>
+<button class="flex items-center gap-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-1.5 text-xs font-bold text-gray-700 dark:text-gray-300 shadow-sm active:bg-gray-50">
+<span class="material-symbols-outlined text-lg">sort</span>
+<span>Sort</span>
+</button>
+</div>
+</div>
+<main class="p-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
+<div class="relative h-36 overflow-hidden bg-gray-100">
+<div class="absolute top-2 left-2 z-10 flex items-center justify-center rounded-md bg-red-500 px-2 py-0.5 shadow-sm">
+<p class="text-[10px] font-bold text-white uppercase tracking-wider">20% Off</p>
+</div>
+<img alt="Avocados" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2xPfqM2FnFiY6H-qglQ1zw01lEfz5cO_WGAv-lvWTk9JjyXTh7uR4a0VoUPm2hiAz0qecbfIj5ve_XCV_AeURBQMPZuuVJcUOBdfD9sf1Q0XkiGVuhPePg647icHlbtFYusbcfOw1LugLO3EnQuOOHM__P1bcSqTTE2y-RoX7XJ6NalvHrmM73s2LSqjY1YQPJtvLOOxIn_dfkIaIklUpStG7KaWiOHcAgfBJLvZFFnT0x5PIAFyL6jp54tXZDU-RwlOh6u2JOzUk"/>
+</div>
+<div class="flex flex-1 flex-col p-3">
+<h3 class="font-bold text-[#333333] dark:text-white text-sm leading-tight line-clamp-2 min-h-[2.5em]">Organic Avocados 2 pcs</h3>
+<div class="mt-2 flex items-baseline gap-1.5">
+<p class="text-base font-extrabold text-primary">৳280</p>
+<p class="text-xs text-gray-400 line-through font-medium">৳350</p>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<button class="flex-1 rounded-lg bg-primary py-2 text-xs font-bold text-white shadow-sm hover:bg-green-600 active:scale-95 transition-all">Buy</button>
+<button class="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-green-50 text-primary hover:bg-primary hover:text-white transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
+<div class="relative h-36 overflow-hidden bg-gray-100">
+<img alt="Pineapple" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg2m2wIKp59xIEcqw5RDmi1MyRSY7GxO7gR4ndhZZX_DBTBa3gHoSbb3TYVbdxGdgyAIa4l1rqOnbi4uoL7gvXlaB4AIi33X1uLad6MaNJS5Drr3vj0x4Y3KbdSomEgay3lrXwSHOVnRsqAOBlL7JUpZAn1Gn9wqD3Ov3KhQ5FgXqCWCXS2ylmamoZo9ZViWiyEfHEptbYmqciT_5L2-z-7ym2ZUszxpPVleyMF56JFIk3HTWFucdit44TFarFJcPjANG4-fk4YinD"/>
+</div>
+<div class="flex flex-1 flex-col p-3">
+<h3 class="font-bold text-[#333333] dark:text-white text-sm leading-tight line-clamp-2 min-h-[2.5em]">Pineapple 1 whole</h3>
+<div class="mt-2 flex items-baseline gap-1.5">
+<p class="text-base font-extrabold text-primary">৳499</p>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<button class="flex-1 rounded-lg bg-primary py-2 text-xs font-bold text-white shadow-sm hover:bg-green-600 active:scale-95 transition-all">Buy</button>
+<button class="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-green-50 text-primary hover:bg-primary hover:text-white transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
+<div class="relative h-36 overflow-hidden bg-gray-100">
+<div class="absolute top-2 left-2 z-10 flex items-center justify-center rounded-md bg-red-500 px-2 py-0.5 shadow-sm">
+<p class="text-[10px] font-bold text-white uppercase tracking-wider">15% Off</p>
+</div>
+<img alt="Milk" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ8HCx-QkzCjBFgYoDAkJ-bXhd3KAH1jd18h6J2puBQpPeM8pKi4R3ofxI_WXsk53viaZLgNsHR9wE5s31ADfx0YEKVjGjEBx3WSJaKfQbIAoNEbRELSiZyqh0hIcJ4qyy9hA8md5mIvvdWabuxP0nMotIXt1Kkdu9O2QY2rAqYrRckJ51mS3mKRqBNwWUJHDJchoKYJC8n8mJK0cUeRJUQYuRpEFtneFQTUBMkqcu1NrmWgVwIblFG5IbvYfzjxu5ph7rUev3BdLP"/>
+</div>
+<div class="flex flex-1 flex-col p-3">
+<h3 class="font-bold text-[#333333] dark:text-white text-sm leading-tight line-clamp-2 min-h-[2.5em]">Organic Milk 1 L</h3>
+<div class="mt-2 flex items-baseline gap-1.5">
+<p class="text-base font-extrabold text-primary">৳238</p>
+<p class="text-xs text-gray-400 line-through font-medium">৳280</p>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<button class="flex-1 rounded-lg bg-primary py-2 text-xs font-bold text-white shadow-sm hover:bg-green-600 active:scale-95 transition-all">Buy</button>
+<button class="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-green-50 text-primary hover:bg-primary hover:text-white transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
+<div class="relative h-36 overflow-hidden bg-gray-100">
+<img alt="Sourdough" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCInP5kIFlT_aLBcUAql4WBV5m8-1GDJfdssInhPQua1RqdxhovtNrv3j8H-yEcsXFRwXcEh2FzLOPMqZDxx6WYnxZIAOJCSuVLxqdeFOj9yQSmSHroFMMU4AfWhtWCh3VG-6jPuy2YgEINqdXnV9GuUcf-cRr15CtM6a6jfOUoMXnIix-KMv_RZz-69-QMf16lhBagNsmIDmiUstvYOfbggTYnkFnWh35zG9zf4U35Sec_pRprJUWB_q4qRvq2Mq3TYAA0IBrUYCBf"/>
+</div>
+<div class="flex flex-1 flex-col p-3">
+<h3 class="font-bold text-[#333333] dark:text-white text-sm leading-tight line-clamp-2 min-h-[2.5em]">Sourdough Bread 1 loaf</h3>
+<div class="mt-2 flex items-baseline gap-1.5">
+<p class="text-base font-extrabold text-primary">৳525</p>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<button class="flex-1 rounded-lg bg-primary py-2 text-xs font-bold text-white shadow-sm hover:bg-green-600 active:scale-95 transition-all">Buy</button>
+<button class="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-green-50 text-primary hover:bg-primary hover:text-white transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
+<div class="relative h-36 overflow-hidden bg-gray-100">
+<img alt="Blueberries" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpQGItKrV_LNC6MPWKUK89j6wKHNano7O32fHvcNLXPYVeD6tOHz6wNrhG33JGiPysz7yO-xd3Erww3l_IK61YoRFNA8oBHQtMg9XfSXYD2qqlqJOv7sai2HdgHy9mpx0edMWhF6vWQ4yaZh7-aQw4ZisM_WpiSDk0DT9JNRTPedUP2qGBJ1dbLVL0tmih_85Br_1NJKy_Ggug-uDhup5oenRTHym6swmvhkEYBN1mxHe3KcYiGVf4dsZKxK-Y_KaJkYOMX9HpXDIA"/>
+</div>
+<div class="flex flex-1 flex-col p-3">
+<h3 class="font-bold text-[#333333] dark:text-white text-sm leading-tight line-clamp-2 min-h-[2.5em]">Organic Blueberries</h3>
+<div class="mt-2 flex items-baseline gap-1.5">
+<p class="text-base font-extrabold text-primary">৳650</p>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<button class="flex-1 rounded-lg bg-primary py-2 text-xs font-bold text-white shadow-sm hover:bg-green-600 active:scale-95 transition-all">Buy</button>
+<button class="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-green-50 text-primary hover:bg-primary hover:text-white transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
+<div class="relative h-36 overflow-hidden bg-gray-100">
+<div class="absolute top-2 left-2 z-10 flex items-center justify-center rounded-md bg-red-500 px-2 py-0.5 shadow-sm">
+<p class="text-[10px] font-bold text-white uppercase tracking-wider">10% Off</p>
+</div>
+<img alt="Broccoli" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2xPfqM2FnFiY6H-qglQ1zw01lEfz5cO_WGAv-lvWTk9JjyXTh7uR4a0VoUPm2hiAz0qecbfIj5ve_XCV_AeURBQMPZuuVJcUOBdfD9sf1Q0XkiGVuhPePg647icHlbtFYusbcfOw1LugLO3EnQuOOHM__P1bcSqTTE2y-RoX7XJ6NalvHrmM73s2LSqjY1YQPJtvLOOxIn_dfkIaIklUpStG7KaWiOHcAgfBJLvZFFnT0x5PIAFyL6jp54tXZDU-RwlOh6u2JOzUk"/>
+</div>
+<div class="flex flex-1 flex-col p-3">
+<h3 class="font-bold text-[#333333] dark:text-white text-sm leading-tight line-clamp-2 min-h-[2.5em]">Organic Broccoli</h3>
+<div class="mt-2 flex items-baseline gap-1.5">
+<p class="text-base font-extrabold text-primary">৳180</p>
+<p class="text-xs text-gray-400 line-through font-medium">৳200</p>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<button class="flex-1 rounded-lg bg-primary py-2 text-xs font-bold text-white shadow-sm hover:bg-green-600 active:scale-95 transition-all">Buy</button>
+<button class="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-green-50 text-primary hover:bg-primary hover:text-white transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-background-dark border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+<div class="mx-auto flex h-[90px] w-full max-w-md items-center justify-between px-6 pb-2">
+<button class="flex flex-col items-center gap-1.5 text-gray-400 hover:text-gray-600 transition-colors w-14">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-semibold">Home</span>
+</button>
+<button class="flex h-14 grow mx-4 items-center justify-between rounded-full bg-primary px-5 text-white shadow-lg shadow-green-500/30 hover:bg-green-600 active:scale-95 transition-all">
+<div class="flex flex-col items-start justify-center">
+<span class="text-[10px] font-bold uppercase tracking-wider opacity-90 leading-none mb-0.5">Checkout</span>
+<span class="text-base font-extrabold leading-none">৳1018</span>
+</div>
+<div class="flex items-center gap-1.5 bg-white/20 rounded-full pl-2 pr-3 py-1">
+<span class="material-symbols-outlined text-lg">shopping_bag</span>
+<span class="text-sm font-bold">3</span>
+</div>
+</button>
+<button class="flex flex-col items-center gap-1.5 text-primary w-14">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="text-[10px] font-bold">Search</span>
+</button>
+</div>
+</nav>
+</div>
+
+</body></html>
