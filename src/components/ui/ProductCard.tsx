@@ -25,9 +25,7 @@ export function ProductCard({ name, weight, price, originalPrice, discount, imag
                         <p className="text-xs font-bold text-white">{discount}</p>
                     </div>
                 )}
-                <button className="absolute bottom-3 right-3 bg-white dark:bg-surface-dark p-2 rounded-full shadow-md translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:text-white">
-                    <Plus className="w-5 h-5" />
-                </button>
+
             </div>
             <div className="p-4">
                 <h3 className="font-semibold text-lg leading-tight mb-1">{name} - <span className="text-subtext-light dark:text-subtext-dark font-normal">{weight}</span></h3>

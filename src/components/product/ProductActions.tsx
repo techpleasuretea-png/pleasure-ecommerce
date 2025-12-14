@@ -9,45 +9,65 @@ interface ProductActionsProps {
 
 export function ProductActions({ quantity, setQuantity, onAddToCart, onBuyNow }: ProductActionsProps) {
     return (
-        <div className="flex flex-col gap-4 py-6 border-t border-b border-gray-100 dark:border-gray-800 my-6">
+        <div className="flex flex-col gap-6 py-4 md:py-6 border-t border-b border-gray-100 dark:border-gray-800 my-6">
             <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-800/50 rounded-full px-4 py-2">
+                <span className="text-base font-bold text-[#333333] dark:text-white md:hidden">Quantity</span>
+                <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-xl w-max bg-gray-50 dark:bg-transparent">
                     <button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="p-1 hover:text-primary transition-colors"
+                        className="px-4 py-3 hover:text-primary transition-colors"
                     >
-                        <Minus className="w-5 h-5" />
+                        <Minus className="w-4 h-4" />
                     </button>
-                    <span className="font-bold text-lg w-8 text-center">{quantity}</span>
+                    <input
+                        type="number"
+                        value={quantity}
+                        className="w-12 text-center bg-transparent border-none focus:ring-0 p-0 text-text-light dark:text-text-dark font-semibold"
+                        readOnly
+                    />
                     <button
                         onClick={() => setQuantity(quantity + 1)}
-                        className="p-1 hover:text-primary transition-colors"
+                        className="px-4 py-3 hover:text-primary transition-colors"
                     >
-                        <Plus className="w-5 h-5" />
+                        <Plus className="w-4 h-4" />
                     </button>
-                </div>
-                <div className="text-sm font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1 rounded-full">
-                    In Stock
                 </div>
             </div>
 
-            <div className="flex gap-3 mt-2">
+            <div className="grid grid-cols-2 gap-3 mb-4 md:mb-8 md:flex md:gap-4">
                 <button
                     onClick={onAddToCart}
-                    className="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg shadow-primary/25 flex items-center justify-center gap-2"
+                    className="flex-1 font-semibold py-3 px-8 rounded-xl flex items-center justify-center gap-2 transition-all 
+                    border-2 border-primary text-primary bg-transparent hover:bg-primary/5
+                    md:bg-primary md:text-white md:border-transparent md:shadow-lg md:shadow-primary/20 md:hover:bg-opacity-90"
                 >
-                    <ShoppingBag className="w-5 h-5" />
+                    <ShoppingBag className="w-5 h-5 hidden md:block" />
                     Add to Cart
                 </button>
                 <button
                     onClick={onBuyNow}
-                    className="flex-1 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-primary hover:text-primary dark:hover:border-primary text-text-light dark:text-text-dark font-bold py-3.5 rounded-xl transition-all"
+                    className="flex-1 font-semibold py-3 px-8 rounded-xl transition-all flex items-center justify-center
+                    bg-primary text-white shadow-lg shadow-primary/20 hover:bg-opacity-90
+                    md:bg-transparent md:text-primary md:border-2 md:border-primary md:shadow-none md:hover:bg-primary md:hover:text-white"
                 >
                     Buy Now
                 </button>
-                <button className="p-3.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                    <Heart className="w-6 h-6 text-gray-400 group-hover:text-red-500" />
-                </button>
+            </div>
+
+            <div className="space-y-3 text-sm text-subtext-light dark:text-subtext-dark border-gray-100 dark:border-gray-800">
+                <div className="flex gap-2">
+                    <span className="font-semibold text-text-light dark:text-text-dark min-w-[80px]">SKU:</span>
+                    <span>AVO-500-ORG</span>
+                </div>
+                <div className="flex gap-2">
+                    <span className="font-semibold text-text-light dark:text-text-dark min-w-[80px]">Category:</span>
+                    <a href="#" className="hover:text-primary transition-colors">Fruits</a>,
+                    <a href="#" className="hover:text-primary transition-colors">Organic</a>
+                </div>
+                <div className="flex gap-2">
+                    <span className="font-semibold text-text-light dark:text-text-dark min-w-[80px]">Tags:</span>
+                    <span>Fresh, Healthy, Keto, Vegan</span>
+                </div>
             </div>
         </div>
     );
