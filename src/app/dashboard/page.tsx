@@ -1,20 +1,20 @@
 "use client";
 
-import { ShoppingBag, MapPin, CreditCard, Clock } from "lucide-react";
+import { ShoppingBag, MapPin, CreditCard, Clock, XCircle } from "lucide-react";
 
 export default function DashboardPage() {
     return (
         <div className="space-y-6">
             <h1 className="text-2xl font-bold font-display text-text-light dark:text-text-dark">Overview</h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                     <div className="flex items-center gap-4 mb-2">
                         <div className="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-primary">
                             <ShoppingBag className="w-5 h-5" />
                         </div>
                         <div>
-                            <p className="text-sm text-subtext-light dark:text-subtext-dark">Total Orders</p>
+                            <p className="text-xs text-subtext-light dark:text-subtext-dark uppercase font-bold tracking-wider">Total Orders</p>
                             <h3 className="text-xl font-bold text-text-light dark:text-text-dark">12</h3>
                         </div>
                     </div>
@@ -25,19 +25,19 @@ export default function DashboardPage() {
                             <Clock className="w-5 h-5" />
                         </div>
                         <div>
-                            <p className="text-sm text-subtext-light dark:text-subtext-dark">Pending</p>
+                            <p className="text-xs text-subtext-light dark:text-subtext-dark uppercase font-bold tracking-wider">Pending</p>
                             <h3 className="text-xl font-bold text-text-light dark:text-text-dark">1</h3>
                         </div>
                     </div>
                 </div>
                 <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                     <div className="flex items-center gap-4 mb-2">
-                        <div className="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-500">
-                            <MapPin className="w-5 h-5" />
+                        <div className="w-10 h-10 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-500">
+                            <XCircle className="w-5 h-5" />
                         </div>
                         <div>
-                            <p className="text-sm text-subtext-light dark:text-subtext-dark">Saved Addresses</p>
-                            <h3 className="text-xl font-bold text-text-light dark:text-text-dark">2</h3>
+                            <p className="text-xs text-subtext-light dark:text-subtext-dark uppercase font-bold tracking-wider">Cancel Order</p>
+                            <h3 className="text-xl font-bold text-text-light dark:text-text-dark">0</h3>
                         </div>
                     </div>
                 </div>

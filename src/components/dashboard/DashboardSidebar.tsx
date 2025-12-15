@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, MapPin, Settings, LogOut, Phone } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, MapPin, User, LogOut, Phone } from "lucide-react";
 
 const sidebarItems = [
     {
@@ -16,18 +16,18 @@ const sidebarItems = [
         icon: ShoppingBag,
     },
     {
-        title: "Address Book",
-        href: "/dashboard/address",
+        title: "Delivery Details",
+        href: "/dashboard/delivery-details",
         icon: MapPin,
     },
     {
-        title: "Settings",
-        href: "/dashboard/settings",
-        icon: Settings,
+        title: "Profile",
+        href: "/dashboard/profile",
+        icon: User,
     },
 ];
 
-export function DashboardSidebar() {
+export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
     const pathname = usePathname();
 
     return (
@@ -50,9 +50,10 @@ export function DashboardSidebar() {
                         <Link
                             key={item.href}
                             href={item.href}
+                            onClick={onClose}
                             className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-colors ${isActive
-                                    ? "bg-primary text-white shadow-md shadow-primary/20"
-                                    : "text-text-light dark:text-text-dark hover:bg-gray-50 dark:hover:bg-gray-800"
+                                ? "bg-primary text-white shadow-md shadow-primary/20"
+                                : "text-text-light dark:text-text-dark hover:bg-gray-50 dark:hover:bg-gray-800"
                                 }`}
                         >
                             <Icon className={`w-5 h-5 ${isActive ? "text-white" : "text-subtext-light dark:text-subtext-dark"}`} />
