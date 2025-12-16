@@ -49,7 +49,7 @@ export function CategoryGridClient({ categories }: CategoryGridClientProps) {
                     const colorClass = CATEGORY_STYLES[cat.name] || DEFAULT_STYLE;
 
                     return (
-                        <Link key={cat.id} href={`/category/${cat.slug}`} className="text-center group block">
+                        <Link key={cat.id} href={`/shop?category=${cat.slug}`} className="text-center group block">
                             <div className={`${colorClass} w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-2 transition-transform duration-300 shadow-sm group-hover:shadow-md`}>
                                 <img
                                     src={cat.image_url || ''}

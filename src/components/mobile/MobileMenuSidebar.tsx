@@ -9,14 +9,14 @@ interface MobileMenuSidebarProps {
 }
 
 const categories = [
-    { name: "Fruits", icon: "🍎", color: "bg-red-50 text-red-500 dark:bg-red-900/20 dark:text-red-400" },
-    { name: "Vegetables", icon: "🥦", color: "bg-green-50 text-green-500 dark:bg-green-900/20 dark:text-green-400" },
-    { name: "Dairy & Eggs", icon: "🥛", color: "bg-blue-50 text-blue-500 dark:bg-blue-900/20 dark:text-blue-400" },
-    { name: "Bakery", icon: "🥖", color: "bg-orange-50 text-orange-500 dark:bg-orange-900/20 dark:text-orange-400" },
-    { name: "Meat & Fish", icon: "🍖", color: "bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400" },
-    { name: "Snacks", icon: "🍪", color: "bg-purple-50 text-purple-500 dark:bg-purple-900/20 dark:text-purple-400" },
-    { name: "Beverages", icon: "🍹", color: "bg-teal-50 text-teal-500 dark:bg-teal-900/20 dark:text-teal-400" },
-    { name: "Personal Care", icon: "🧴", color: "bg-pink-50 text-pink-500 dark:bg-pink-900/20 dark:text-pink-400" },
+    { name: "Fruits", slug: "fruits", icon: "🍎", color: "bg-red-50 text-red-500 dark:bg-red-900/20 dark:text-red-400" },
+    { name: "Vegetables", slug: "vegetables", icon: "🥦", color: "bg-green-50 text-green-500 dark:bg-green-900/20 dark:text-green-400" },
+    { name: "Dairy & Eggs", slug: "dairy", icon: "🥛", color: "bg-blue-50 text-blue-500 dark:bg-blue-900/20 dark:text-blue-400" },
+    { name: "Bakery", slug: "bakery", icon: "🥖", color: "bg-orange-50 text-orange-500 dark:bg-orange-900/20 dark:text-orange-400" },
+    { name: "Meat & Fish", slug: "meat,seafood", icon: "🍖", color: "bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400" },
+    { name: "Snacks", slug: "snacks", icon: "🍪", color: "bg-purple-50 text-purple-500 dark:bg-purple-900/20 dark:text-purple-400" },
+    { name: "Beverages", slug: "drinks", icon: "🍹", color: "bg-teal-50 text-teal-500 dark:bg-teal-900/20 dark:text-teal-400" },
+    { name: "Pantry", slug: "pantry", icon: "🥫", color: "bg-pink-50 text-pink-500 dark:bg-pink-900/20 dark:text-pink-400" }, // Replaced Personal Care with Pantry
 ];
 
 export function MobileMenuSidebar({ isOpen, onClose }: MobileMenuSidebarProps) {
@@ -61,7 +61,7 @@ export function MobileMenuSidebar({ isOpen, onClose }: MobileMenuSidebarProps) {
                         {categories.map((cat, idx) => (
                             <Link
                                 key={idx}
-                                href={`/category/${cat.name.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
+                                href={`/shop?category=${cat.slug}`}
                                 className="group flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-primary/5 active:bg-primary/10 text-[#333333] dark:text-white"
                                 onClick={onClose}
                             >
