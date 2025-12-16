@@ -9,16 +9,28 @@ import { ChevronDown, Search } from "lucide-react";
 import { products } from "@/data/products";
 
 interface SearchPageProps {
-    searchParams: { q?: string };
+    searchParams: {
+        q?: string;
+        featured?: string;
+        onSale?: string;
+    };
 }
 
 export default function SearchPage({ searchParams }: SearchPageProps) {
     const query = searchParams.q || "";
+    const showFeatured = searchParams.featured === "true";
+    const showOnSale = searchParams.onSale === "true";
 
-    // Filter products based on search query
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(query.toLowerCase())
-    );
+    // Filter products based on search query and other filters
+    const filteredProducts = products.filter((product) => {
+        const matchesQuery = product.name.toLowerCase().includes(query.toLowerCase());
+        if (!matchesQuery) return false;
+
+        if (showFeatured && !product.featured) return false;
+        if (showOnSale && !product.discount && (!product.originalPrice || product.originalPrice <= product.price)) return false;
+
+        return true;
+    });
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">

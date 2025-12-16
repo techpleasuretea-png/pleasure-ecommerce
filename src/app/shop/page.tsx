@@ -8,7 +8,23 @@ import { ChevronDown } from "lucide-react";
 
 import { products } from "@/data/products";
 
-export default function ShopPage() {
+interface ShopPageProps {
+    searchParams: {
+        featured?: string;
+        onSale?: string;
+    };
+}
+
+export default function ShopPage({ searchParams }: ShopPageProps) {
+    const showFeatured = searchParams.featured === "true";
+    const showOnSale = searchParams.onSale === "true";
+
+    const filteredProducts = products.filter((product) => {
+        if (showFeatured && !product.featured) return false;
+        if (showOnSale && !product.discount && (!product.originalPrice || product.originalPrice <= product.price)) return false;
+        return true;
+    });
+
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
             <Header />
@@ -41,7 +57,7 @@ export default function ShopPage() {
 
                             {/* Product Grid */}
                             <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 md:gap-6">
-                                {products.map((product, idx) => (
+                                {filteredProducts.map((product, idx) => (
                                     <ProductCard key={idx} {...product} />
                                 ))}
                             </div>

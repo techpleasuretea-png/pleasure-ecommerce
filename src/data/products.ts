@@ -5,7 +5,8 @@ export const products = [
         price: 4.99,
         originalPrice: 6.24,
         discount: "20% OFF",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo"
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo",
+        featured: true
     },
     {
         name: "Sourdough Bread",
@@ -21,7 +22,8 @@ export const products = [
         price: 7.99,
         originalPrice: 8.88,
         discount: "10% OFF",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCCxbKs9pCH2Ka4kHpk_m1Ivt1Ou2krDDLnEjLgXZZAtFxIoUcoLbhLqzVOxEiVjcalpJNdWs5h8zpWqzsBDih-S2cqmQsZ6DF8G16d3CDH1xdZ6IFD3XVHruE5GcRG_WQ5-OJfN6kDfffgYenXPI4VRhDUgLkHiG7sCD3hyM4SVrzH2jyM0r2I5CuhtCnTSf7fji7fJ6mg-iLrNWUCrHxu4YHWejJcXrkx6nm2i934phwbc5PLqpNh_a28u7s0vAgucRx-clxI5_w"
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCCxbKs9pCH2Ka4kHpk_m1Ivt1Ou2krDDLnEjLgXZZAtFxIoUcoLbhLqzVOxEiVjcalpJNdWs5h8zpWqzsBDih-S2cqmQsZ6DF8G16d3CDH1xdZ6IFD3XVHruE5GcRG_WQ5-OJfN6kDfffgYenXPI4VRhDUgLkHiG7sCD3hyM4SVrzH2jyM0r2I5CuhtCnTSf7fji7fJ6mg-iLrNWUCrHxu4YHWejJcXrkx6nm2i934phwbc5PLqpNh_a28u7s0vAgucRx-clxI5_w",
+        featured: true
     },
     {
         name: "Juicy Strawberries",
@@ -41,7 +43,8 @@ export const products = [
         name: "Ginger Kombucha",
         weight: "500ml",
         price: 4.50,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC_Tw5oCz4OpfVN-GmZ7msIRDshk2lfU9-EwjoolQjOXwkFVXh4wn8fmrMAlMVbxRtMlmJXU-oL4kDfT9P9vt_LUtb0fgrmhW_QSePDKqVOdPvS4eVQi1Itk83rrHZ1odbkjcMkP34E4ov_3tgMUOUsWwvfOSwuRFSpO1O0rqgTjQFNtZmfO9efNoICCcalJVxBh1bocXQKpWgh5e-4aoPN2o3wjbH3FLB8B8blgOyl2qTQ6hNJng_wXF5Wy-_MTfbWA3GvcFyE0DE"
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC_Tw5oCz4OpfVN-GmZ7msIRDshk2lfU9-EwjoolQjOXwkFVXh4wn8fmrMAlMVbxRtMlmJXU-oL4kDfT9P9vt_LUtb0fgrmhW_QSePDKqVOdPvS4eVQi1Itk83rrHZ1odbkjcMkP34E4ov_3tgMUOUsWwvfOSwuRFSpO1O0rqgTjQFNtZmfO9efNoICCcalJVxBh1bocXQKpWgh5e-4aoPN2o3wjbH3FLB8B8blgOyl2qTQ6hNJng_wXF5Wy-_MTfbWA3GvcFyE0DE",
+        featured: true
     },
     {
         name: "Wild-Caught Salmon",
@@ -54,7 +57,8 @@ export const products = [
         name: "Organic Chicken Breast",
         weight: "500g",
         price: 9.50,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVcIACWS6ZpZUfhWI-bBwVt0Q5o2iPj7XZERwhAwQ4VcYKlW6aWJ3J6m_seGZ8r1irhe3OA8pNTIL1SHTrylZIVvZP51G26X8ZiP3T_Hb_OrCl_djBvzriHt5SWupL1CXzys6D1Vyxe7ml0KudNiaj8xoV2hRRpjEQBCIVJpg_AJVjxMfKxgFvyekkarrw7jkgDliM-rZh5C6-9d-UYe5G7Fo6Q2TLr8ciS5UYETqufqZJxUfyAqzUdtkS3TFhTg2jy4XRzAokEVE"
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVcIACWS6ZpZUfhWI-bBwVt0Q5o2iPj7XZERwhAwQ4VcYKlW6aWJ3J6m_seGZ8r1irhe3OA8pNTIL1SHTrylZIVvZP51G26X8ZiP3T_Hb_OrCl_djBvzriHt5SWupL1CXzys6D1Vyxe7ml0KudNiaj8xoV2hRRpjEQBCIVJpg_AJVjxMfKxgFvyekkarrw7jkgDliM-rZh5C6-9d-UYe5G7Fo6Q2TLr8ciS5UYETqufqZJxUfyAqzUdtkS3TFhTg2jy4XRzAokEVE",
+        featured: true
     },
     {
         name: "Organic Kale",
