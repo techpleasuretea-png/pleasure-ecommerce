@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, MapPin, CreditCard, Clock, XCircle } from "lucide-react";
+import { ShoppingBag, MapPin, CreditCard, Clock, XCircle, LogOut } from "lucide-react";
 
 export default function DashboardPage() {
     return (
@@ -41,6 +41,8 @@ export default function DashboardPage() {
                         </div>
                     </div>
                 </div>
+
+
             </div>
 
             <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">

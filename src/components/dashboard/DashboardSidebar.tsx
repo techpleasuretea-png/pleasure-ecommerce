@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, ShoppingBag, MapPin, User, LogOut, Phone } from "lucide-react";
+import { logout } from "@/app/actions/authActions";
 
 const sidebarItems = [
     {
@@ -75,7 +76,10 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
                     </a>
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm font-bold text-subtext-light dark:text-subtext-dark hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
+                <button
+                    onClick={() => logout()}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm font-bold text-subtext-light dark:text-subtext-dark hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+                >
                     <LogOut className="w-5 h-5" />
                     Log Out
                 </button>

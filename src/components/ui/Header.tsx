@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Search, User, Heart, ShoppingBag, Menu } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { MobileHeader } from "../mobile/MobileHeader";
 
@@ -13,6 +13,17 @@ export function Header() {
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
     const pathname = usePathname();
+    const [user, setUser] = useState<any>(null);
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const { createClient } = await import("@/lib/supabase/client");
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        };
+        checkUser();
+    }, [pathname]); // Re-check on route change to catch login/logout updates potentially
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -83,7 +94,10 @@ export function Header() {
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <button className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors">
+                                <button
+                                    onClick={() => router.push(user ? '/dashboard' : '/login')}
+                                    className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors"
+                                >
                                     <User className="w-6 h-6" />
                                 </button>
                                 <button className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors">
