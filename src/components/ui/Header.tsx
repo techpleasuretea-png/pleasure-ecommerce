@@ -4,10 +4,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, User, Heart, ShoppingBag, Menu } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { MobileHeader } from "../mobile/MobileHeader";
 
 export function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const [searchQuery, setSearchQuery] = useState("");
+    const router = useRouter();
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    };
 
     return (
         <>
@@ -34,14 +45,16 @@ export function Header() {
 
                         {/* Desktop Actions */}
                         <div className="flex items-center gap-4">
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark w-5 h-5" />
+                            <form onSubmit={handleSearch} className="relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark w-5 h-5 pointer-events-none" />
                                 <input
                                     className="w-64 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-shadow"
                                     placeholder="Search products..."
                                     type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
                                 />
-                            </div>
+                            </form>
 
                             <div className="flex flex-col items-end text-sm">
                                 <span className="text-subtext-light dark:text-subtext-dark text-xs">Call for Order</span>

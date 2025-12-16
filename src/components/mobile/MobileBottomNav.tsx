@@ -1,9 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ShoppingBag, Search, Store } from "lucide-react";
 
 export function MobileBottomNav() {
+    const pathname = usePathname();
+
+    // Hide on Order Details page (e.g. /dashboard/orders/ORD-123) where we have a custom footer
+    if (pathname?.startsWith("/dashboard/orders/")) {
+        return null;
+    }
+
     return (
         <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-t border-gray-100 dark:border-gray-800 pb-safe">
             <div className="flex h-24 items-center justify-between px-8">
