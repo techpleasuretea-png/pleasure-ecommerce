@@ -11,6 +11,7 @@ interface ShopPageProps {
     searchParams: Promise<{
         featured?: string;
         onSale?: string;
+        category?: string;
     }>;
 }
 
@@ -20,6 +21,13 @@ export default async function ShopPage(props: ShopPageProps) {
     const searchParams = await props.searchParams;
     const showFeatured = searchParams.featured === "true";
     const showOnSale = searchParams.onSale === "true";
+    const selectedCategories = searchParams.category ? searchParams.category.split(",") : [];
+
+    // Fetch categories
+    const { data: categoriesData } = await supabase
+        .from('categories')
+        .select('name, slug');
+    const categories = categoriesData || [];
 
     // Fetch products from Supabase
     const { data: productsData, error } = await supabase
@@ -29,6 +37,9 @@ export default async function ShopPage(props: ShopPageProps) {
             product_images (
                 image_url,
                 is_primary
+            ),
+            category:categories (
+                slug
             )
         `);
 
@@ -49,6 +60,14 @@ export default async function ShopPage(props: ShopPageProps) {
         // Logic for onSale: has discount text or original price > selling price
         const isOnSale = !!product.discount || (originalPrice && originalPrice > price);
         if (showOnSale && !isOnSale) return false;
+
+        // Category logic
+        if (selectedCategories.length > 0) {
+            const productCategorySlug = product.category?.slug;
+            if (!productCategorySlug || !selectedCategories.includes(productCategorySlug)) {
+                return false;
+            }
+        }
 
         return true;
     }).map((product) => {
@@ -79,7 +98,7 @@ export default async function ShopPage(props: ShopPageProps) {
                     <div className="flex flex-col md:flex-row gap-8">
                         {/* Desktop Sidebar */}
                         <div className="hidden md:block w-80 shrink-0">
-                            <ShopSidebar />
+                            <ShopSidebar categories={categories} />
                         </div>
 
                         {/* Main Content */}
