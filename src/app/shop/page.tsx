@@ -4,7 +4,7 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopSidebar } from "@/components/shop/ShopSidebar";
 import { ShopMobileBar } from "@/components/shop/ShopMobileBar";
 import { ShopMobileFooter } from "@/components/shop/ShopMobileFooter";
-import { ChevronDown } from "lucide-react";
+import { ShopSort } from "@/components/shop/ShopSort";
 import { supabase } from "@/lib/supabaseClient";
 
 interface ShopPageProps {
@@ -14,6 +14,7 @@ interface ShopPageProps {
         category?: string;
         min?: string;
         max?: string;
+        sort?: string;
     }>;
 }
 
@@ -27,6 +28,8 @@ export default async function ShopPage(props: ShopPageProps) {
     const minPrice = searchParams.min ? parseFloat(searchParams.min) : null;
     const maxPrice = searchParams.max ? parseFloat(searchParams.max) : null;
 
+    const sort = searchParams.sort || "popularity";
+
     // Fetch categories
     const { data: categoriesData } = await supabase
         .from('categories')
@@ -34,7 +37,7 @@ export default async function ShopPage(props: ShopPageProps) {
     const categories = categoriesData || [];
 
     // Fetch products from Supabase
-    const { data: productsData, error } = await supabase
+    let query = supabase
         .from('products')
         .select(`
             *,
@@ -46,6 +49,18 @@ export default async function ShopPage(props: ShopPageProps) {
                 slug
             )
         `);
+
+    // Apply sorting
+    if (sort === "price_asc") {
+        query = query.order('selling_price', { ascending: true });
+    } else if (sort === "price_desc") {
+        query = query.order('selling_price', { ascending: false });
+    } else if (sort === "newest") {
+        query = query.order('created_at', { ascending: false });
+    }
+    // Default or popularity sort can stay as default order
+
+    const { data: productsData, error } = await query;
 
     if (error) {
         console.error("Error fetching products:", error);
@@ -112,17 +127,7 @@ export default async function ShopPage(props: ShopPageProps) {
                         {/* Main Content */}
                         <div className="flex-1">
                             {/* Desktop Sort Dropdown */}
-                            <div className="hidden md:flex justify-end items-center mb-6">
-                                <div className="relative">
-                                    <select className="appearance-none w-48 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-sm rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer">
-                                        <option>Sort by popularity</option>
-                                        <option>Sort by price: low to high</option>
-                                        <option>Sort by price: high to low</option>
-                                        <option>Sort by new arrivals</option>
-                                    </select>
-                                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-subtext-light dark:text-subtext-dark pointer-events-none" />
-                                </div>
-                            </div>
+                            <ShopSort />
 
                             {/* Product Grid */}
                             <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 md:gap-6">

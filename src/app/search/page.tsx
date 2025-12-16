@@ -5,7 +5,8 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopSidebar } from "@/components/shop/ShopSidebar";
 import { ShopMobileBar } from "@/components/shop/ShopMobileBar";
 import { ShopMobileFooter } from "@/components/shop/ShopMobileFooter";
-import { ChevronDown, Search } from "lucide-react";
+import { Search } from "lucide-react";
+import { ShopSort } from "@/components/shop/ShopSort";
 import { supabase } from "@/lib/supabaseClient";
 
 interface SearchPageProps {
@@ -13,6 +14,7 @@ interface SearchPageProps {
         q?: string;
         featured?: string;
         onSale?: string;
+        sort?: string;
     }>;
 }
 
@@ -73,9 +75,21 @@ export default async function SearchPage(props: SearchPageProps) {
             originalPrice: product.mrp ? parseFloat(product.mrp) : undefined,
             discount: product.discount,
             image: primaryImage?.image_url || "/placeholder.png",
-            featured: product.is_featured
+            featured: product.is_featured,
+            created_at: product.created_at
         };
     });
+
+    // Apply sorting in JS
+    const sort = searchParams.sort || "popularity";
+    if (sort === "price_asc") {
+        filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (sort === "price_desc") {
+        filteredProducts.sort((a, b) => b.price - a.price);
+    } else if (sort === "newest") {
+        filteredProducts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    }
+    // popularity/default fallback
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
@@ -105,15 +119,7 @@ export default async function SearchPage(props: SearchPageProps) {
                                     </p>
                                 </div>
 
-                                <div className="hidden md:flex relative">
-                                    <select className="appearance-none w-48 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-sm rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer">
-                                        <option>Sort by popularity</option>
-                                        <option>Sort by price: low to high</option>
-                                        <option>Sort by price: high to low</option>
-                                        <option>Sort by new arrivals</option>
-                                    </select>
-                                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-subtext-light dark:text-subtext-dark pointer-events-none" />
-                                </div>
+                                <ShopSort />
                             </div>
 
                             {/* Product Grid */}

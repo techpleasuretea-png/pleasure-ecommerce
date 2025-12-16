@@ -47,52 +47,78 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
         if (maxPrice) params.set("max", maxPrice);
         else params.delete("max");
 
+        // Sync other filters from state
+        if (featured) params.set("featured", "true");
+        else params.delete("featured");
+
+        if (onSale) params.set("onSale", "true");
+        else params.delete("onSale");
+
+        if (selectedCategories.length > 0) params.set("category", selectedCategories.join(","));
+        else params.delete("category");
+
         router.push(`?${params.toString()}`);
+    };
+
+    const handleClearFilters = () => {
+        setFeatured(false);
+        setOnSale(false);
+        setSelectedCategories([]);
+        setShowAllCategories(false);
+        setMinPrice("");
+        setMaxPrice("");
+        router.push("?");
     };
 
     const handleFilterChange = (key: string, value: boolean) => {
-        const params = new URLSearchParams(searchParams.toString());
-        if (value) {
-            params.set(key, "true");
-        } else {
-            params.delete(key);
+        if (key === "featured") setFeatured(value);
+        if (key === "onSale") setOnSale(value);
+
+        if (!mobile) {
+            const params = new URLSearchParams(searchParams.toString());
+            if (value) {
+                params.set(key, "true");
+            } else {
+                params.delete(key);
+            }
+            router.push(`?${params.toString()}`);
         }
-        router.push(`?${params.toString()}`);
     };
 
     const handleCategoryChange = (slug: string, checked: boolean) => {
-        const params = new URLSearchParams(searchParams.toString());
-        let currentCats = params.get("category") ? params.get("category")!.split(",") : [];
-
+        let newCategories = [...selectedCategories];
         if (checked) {
-            if (!currentCats.includes(slug)) {
-                currentCats.push(slug);
+            if (!newCategories.includes(slug)) {
+                newCategories.push(slug);
             }
         } else {
-            currentCats = currentCats.filter(c => c !== slug);
+            newCategories = newCategories.filter(c => c !== slug);
         }
+        setSelectedCategories(newCategories);
 
-        if (currentCats.length > 0) {
-            params.set("category", currentCats.join(","));
-        } else {
-            params.delete("category");
+        if (!mobile) {
+            const params = new URLSearchParams(searchParams.toString());
+            if (newCategories.length > 0) {
+                params.set("category", newCategories.join(","));
+            } else {
+                params.delete("category");
+            }
+            router.push(`?${params.toString()}`);
         }
-
-        router.push(`?${params.toString()}`);
     };
 
     if (mobile) {
         return (
             <aside className="w-full space-y-6">
                 <div>
-                    <h3 className="font-bold text-lg mb-4 text-[#333333] dark:text-white">Filters</h3>
+                    <h3 className="font-bold text-lg mb-4 text-[#333333] dark:text-white">Filter by</h3>
                     <div className="flex flex-wrap gap-2">
                         {/* Featured Chip */}
                         <button
                             onClick={() => handleFilterChange("featured", !featured)}
                             className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${featured
-                                    ? "bg-primary text-white border-primary"
-                                    : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
+                                ? "bg-primary text-white border-primary"
+                                : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
                                 }`}
                         >
                             Featured
@@ -102,21 +128,26 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
                         <button
                             onClick={() => handleFilterChange("onSale", !onSale)}
                             className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${onSale
-                                    ? "bg-primary text-white border-primary"
-                                    : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
+                                ? "bg-primary text-white border-primary"
+                                : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
                                 }`}
                         >
                             Price Offer
                         </button>
+                    </div>
+                </div>
 
+                <div>
+                    <h3 className="font-bold text-lg mb-4 text-[#333333] dark:text-white">Categories</h3>
+                    <div className="flex flex-wrap gap-2">
                         {/* Category Chips */}
                         {categories.slice(0, showAllCategories ? categories.length : 8).map((category) => (
                             <button
                                 key={category.slug}
                                 onClick={() => handleCategoryChange(category.slug, !selectedCategories.includes(category.slug))}
                                 className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${selectedCategories.includes(category.slug)
-                                        ? "bg-primary text-white border-primary"
-                                        : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
+                                    ? "bg-primary text-white border-primary"
+                                    : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
                                     }`}
                             >
                                 {category.name}
@@ -164,12 +195,20 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
                     </div>
                 </div>
 
-                <button
-                    onClick={handleApplyFilters}
-                    className="w-full bg-primary text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all shadow-md shadow-primary/20 active:scale-95"
-                >
-                    Apply Filters
-                </button>
+                <div className="flex gap-3">
+                    <button
+                        onClick={handleClearFilters}
+                        className="flex-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold py-2.5 rounded-xl text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    >
+                        Clear
+                    </button>
+                    <button
+                        onClick={handleApplyFilters}
+                        className="flex-[2] bg-primary text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all shadow-md shadow-primary/20 active:scale-95"
+                    >
+                        Apply Filters
+                    </button>
+                </div>
             </aside>
         );
     }
@@ -270,12 +309,20 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
                 </div>
             </div>
 
-            <button
-                onClick={handleApplyFilters}
-                className="w-full bg-primary text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all shadow-md shadow-primary/20 active:scale-95"
-            >
-                Apply Filters
-            </button>
+            <div className="flex gap-3">
+                <button
+                    onClick={handleClearFilters}
+                    className="flex-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold py-2.5 rounded-xl text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                    Clear
+                </button>
+                <button
+                    onClick={handleApplyFilters}
+                    className="flex-[2] bg-primary text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all shadow-md shadow-primary/20 active:scale-95"
+                >
+                    Apply Filters
+                </button>
+            </div>
         </aside>
     );
 }
