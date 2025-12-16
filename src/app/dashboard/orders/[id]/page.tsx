@@ -121,7 +121,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
                     {/* Tracking Timeline */}
-                    <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                    <div className="hidden md:block bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                         <h2 className="text-lg font-bold text-text-light dark:text-text-dark mb-6">Order Status</h2>
                         <div className="relative">
                             {/* Timeline Line */}
@@ -275,8 +275,11 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
             </div>
 
             {/* Mobile Sticky Footer Status Timeline */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe">
-                <div className="flex items-center justify-between px-6 py-4 overflow-x-auto no-scrollbar gap-8">
+            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 z-[100] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe">
+                <div className="flex items-center justify-between px-6 py-4 relative">
+                    {/* Connecting Line */}
+                    <div className="absolute top-[28px] left-6 right-6 h-0.5 bg-gray-100 dark:bg-gray-700 -z-0" />
+
                     {order.timeline.map((step, index) => {
                         const isCompleted = step.completed;
                         const isCurrent = step.current;
@@ -286,15 +289,10 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                         const lineColor = isCompleted ? 'bg-primary' : 'bg-gray-100 dark:bg-gray-700';
 
                         return (
-                            <div key={index} className="flex flex-col items-center gap-1.5 min-w-[60px] relative">
-                                {/* Connector Line (except for last item) */}
-                                {index < order.timeline.length - 1 && (
-                                    <div className={`absolute top-3 left-[calc(50%+12px)] w-[calc(100%+8px)] h-0.5 ${lineColor} -z-0`} />
-                                )}
-
-                                <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 bg-white dark:bg-surface-dark z-10 transition-colors ${isCompleted ? 'border-primary text-primary' :
+                            <div key={index} className="flex flex-col items-center gap-1.5 relative z-10 flex-1">
+                                <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors ${isCompleted ? 'border-primary bg-primary text-white' :
                                     isCurrent ? 'border-primary bg-primary text-white' :
-                                        'border-gray-200 dark:border-gray-700 text-gray-300 dark:text-gray-600'
+                                        'border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark text-gray-300 dark:text-gray-600'
                                     }`}>
                                     <Icon className="w-3 h-3" />
                                 </div>
