@@ -6,7 +6,7 @@ import { ShopSidebar } from "@/components/shop/ShopSidebar";
 import { ShopMobileBar } from "@/components/shop/ShopMobileBar";
 import { ShopMobileFooter } from "@/components/shop/ShopMobileFooter";
 import { ChevronDown, Search } from "lucide-react";
-import { products } from "@/data/products";
+import { supabase } from "@/lib/supabaseClient";
 
 interface SearchPageProps {
     searchParams: Promise<{
@@ -16,21 +16,59 @@ interface SearchPageProps {
     }>;
 }
 
+export const revalidate = 0;
+
 export default async function SearchPage(props: SearchPageProps) {
     const searchParams = await props.searchParams;
     const query = searchParams.q || "";
     const showFeatured = searchParams.featured === "true";
     const showOnSale = searchParams.onSale === "true";
 
+    // Fetch products from Supabase
+    // Ideally we would filter by query in the DB, but to match exact previous behavior and for simplicity with small dataset:
+    const { data: productsData, error } = await supabase
+        .from('products')
+        .select(`
+            *,
+            product_images (
+                image_url,
+                is_primary
+            )
+        `);
+
+    if (error) {
+        console.error("Error fetching products:", error);
+    }
+
+    const products = productsData || [];
+
     // Filter products based on search query and other filters
     const filteredProducts = products.filter((product) => {
         const matchesQuery = product.name.toLowerCase().includes(query.toLowerCase());
         if (!matchesQuery) return false;
 
-        if (showFeatured && !product.featured) return false;
-        if (showOnSale && !product.discount && (!product.originalPrice || product.originalPrice <= product.price)) return false;
+        // Parse prices
+        const price = parseFloat(product.selling_price);
+        const originalPrice = parseFloat(product.mrp);
+
+        if (showFeatured && !product.is_featured) return false;
+
+        const isOnSale = !!product.discount || (originalPrice && originalPrice > price);
+        if (showOnSale && !isOnSale) return false;
 
         return true;
+    }).map((product) => {
+        const primaryImage = product.product_images?.find((img: any) => img.is_primary) || product.product_images?.[0];
+
+        return {
+            name: product.name,
+            weight: product.weight,
+            price: parseFloat(product.selling_price),
+            originalPrice: product.mrp ? parseFloat(product.mrp) : undefined,
+            discount: product.discount,
+            image: primaryImage?.image_url || "/placeholder.png",
+            featured: product.is_featured
+        };
     });
 
     return (

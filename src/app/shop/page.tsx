@@ -5,8 +5,7 @@ import { ShopSidebar } from "@/components/shop/ShopSidebar";
 import { ShopMobileBar } from "@/components/shop/ShopMobileBar";
 import { ShopMobileFooter } from "@/components/shop/ShopMobileFooter";
 import { ChevronDown } from "lucide-react";
-
-import { products } from "@/data/products";
+import { supabase } from "@/lib/supabaseClient";
 
 interface ShopPageProps {
     searchParams: Promise<{
@@ -15,15 +14,57 @@ interface ShopPageProps {
     }>;
 }
 
+export const revalidate = 0; // Ensure fresh data on every request
+
 export default async function ShopPage(props: ShopPageProps) {
     const searchParams = await props.searchParams;
     const showFeatured = searchParams.featured === "true";
     const showOnSale = searchParams.onSale === "true";
 
+    // Fetch products from Supabase
+    const { data: productsData, error } = await supabase
+        .from('products')
+        .select(`
+            *,
+            product_images (
+                image_url,
+                is_primary
+            )
+        `);
+
+    if (error) {
+        console.error("Error fetching products:", error);
+        // Handle error appropriately, maybe show an empty state or error message
+    }
+
+    const products = productsData || [];
+
     const filteredProducts = products.filter((product) => {
-        if (showFeatured && !product.featured) return false;
-        if (showOnSale && !product.discount && (!product.originalPrice || product.originalPrice <= product.price)) return false;
+        // Parse prices from string to number for comparison
+        const price = parseFloat(product.selling_price);
+        const originalPrice = parseFloat(product.mrp);
+
+        if (showFeatured && !product.is_featured) return false;
+
+        // Logic for onSale: has discount text or original price > selling price
+        const isOnSale = !!product.discount || (originalPrice && originalPrice > price);
+        if (showOnSale && !isOnSale) return false;
+
         return true;
+    }).map((product) => {
+        // Map database fields to ProductCard props
+        const primaryImage = product.product_images?.find((img: any) => img.is_primary) || product.product_images?.[0];
+
+        return {
+            name: product.name,
+            weight: product.weight,
+            price: parseFloat(product.selling_price),
+            originalPrice: product.mrp ? parseFloat(product.mrp) : undefined,
+            discount: product.discount,
+            image: primaryImage?.image_url || "/placeholder.png", // Fallback image
+            // Prop not present in ProductCard but used for logic
+            featured: product.is_featured
+        };
     });
 
     return (
