@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/ui/Header";
+import { login } from "../actions/authActions";
 import { Footer } from "@/components/ui/Footer";
 
 export default function LoginPage() {
@@ -42,7 +43,13 @@ export default function LoginPage() {
                         <p className="text-subtext-light dark:text-subtext-dark">Login to access your account and organic favorites.</p>
                     </div>
 
-                    <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+
+                    <form className="space-y-6" action={async (formData) => {
+                        const res = await login(formData);
+                        if (res?.error) {
+                            alert(res.error); // Simple error handling for now
+                        }
+                    }}>
                         <div className="space-y-1.5">
                             <label className="block text-sm font-medium text-subtext-light dark:text-subtext-dark" htmlFor="identity">
                                 Email or Mobile Number
@@ -54,8 +61,11 @@ export default function LoginPage() {
                                 <input
                                     className="w-full bg-surface-light dark:bg-surface-dark/50 md:dark:bg-black/20 border border-gray-200 dark:border-gray-700 rounded-xl pl-11 pr-4 py-3.5 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
                                     id="identity"
+                                    name="identity"
                                     placeholder="example@mail.com"
                                     type="text"
+                                    autoComplete="username"
+                                    required
                                 />
                             </div>
                         </div>
@@ -71,8 +81,11 @@ export default function LoginPage() {
                                 <input
                                     className="w-full bg-surface-light dark:bg-surface-dark/50 md:dark:bg-black/20 border border-gray-200 dark:border-gray-700 rounded-xl pl-11 pr-12 py-3.5 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
                                     id="password"
+                                    name="password"
                                     placeholder="••••••••"
                                     type={showPassword ? "text" : "password"}
+                                    autoComplete="current-password"
+                                    required
                                 />
                                 <button
                                     className="absolute inset-y-0 right-0 pr-4 flex items-center"
@@ -98,7 +111,7 @@ export default function LoginPage() {
                             </Link>
                         </div>
 
-                        <button className="w-full bg-primary hover:bg-green-600 transition-colors text-white rounded-xl py-3.5 shadow-lg shadow-primary/30 flex items-center justify-center gap-2 text-base font-bold">
+                        <button type="submit" className="w-full bg-primary hover:bg-green-600 transition-colors text-white rounded-xl py-3.5 shadow-lg shadow-primary/30 flex items-center justify-center gap-2 text-base font-bold">
                             Login
                         </button>
 

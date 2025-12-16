@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signup } from "../actions/authActions";
 
 export default function SignupPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +35,13 @@ export default function SignupPage() {
                         </p>
                     </div>
 
-                    <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+
+                    <form className="space-y-5" action={async (formData) => {
+                        const res = await signup(formData);
+                        if (res?.error) {
+                            alert(res.error);
+                        }
+                    }}>
                         <div>
                             <label className="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1.5" htmlFor="email">
                                 Email
@@ -42,6 +49,7 @@ export default function SignupPage() {
                             <input
                                 className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
                                 id="email"
+                                name="email"
                                 placeholder="example@email.com"
                                 type="email"
                             />
@@ -54,6 +62,7 @@ export default function SignupPage() {
                             <input
                                 className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
                                 id="mobile"
+                                name="mobile"
                                 placeholder="017xxxxxxxx"
                                 type="tel"
                             />
@@ -66,8 +75,11 @@ export default function SignupPage() {
                             <input
                                 className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
                                 id="password"
+                                name="password"
                                 placeholder="••••••••"
                                 type="password"
+                                autoComplete="new-password"
+                                required
                             />
                         </div>
 
@@ -78,8 +90,11 @@ export default function SignupPage() {
                             <input
                                 className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder-gray-400"
                                 id="confirm-password"
+                                name="confirm-password"
                                 placeholder="••••••••"
                                 type="password"
+                                autoComplete="new-password"
+                                required
                             />
                         </div>
 
