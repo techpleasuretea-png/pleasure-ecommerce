@@ -10,9 +10,10 @@ interface Category {
 
 interface ShopSidebarProps {
     categories: Category[];
+    mobile?: boolean;
 }
 
-export function ShopSidebar({ categories }: ShopSidebarProps) {
+export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [featured, setFeatured] = useState(false);
@@ -80,6 +81,100 @@ export function ShopSidebar({ categories }: ShopSidebarProps) {
         router.push(`?${params.toString()}`);
     };
 
+    if (mobile) {
+        return (
+            <aside className="w-full space-y-6">
+                <div>
+                    <h3 className="font-bold text-lg mb-4 text-[#333333] dark:text-white">Filters</h3>
+                    <div className="flex flex-wrap gap-2">
+                        {/* Featured Chip */}
+                        <button
+                            onClick={() => handleFilterChange("featured", !featured)}
+                            className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${featured
+                                    ? "bg-primary text-white border-primary"
+                                    : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
+                                }`}
+                        >
+                            Featured
+                        </button>
+
+                        {/* On Sale Chip */}
+                        <button
+                            onClick={() => handleFilterChange("onSale", !onSale)}
+                            className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${onSale
+                                    ? "bg-primary text-white border-primary"
+                                    : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
+                                }`}
+                        >
+                            Price Offer
+                        </button>
+
+                        {/* Category Chips */}
+                        {categories.slice(0, showAllCategories ? categories.length : 8).map((category) => (
+                            <button
+                                key={category.slug}
+                                onClick={() => handleCategoryChange(category.slug, !selectedCategories.includes(category.slug))}
+                                className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${selectedCategories.includes(category.slug)
+                                        ? "bg-primary text-white border-primary"
+                                        : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
+                                    }`}
+                            >
+                                {category.name}
+                            </button>
+                        ))}
+
+                        {/* Show More Chips Button */}
+                        {categories.length > 8 && (
+                            <button
+                                onClick={() => setShowAllCategories(!showAllCategories)}
+                                className="px-4 py-2 rounded-full text-sm font-medium border bg-gray-100 dark:bg-gray-800 text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                {showAllCategories ? "Show Less" : `+${categories.length - 8} More`}
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                <div>
+                    <h3 className="font-bold text-lg mb-4 text-[#333333] dark:text-white">Price Range</h3>
+                    <div className="flex items-center gap-4">
+                        <div className="relative flex-1">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark">৳</span>
+                            <input
+                                type="number"
+                                placeholder="Min"
+                                value={minPrice}
+                                onChange={(e) => setMinPrice(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleApplyFilters()}
+                                className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg py-2 pl-7 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                            />
+                        </div>
+                        <span className="text-subtext-light dark:text-subtext-dark">-</span>
+                        <div className="relative flex-1">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark">৳</span>
+                            <input
+                                type="number"
+                                placeholder="Max"
+                                value={maxPrice}
+                                onChange={(e) => setMaxPrice(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleApplyFilters()}
+                                className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg py-2 pl-7 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    onClick={handleApplyFilters}
+                    className="w-full bg-primary text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all shadow-md shadow-primary/20 active:scale-95"
+                >
+                    Apply Filters
+                </button>
+            </aside>
+        );
+    }
+
+    // Desktop Layout (Standard)
     return (
         <aside className="w-full space-y-8">
             <div>

@@ -42,6 +42,12 @@ export default async function SearchPage(props: SearchPageProps) {
 
     const products = productsData || [];
 
+    // Fetch categories
+    const { data: categoriesData } = await supabase
+        .from('categories')
+        .select('name, slug');
+    const categories = categoriesData || [];
+
     // Filter products based on search query and other filters
     const filteredProducts = products.filter((product) => {
         const matchesQuery = product.name.toLowerCase().includes(query.toLowerCase());
@@ -77,13 +83,13 @@ export default async function SearchPage(props: SearchPageProps) {
 
             <main className="flex-1 pb-24 md:pb-8">
                 {/* Mobile Filters Bar - Reused from Shop */}
-                <ShopMobileBar />
+                <ShopMobileBar categories={categories} />
 
                 <div className="mx-auto max-w-screen-xl px-4 md:px-8 py-4 md:py-8">
                     <div className="flex flex-col md:flex-row gap-8">
                         {/* Desktop Sidebar - Reused from Shop */}
                         <div className="hidden md:block w-80 shrink-0">
-                            <ShopSidebar />
+                            <ShopSidebar categories={categories} />
                         </div>
 
                         {/* Main Content */}

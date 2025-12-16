@@ -100,7 +100,7 @@ export default async function ShopPage(props: ShopPageProps) {
 
             <main className="flex-1 pb-24 md:pb-8">
                 {/* Mobile Filters Bar */}
-                <ShopMobileBar />
+                <ShopMobileBar categories={categories} />
 
                 <div className="mx-auto max-w-screen-xl px-4 md:px-8 py-4 md:py-8">
                     <div className="flex flex-col md:flex-row gap-8">
