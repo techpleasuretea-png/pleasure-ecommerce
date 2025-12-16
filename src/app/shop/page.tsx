@@ -12,6 +12,8 @@ interface ShopPageProps {
         featured?: string;
         onSale?: string;
         category?: string;
+        min?: string;
+        max?: string;
     }>;
 }
 
@@ -22,6 +24,8 @@ export default async function ShopPage(props: ShopPageProps) {
     const showFeatured = searchParams.featured === "true";
     const showOnSale = searchParams.onSale === "true";
     const selectedCategories = searchParams.category ? searchParams.category.split(",") : [];
+    const minPrice = searchParams.min ? parseFloat(searchParams.min) : null;
+    const maxPrice = searchParams.max ? parseFloat(searchParams.max) : null;
 
     // Fetch categories
     const { data: categoriesData } = await supabase
@@ -68,6 +72,10 @@ export default async function ShopPage(props: ShopPageProps) {
                 return false;
             }
         }
+
+        // Price range logic
+        if (minPrice !== null && price < minPrice) return false;
+        if (maxPrice !== null && price > maxPrice) return false;
 
         return true;
     }).map((product) => {

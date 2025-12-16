@@ -19,6 +19,8 @@ export function ShopSidebar({ categories }: ShopSidebarProps) {
     const [onSale, setOnSale] = useState(false);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [showAllCategories, setShowAllCategories] = useState(false);
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
 
     useEffect(() => {
         setFeatured(searchParams.get("featured") === "true");
@@ -30,7 +32,22 @@ export function ShopSidebar({ categories }: ShopSidebarProps) {
         } else {
             setSelectedCategories([]);
         }
+
+        setMinPrice(searchParams.get("min") || "");
+        setMaxPrice(searchParams.get("max") || "");
     }, [searchParams]);
+
+    const handleApplyFilters = () => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        if (minPrice) params.set("min", minPrice);
+        else params.delete("min");
+
+        if (maxPrice) params.set("max", maxPrice);
+        else params.delete("max");
+
+        router.push(`?${params.toString()}`);
+    };
 
     const handleFilterChange = (key: string, value: boolean) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -131,21 +148,37 @@ export function ShopSidebar({ categories }: ShopSidebarProps) {
 
             <div>
                 <h3 className="font-bold text-lg mb-4 text-[#333333] dark:text-white">Price Range</h3>
-                <div className="space-y-4">
-                    <input
-                        className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary"
-                        type="range"
-                        min="0"
-                        max="100"
-                    />
-                    <div className="flex justify-between text-sm text-subtext-light dark:text-subtext-dark font-medium">
-                        <span>৳0</span>
-                        <span>৳100</span>
+                <div className="flex items-center gap-4">
+                    <div className="relative flex-1">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark">৳</span>
+                        <input
+                            type="number"
+                            placeholder="Min"
+                            value={minPrice}
+                            onChange={(e) => setMinPrice(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleApplyFilters()}
+                            className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg py-2 pl-7 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                    </div>
+                    <span className="text-subtext-light dark:text-subtext-dark">-</span>
+                    <div className="relative flex-1">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark">৳</span>
+                        <input
+                            type="number"
+                            placeholder="Max"
+                            value={maxPrice}
+                            onChange={(e) => setMaxPrice(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleApplyFilters()}
+                            className="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg py-2 pl-7 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
                     </div>
                 </div>
             </div>
 
-            <button className="w-full bg-primary text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all shadow-md shadow-primary/20 active:scale-95">
+            <button
+                onClick={handleApplyFilters}
+                className="w-full bg-primary text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all shadow-md shadow-primary/20 active:scale-95"
+            >
                 Apply Filters
             </button>
         </aside>
