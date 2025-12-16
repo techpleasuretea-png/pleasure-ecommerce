@@ -30,6 +30,11 @@ const tabs = [
 export function DashboardMobileTabs() {
     const pathname = usePathname();
 
+    // Hide tabs on order details page
+    if (pathname.startsWith("/dashboard/orders/") && pathname !== "/dashboard/orders") {
+        return null;
+    }
+
     return (
         <div className="md:hidden w-full overflow-x-auto border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-surface-dark mb-6 -mx-4 px-4 sticky top-0 z-10 no-scrollbar">
             <div className="flex min-w-full">
@@ -41,8 +46,8 @@ export function DashboardMobileTabs() {
                             key={tab.href}
                             href={tab.href}
                             className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors whitespace-nowrap ${isActive
-                                    ? "border-primary text-primary"
-                                    : "border-transparent text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark"
+                                ? "border-primary text-primary"
+                                : "border-transparent text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark"
                                 }`}
                         >
                             <Icon className="w-4 h-4" />

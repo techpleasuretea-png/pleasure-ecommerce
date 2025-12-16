@@ -92,29 +92,27 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
             <div className="flex flex-col gap-4">
                 <Link
                     href="/dashboard/orders"
-                    className="inline-flex items-center text-subtext-light dark:text-subtext-dark hover:text-primary transition-colors text-sm font-medium w-fit"
+                    className="inline-flex items-center text-subtext-light dark:text-subtext-dark hover:text-primary transition-colors text-base font-medium w-fit p-2 -ml-2"
                 >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    <ArrowLeft className="w-5 h-5 mr-2" />
                     Back to Orders
                 </Link>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-bold font-display text-text-light dark:text-text-dark flex items-center gap-3">
                             Order #{id}
-                            <span className="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap">
-                                {order.status}
-                            </span>
+
+                            <button className="md:hidden ml-2 px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                Invoice
+                            </button>
                         </h1>
                         <p className="text-xs md:text-sm text-subtext-light dark:text-subtext-dark mt-1">
                             Placed on {order.date}
                         </p>
                     </div>
-                    <div className="flex gap-2 md:gap-3 w-full md:w-auto">
+                    <div className="hidden md:flex gap-2 md:gap-3 w-full md:w-auto">
                         <button className="flex-1 md:flex-none justify-center px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                             Invoice
-                        </button>
-                        <button className="flex-1 md:flex-none justify-center px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold shadow-lg shadow-primary/20 hover:bg-green-600 transition-all">
-                            Track Order
                         </button>
                     </div>
                 </div>
@@ -126,31 +124,28 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                     <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                         <h2 className="text-lg font-bold text-text-light dark:text-text-dark mb-6">Order Status</h2>
                         <div className="relative">
-                            {/* Desktop Timeline Line */}
-                            <div className="hidden md:block absolute top-[24px] left-0 w-full h-1 bg-gray-100 dark:bg-gray-800 -z-0" />
+                            {/* Timeline Line */}
+                            <div className="absolute top-[16px] md:top-[24px] left-0 w-full h-1 bg-gray-100 dark:bg-gray-800 -z-0" />
 
-                            {/* Mobile Timeline Line */}
-                            <div className="md:hidden absolute left-[15px] top-0 h-full w-0.5 bg-gray-100 dark:bg-gray-800 -z-0" />
-
-                            <div className="flex flex-col md:flex-row justify-between relative z-10 gap-8 md:gap-0">
+                            <div className="flex flex-row justify-between relative z-10">
                                 {order.timeline.map((step, index) => {
                                     const isCompleted = step.completed;
                                     const isCurrent = step.current;
                                     const Icon = step.icon;
 
                                     return (
-                                        <div key={index} className={`flex md:flex-col items-center md:items-center gap-4 md:gap-3 ${isCompleted || isCurrent ? 'text-primary' : 'text-gray-400 dark:text-gray-600'}`}>
+                                        <div key={index} className={`flex flex-col items-center gap-2 md:gap-3 flex-1 ${isCompleted || isCurrent ? 'text-primary' : 'text-gray-400 dark:text-gray-600'}`}>
                                             <div className={`w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center border-2 md:border-4 transition-all duration-300 bg-white dark:bg-surface-dark z-10 ${isCompleted ? 'border-primary text-primary' :
                                                 isCurrent ? 'border-primary bg-primary text-white' :
                                                     'border-gray-200 dark:border-gray-700'
                                                 }`}>
                                                 <Icon className={`w-4 h-4 md:w-5 md:h-5 ${isCurrent ? 'text-white' : ''}`} />
                                             </div>
-                                            <div className="pt-1 md:text-center">
-                                                <p className={`font-bold text-sm ${isCompleted || isCurrent ? 'text-text-light dark:text-text-dark' : 'text-gray-400'}`}>
+                                            <div className="pt-1 text-center pl-0">
+                                                <p className={`font-bold text-[10px] md:text-base leading-tight ${isCompleted || isCurrent ? 'text-text-light dark:text-text-dark' : 'text-gray-400'}`}>
                                                     {step.status}
                                                 </p>
-                                                <p className="text-xs text-subtext-light dark:text-subtext-dark mt-0.5">
+                                                <p className="text-[10px] md:text-sm text-subtext-light dark:text-subtext-dark mt-0.5 hidden md:block">
                                                     {step.date}
                                                 </p>
                                             </div>
@@ -177,9 +172,11 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                                     </div>
                                     <div className="flex-1 flex flex-col md:flex-row md:justify-between md:items-center gap-1 md:gap-4">
                                         <div className="flex-1">
-                                            <h3 className="font-bold text-text-light dark:text-text-dark text-sm md:text-base line-clamp-2">{item.name}</h3>
+                                            <h3 className="font-bold text-text-light dark:text-text-dark text-sm md:text-base line-clamp-2">
+                                                {item.name} <span className="text-subtext-light dark:text-subtext-dark font-normal text-xs">{item.unit}</span>
+                                            </h3>
                                             <p className="text-xs md:text-sm text-subtext-light dark:text-subtext-dark mt-0.5 md:mt-1">
-                                                {item.quantity} x ৳{item.price.toFixed(2)} / {item.unit}
+                                                {item.quantity} x ৳{item.price.toFixed(2)}
                                             </p>
                                         </div>
                                         <div className="text-left md:text-right">
@@ -264,16 +261,49 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                             </div>
                         </div>
                         <div className="space-y-3">
-                            <button className="w-full flex items-center justify-center gap-2 bg-white dark:bg-surface-dark hover:bg-indigo-50 dark:hover:bg-indigo-900/20 py-2.5 rounded-xl text-indigo-700 dark:text-indigo-300 font-semibold text-sm transition-colors shadow-sm">
-                                <MessageCircle className="w-4 h-4" />
+                            <button className="w-full flex items-center justify-center gap-2 bg-white dark:bg-surface-dark hover:bg-indigo-50 dark:hover:bg-indigo-900/20 py-3 rounded-xl text-indigo-700 dark:text-indigo-300 font-bold text-sm md:text-base transition-colors shadow-sm">
+                                <MessageCircle className="w-5 h-5" />
                                 Chat with Support
                             </button>
-                            <button className="w-full flex items-center justify-center gap-2 bg-transparent border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 py-2.5 rounded-xl text-indigo-700 dark:text-indigo-300 font-semibold text-sm transition-colors">
-                                <Phone className="w-4 h-4" />
+                            <button className="w-full flex items-center justify-center gap-2 bg-transparent border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 py-3 rounded-xl text-indigo-700 dark:text-indigo-300 font-bold text-sm md:text-base transition-colors">
+                                <Phone className="w-5 h-5" />
                                 Call Us
                             </button>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {/* Mobile Sticky Footer Status Timeline */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe">
+                <div className="flex items-center justify-between px-6 py-4 overflow-x-auto no-scrollbar gap-8">
+                    {order.timeline.map((step, index) => {
+                        const isCompleted = step.completed;
+                        const isCurrent = step.current;
+                        const Icon = step.icon;
+                        // Simplified logic for icon color/styling for footer
+                        const activeColor = isCompleted || isCurrent ? 'text-primary' : 'text-gray-300 dark:text-gray-600';
+                        const lineColor = isCompleted ? 'bg-primary' : 'bg-gray-100 dark:bg-gray-700';
+
+                        return (
+                            <div key={index} className="flex flex-col items-center gap-1.5 min-w-[60px] relative">
+                                {/* Connector Line (except for last item) */}
+                                {index < order.timeline.length - 1 && (
+                                    <div className={`absolute top-3 left-[calc(50%+12px)] w-[calc(100%+8px)] h-0.5 ${lineColor} -z-0`} />
+                                )}
+
+                                <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 bg-white dark:bg-surface-dark z-10 transition-colors ${isCompleted ? 'border-primary text-primary' :
+                                    isCurrent ? 'border-primary bg-primary text-white' :
+                                        'border-gray-200 dark:border-gray-700 text-gray-300 dark:text-gray-600'
+                                    }`}>
+                                    <Icon className="w-3 h-3" />
+                                </div>
+                                <p className={`text-[10px] font-bold whitespace-nowrap ${isCompleted || isCurrent ? 'text-text-light dark:text-text-dark' : 'text-gray-400'}`}>
+                                    {step.status}
+                                </p>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </div>
