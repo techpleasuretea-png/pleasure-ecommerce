@@ -6,6 +6,8 @@ import { ShopMobileBar } from "@/components/shop/ShopMobileBar";
 import { ShopMobileFooter } from "@/components/shop/ShopMobileFooter";
 import { ShopSort } from "@/components/shop/ShopSort";
 import { supabase } from "@/lib/supabaseClient";
+import { fetchProducts } from "@/app/actions/productActions";
+import { ProductInfiniteList } from "@/components/shop/ProductInfiniteList";
 
 interface ShopPageProps {
     searchParams: Promise<{
@@ -36,78 +38,21 @@ export default async function ShopPage(props: ShopPageProps) {
         .select('name, slug');
     const categories = categoriesData || [];
 
-    // Fetch products from Supabase
-    let query = supabase
-        .from('products')
-        .select(`
-            *,
-            product_images (
-                image_url,
-                is_primary
-            ),
-            category:categories (
-                slug
-            )
-        `);
+    // Prepare filters for initial fetch
+    const filters = {
+        page: 1,
+        limit: 12,
+        search: searchParams.q, // Not used in ShopPage usually but good to have
+        featured: showFeatured,
+        onSale: showOnSale,
+        categorySlugs: selectedCategories,
+        minPrice: minPrice !== null ? minPrice : undefined,
+        maxPrice: maxPrice !== null ? maxPrice : undefined,
+        sort: sort
+    };
 
-    // Apply sorting
-    if (sort === "price_asc") {
-        query = query.order('selling_price', { ascending: true });
-    } else if (sort === "price_desc") {
-        query = query.order('selling_price', { ascending: false });
-    } else if (sort === "newest") {
-        query = query.order('created_at', { ascending: false });
-    }
-    // Default or popularity sort can stay as default order
-
-    const { data: productsData, error } = await query;
-
-    if (error) {
-        console.error("Error fetching products:", error);
-        // Handle error appropriately, maybe show an empty state or error message
-    }
-
-    const products = productsData || [];
-
-    const filteredProducts = products.filter((product) => {
-        // Parse prices from string to number for comparison
-        const price = parseFloat(product.selling_price);
-        const originalPrice = parseFloat(product.mrp);
-
-        if (showFeatured && !product.is_featured) return false;
-
-        // Logic for onSale: has discount text or original price > selling price
-        const isOnSale = !!product.discount || (originalPrice && originalPrice > price);
-        if (showOnSale && !isOnSale) return false;
-
-        // Category logic
-        if (selectedCategories.length > 0) {
-            const productCategorySlug = product.category?.slug;
-            if (!productCategorySlug || !selectedCategories.includes(productCategorySlug)) {
-                return false;
-            }
-        }
-
-        // Price range logic
-        if (minPrice !== null && price < minPrice) return false;
-        if (maxPrice !== null && price > maxPrice) return false;
-
-        return true;
-    }).map((product) => {
-        // Map database fields to ProductCard props
-        const primaryImage = product.product_images?.find((img: any) => img.is_primary) || product.product_images?.[0];
-
-        return {
-            name: product.name,
-            weight: product.weight,
-            price: parseFloat(product.selling_price),
-            originalPrice: product.mrp ? parseFloat(product.mrp) : undefined,
-            discount: product.discount,
-            image: primaryImage?.image_url || "/placeholder.png", // Fallback image
-            // Prop not present in ProductCard but used for logic
-            featured: product.is_featured
-        };
-    });
+    // Fetch initial products
+    const { products: initialProducts } = await fetchProducts(filters);
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
@@ -130,11 +75,12 @@ export default async function ShopPage(props: ShopPageProps) {
                             <ShopSort />
 
                             {/* Product Grid */}
-                            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 md:gap-6">
-                                {filteredProducts.map((product, idx) => (
-                                    <ProductCard key={idx} {...product} />
-                                ))}
-                            </div>
+                            {/* Product List with Infinite Scroll */}
+                            <ProductInfiniteList
+                                initialProducts={initialProducts}
+                                searchParams={searchParams}
+                                key={JSON.stringify(searchParams)}
+                            />
                         </div>
                     </div>
                 </div>

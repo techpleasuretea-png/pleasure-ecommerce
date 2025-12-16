@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, User, Heart, ShoppingBag, Menu } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { MobileHeader } from "../mobile/MobileHeader";
 
 export function Header() {
@@ -12,6 +12,7 @@ export function Header() {
 
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
+    const pathname = usePathname();
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,10 +37,30 @@ export function Header() {
                             </div>
 
                             <nav className="flex items-center gap-6 text-sm font-medium">
-                                <Link className="text-primary font-semibold transition-colors" href="/">Home</Link>
-                                <Link className="hover:text-primary transition-colors" href="/shop">Shop</Link>
-                                <Link className="hover:text-primary transition-colors" href="/new-arrivals">New Arrivals</Link>
-                                <Link className="hover:text-primary transition-colors" href="/offers">Offers</Link>
+                                <Link
+                                    className={`${pathname === "/" ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                    href="/"
+                                >
+                                    Home
+                                </Link>
+                                <Link
+                                    className={`${pathname.startsWith("/shop") ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                    href="/shop"
+                                >
+                                    Shop
+                                </Link>
+                                <Link
+                                    className={`${pathname === "/new-arrivals" ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                    href="/new-arrivals"
+                                >
+                                    New Arrivals
+                                </Link>
+                                <Link
+                                    className={`${pathname === "/offers" ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                    href="/offers"
+                                >
+                                    Offers
+                                </Link>
                             </nav>
                         </div>
 
