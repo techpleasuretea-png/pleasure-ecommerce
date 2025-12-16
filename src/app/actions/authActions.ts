@@ -68,6 +68,11 @@ export async function signup(formData: FormData) {
         return { error: "Signup successful but login failed. Please try logging in." };
     }
 
+    // Authenticate the client with the new session to ensure RLS allows insertion
+    if (authResponse.data.session) {
+        await supabase.auth.setSession(authResponse.data.session);
+    }
+
     // Insert into profiles
     const { error: profileError } = await supabase
         .from('profiles')
@@ -79,7 +84,7 @@ export async function signup(formData: FormData) {
 
     if (profileError) {
         console.error("Profile creation error:", profileError);
-        // Continue anyway, or return error? Typically we want to finish auth.
+        return { error: `Profile creation failed: ${profileError.message}` };
     }
 
     // Insert into user_phones if phone provided
@@ -93,6 +98,7 @@ export async function signup(formData: FormData) {
 
         if (phoneError) {
             console.error("User Phone creation error:", phoneError);
+            return { error: `Phone creation failed: ${phoneError.message}` };
         }
     }
 
