@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { MoveRight, MoveLeft } from "lucide-react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 
 export interface Slide {
     id: string;
@@ -83,77 +83,79 @@ export function HeroSlideshow({ slides }: HeroSlideshowProps) {
 
 
             {/* --- Desktop View --- */}
-            <div className="hidden md:flex relative mt-4 h-[500px] w-full rounded-2xl overflow-hidden items-center justify-center text-center mx-auto md:mx-8 max-w-[1400px]">
-                {validSlides.map((s, index) => (
-                    <div
-                        key={s.id}
-                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-                            }`}
-                    >
-                        {/* Image */}
-                        <div className="absolute inset-0 w-full h-full">
-                            <Image
-                                src={s.image_url}
-                                alt={s.title}
-                                fill
-                                className="object-cover"
-                                priority={index === 0}
-                            />
-                            <div className="absolute inset-0 bg-black/40"></div>
-                        </div>
-
-                        {/* Content */}
-                        <div className="relative z-20 flex flex-col items-center justify-center h-full text-white px-4">
-                            <h1 className="text-4xl md:text-6xl font-bold font-display leading-tight drop-shadow-md">
-                                {s.title}
-                            </h1>
-                            <p className="mt-4 max-w-xl mx-auto text-lg text-gray-200 drop-shadow-sm">
-                                {s.subtitle}
-                            </p>
-
-                            {s.button_text && (
-                                <Link
-                                    href={s.button_link || '/shop'}
-                                    className="mt-8 inline-flex items-center gap-2 bg-primary text-white font-semibold py-3 px-8 rounded-lg hover:opacity-90 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/30"
-                                >
-                                    {s.button_text}
-                                </Link>
-                            )}
-                        </div>
-                    </div>
-                ))}
-
-                {/* Desktop Navigation Arrows */}
-                {validSlides.length > 1 && (
-                    <>
-                        <button
-                            onClick={() => setCurrentSlide(prev => (prev - 1 + validSlides.length) % validSlides.length)}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/20 text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/40"
+            <div className="hidden md:flex justify-center w-full mx-auto max-w-[1600px] px-4 md:px-8 mt-4">
+                <div className="relative h-[500px] w-full rounded-2xl overflow-hidden items-center justify-center text-center">
+                    {validSlides.map((s, index) => (
+                        <div
+                            key={s.id}
+                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                                }`}
                         >
-                            <MoveLeft size={32} />
-                        </button>
-                        <button
-                            onClick={() => setCurrentSlide(prev => (prev + 1) % validSlides.length)}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/20 text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/40"
-                        >
-                            <MoveRight size={32} />
-                        </button>
-
-                        {/* Desktop Dots */}
-                        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-3 z-30">
-                            {validSlides.map((_, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => setCurrentSlide(idx)}
-                                    className={`h-2 rounded-full transition-all duration-300 ${currentSlide === idx ? "bg-white w-8" : "bg-white/40 w-2 hover:bg-white/60"
-                                        }`}
-                                    aria-label={`Go to slide ${idx + 1}`}
+                            {/* Image */}
+                            <div className="absolute inset-0 w-full h-full">
+                                <Image
+                                    src={s.image_url}
+                                    alt={s.title}
+                                    fill
+                                    className="object-cover"
+                                    priority={index === 0}
                                 />
-                            ))}
-                        </div>
-                    </>
-                )}
+                                <div className="absolute inset-0 bg-black/40"></div>
+                            </div>
 
+                            {/* Content */}
+                            <div className="relative z-20 flex flex-col items-center justify-center h-full text-white px-4">
+                                <h1 className="text-4xl md:text-6xl font-bold font-display leading-tight drop-shadow-md">
+                                    {s.title}
+                                </h1>
+                                <p className="mt-4 max-w-xl mx-auto text-lg text-gray-200 drop-shadow-sm">
+                                    {s.subtitle}
+                                </p>
+
+                                {s.button_text && (
+                                    <Link
+                                        href={s.button_link || '/shop'}
+                                        className="mt-8 inline-flex items-center gap-2 bg-primary text-white font-semibold py-3 px-8 rounded-lg hover:opacity-90 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/30"
+                                    >
+                                        {s.button_text}
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+
+                    {/* Desktop Navigation Arrows */}
+                    {validSlides.length > 1 && (
+                        <>
+                            <button
+                                onClick={() => setCurrentSlide(prev => (prev - 1 + validSlides.length) % validSlides.length)}
+                                className="absolute left-6 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/10 border border-white/20 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all hover:bg-white/30 hover:scale-110 active:scale-95 shadow-lg"
+                            >
+                                <ChevronLeft className="w-8 h-8" />
+                            </button>
+                            <button
+                                onClick={() => setCurrentSlide(prev => (prev + 1) % validSlides.length)}
+                                className="absolute right-6 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/10 border border-white/20 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all hover:bg-white/30 hover:scale-110 active:scale-95 shadow-lg"
+                            >
+                                <ChevronRight className="w-8 h-8" />
+                            </button>
+
+                            {/* Desktop Dots */}
+                            <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-3 z-30">
+                                {validSlides.map((_, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setCurrentSlide(idx)}
+                                        className={`h-2 rounded-full transition-all duration-300 ${currentSlide === idx ? "bg-white w-8" : "bg-white/40 w-2 hover:bg-white/60"
+                                            }`}
+                                        aria-label={`Go to slide ${idx + 1}`}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    )}
+
+                </div>
             </div>
         </div>
     );

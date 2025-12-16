@@ -27,7 +27,7 @@ export function Header() {
             </div>
 
             <header className="hidden md:block py-4 px-4 md:px-8 bg-background-light dark:bg-background-dark sticky top-0 z-50 shadow-sm md:shadow-none">
-                <div className="mx-auto max-w-screen-xl">
+                <div className="mx-auto max-w-[1600px]">
                     <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-8">
                             <div className="flex items-center gap-2">

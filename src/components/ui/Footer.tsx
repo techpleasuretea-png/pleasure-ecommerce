@@ -11,7 +11,7 @@ export function Footer() {
             </div>
 
             <footer className="hidden md:block bg-surface-light dark:bg-surface-dark pt-16 pb-8 border-t border-gray-100 dark:border-gray-800">
-                <div className="mx-auto max-w-screen-xl px-4 md:px-8">
+                <div className="mx-auto max-w-[1600px] px-4 md:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                         {/* Brand Column */}
                         <div className="col-span-1">

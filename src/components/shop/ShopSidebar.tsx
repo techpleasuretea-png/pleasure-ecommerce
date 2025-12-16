@@ -1,6 +1,6 @@
 "use client";
 
-import { Slider } from "@/components/ui/slider";
+
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

@@ -9,13 +9,14 @@ import { ChevronDown } from "lucide-react";
 import { products } from "@/data/products";
 
 interface ShopPageProps {
-    searchParams: {
+    searchParams: Promise<{
         featured?: string;
         onSale?: string;
-    };
+    }>;
 }
 
-export default function ShopPage({ searchParams }: ShopPageProps) {
+export default async function ShopPage(props: ShopPageProps) {
+    const searchParams = await props.searchParams;
     const showFeatured = searchParams.featured === "true";
     const showOnSale = searchParams.onSale === "true";
 
