@@ -1,4 +1,5 @@
 import { MapPin, Truck, CreditCard, CheckCircle, Circle, Check } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface CheckoutFormProps {
     shippingMethod: string;
@@ -6,6 +7,44 @@ interface CheckoutFormProps {
 }
 
 export function CheckoutForm({ shippingMethod, onShippingChange }: CheckoutFormProps) {
+    const [formData, setFormData] = useState({
+        name: "",
+        mobile: "",
+        address: ""
+    });
+
+    useEffect(() => {
+        const loadUserData = async () => {
+            const { createClient } = await import("@/lib/supabase/client");
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (user) {
+                // Fetch profile
+                const { data: profile } = await supabase.from('profiles').select('full_name, mobile_number').eq('id', user.id).single();
+                if (profile) {
+                    setFormData(prev => ({
+                        ...prev,
+                        name: profile.full_name || "",
+                        // If mobile number was stored in profile, use it. Codebase uses 'user_phones' table separately? 
+                        // Let's just stick to profile.full_name for now as mobile might be complex.
+                    }));
+                }
+
+                // Fetch mobile if available (optional enhancement)
+                const { data: phoneData } = await supabase.from('user_phones').select('phone_number').eq('user_id', user.id).single();
+                if (phoneData) {
+                    setFormData(prev => ({ ...prev, mobile: phoneData.phone_number }));
+                }
+            }
+        };
+        loadUserData();
+    }, []);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
+    };
+
     return (
         <div className="space-y-8">
             {/* Delivery Information */}
@@ -18,16 +57,37 @@ export function CheckoutForm({ shippingMethod, onShippingChange }: CheckoutFormP
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-2" htmlFor="name">Full Name</label>
-                            <input className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent" id="name" placeholder="John Doe" type="text" />
+                            <input
+                                className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                                id="name"
+                                placeholder="John Doe"
+                                type="text"
+                                value={formData.name}
+                                onChange={handleChange}
+                            />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-2" htmlFor="mobile">Mobile Number</label>
-                            <input className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent" id="mobile" placeholder="+880 1XXX XXXXXX" type="tel" />
+                            <input
+                                className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                                id="mobile"
+                                placeholder="+880 1XXX XXXXXX"
+                                type="tel"
+                                value={formData.mobile}
+                                onChange={handleChange}
+                            />
                         </div>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-2" htmlFor="address">Delivery Address</label>
-                        <textarea className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent" id="address" placeholder="House no, Road no, Area, City" rows={3}></textarea>
+                        <textarea
+                            className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                            id="address"
+                            placeholder="House no, Road no, Area, City"
+                            rows={3}
+                            value={formData.address}
+                            onChange={handleChange}
+                        ></textarea>
                     </div>
 
                     {/* Shipping Method - Desktop Friendly Structure but Responsive */}

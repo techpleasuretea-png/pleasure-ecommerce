@@ -7,9 +7,11 @@ import { useRouter } from "next/navigation";
 import { Header } from "@/components/ui/Header";
 import { login } from "../actions/authActions";
 import { Footer } from "@/components/ui/Footer";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
+    const [guestLoading, setGuestLoading] = useState(false);
     const router = useRouter();
 
     return (
@@ -123,10 +125,46 @@ export default function LoginPage() {
 
                         <button
                             type="button"
-                            onClick={() => router.push('/')}
-                            className="w-full bg-transparent border border-gray-200 dark:border-gray-700 text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl py-3.5 flex items-center justify-center gap-2 text-base font-semibold transition-all"
+                            disabled={guestLoading}
+                            onClick={async () => {
+                                try {
+                                    setGuestLoading(true);
+                                    const supabase = createClient();
+
+                                    const { data, error } = await supabase.auth.signInAnonymously();
+
+                                    if (error) {
+                                        alert(error.message);
+                                        setGuestLoading(false);
+                                        return;
+                                    }
+
+                                    if (data.user) {
+                                        // Create profile for guest
+                                        const { error: profileError } = await supabase
+                                            .from('profiles')
+                                            .insert({
+                                                id: data.user.id,
+                                                email: null,
+                                                full_name: null
+                                            });
+
+                                        if (profileError) {
+                                            console.error("Guest profile error:", profileError);
+                                        }
+
+                                        router.push('/dashboard');
+                                        router.refresh();
+                                    }
+                                } catch (e) {
+                                    console.error(e);
+                                    alert("An unexpected error occurred");
+                                    setGuestLoading(false);
+                                }
+                            }}
+                            className="w-full bg-transparent border border-gray-200 dark:border-gray-700 text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl py-3.5 flex items-center justify-center gap-2 text-base font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Continue as Guest
+                            {guestLoading ? "Signing in..." : "Continue as Guest"}
                         </button>
                     </form>
 
@@ -139,11 +177,11 @@ export default function LoginPage() {
                         </p>
                     </div>
                 </div>
-            </main>
+            </main >
 
             <div className="hidden md:block">
                 <Footer />
             </div>
-        </div>
+        </div >
     );
 }

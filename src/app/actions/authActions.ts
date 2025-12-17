@@ -142,3 +142,35 @@ export async function logout() {
     await supabase.auth.signOut();
     redirect("/login");
 }
+
+export async function guestLogin() {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase.auth.signInAnonymously();
+
+    if (error) {
+        return { error: error.message };
+    }
+
+    const { user, session } = data;
+
+    if (user && session) {
+        // Authenticate client to allow RLS write
+        await supabase.auth.setSession(session);
+
+        const { error: profileError } = await supabase
+            .from('profiles')
+            .insert({
+                id: user.id,
+                email: null,
+                full_name: null
+            });
+
+        if (profileError) {
+            console.error("Guest profile creation error:", profileError);
+            return { error: `Guest profile creation failed: ${profileError.message}` };
+        }
+    }
+
+    redirect("/dashboard");
+}

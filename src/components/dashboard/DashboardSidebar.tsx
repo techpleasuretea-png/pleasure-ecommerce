@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, ShoppingBag, MapPin, User, LogOut, Phone } from "lucide-react";
 import { logout } from "@/app/actions/authActions";
+import { useState, useEffect } from "react";
 
 const sidebarItems = [
     {
@@ -31,14 +32,37 @@ const sidebarItems = [
 export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
     const pathname = usePathname();
 
+    const [profile, setProfile] = useState<any>(null);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const { createClient } = await import("@/lib/supabase/client");
+            const supabase = createClient();
+
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { data } = await supabase
+                    .from('profiles')
+                    .select('full_name')
+                    .eq('id', user.id)
+                    .single();
+                setProfile(data);
+            }
+        };
+        fetchProfile();
+    }, []);
+
+    const displayName = profile?.full_name || "Guest User";
+    const initial = displayName.charAt(0).toUpperCase();
+
     return (
         <div className="w-full md:w-64 bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-4 h-fit">
             <div className="flex items-center gap-3 p-3 mb-6 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                    <span className="font-bold text-lg">G</span>
+                    <span className="font-bold text-lg">{initial}</span>
                 </div>
                 <div>
-                    <h3 className="font-bold text-sm text-text-light dark:text-text-dark">Guest User</h3>
+                    <h3 className="font-bold text-sm text-text-light dark:text-text-dark">{displayName}</h3>
                     <p className="text-xs text-subtext-light dark:text-subtext-dark">Welcome back!</p>
                 </div>
             </div>
