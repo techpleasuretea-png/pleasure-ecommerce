@@ -102,7 +102,8 @@ export async function signup(formData: FormData) {
         }
     }
 
-    redirect("/dashboard");
+    const returnTo = formData.get("returnTo") as string;
+    redirect(returnTo || "/dashboard");
 }
 
 export async function login(formData: FormData) {
@@ -130,11 +131,13 @@ export async function login(formData: FormData) {
         error = signInError;
     }
 
+    const returnTo = formData.get("returnTo") as string;
+
     if (error) {
         return { error: error.message };
     }
 
-    redirect("/dashboard");
+    redirect(returnTo || "/dashboard");
 }
 
 export async function logout() {

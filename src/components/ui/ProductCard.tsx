@@ -1,5 +1,10 @@
+"use client";
+
 import { Plus, ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 interface ProductCardProps {
     name: string;
@@ -11,6 +16,34 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ name, weight, price, originalPrice, discount, image }: ProductCardProps) {
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const [user, setUser] = useState<any>(null);
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        };
+        checkUser();
+    }, []);
+
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!user) {
+            const currentUrl = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+            const returnUrl = encodeURIComponent(currentUrl);
+            router.push(`/login?returnTo=${returnUrl}`);
+            return;
+        }
+
+        // Add to cart logic here
+        console.log("Adding to cart:", name);
+    };
     return (
         <div className="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group border border-transparent hover:border-gray-100 dark:hover:border-gray-800 hover:shadow-lg transition-all duration-300">
             <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
@@ -38,7 +71,10 @@ export function ProductCard({ name, weight, price, originalPrice, discount, imag
 
                 {/* Desktop Buttons */}
                 <div className="hidden md:flex gap-3 mt-4">
-                    <button className="w-full bg-primary text-white font-bold py-2.5 rounded-lg text-sm hover:bg-green-600 shadow-md shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <button
+                        onClick={handleAddToCart}
+                        className="w-full bg-primary text-white font-bold py-2.5 rounded-lg text-sm hover:bg-green-600 shadow-md shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2"
+                    >
                         <ShoppingCart className="w-4 h-4" /> Add to Cart
                     </button>
                     <button className="w-full bg-white dark:bg-transparent border border-gray-200 dark:border-gray-700 text-text-light dark:text-text-dark font-semibold py-2.5 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-all active:scale-95">
@@ -49,7 +85,10 @@ export function ProductCard({ name, weight, price, originalPrice, discount, imag
                 {/* Mobile Buttons */}
                 <div className="flex md:hidden items-center gap-2 mt-3">
                     <button className="flex-1 bg-primary text-white font-bold h-10 rounded-lg text-sm hover:bg-opacity-90 active:scale-95 transition-all">Buy</button>
-                    <button className="h-10 w-10 flex items-center justify-center rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors">
+                    <button
+                        onClick={handleAddToCart}
+                        className="h-10 w-10 flex items-center justify-center rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+                    >
                         <ShoppingCart className="w-5 h-5" />
                     </button>
                 </div>

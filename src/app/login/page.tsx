@@ -3,7 +3,7 @@
 import { ArrowLeft, Leaf, User, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "@/components/ui/Header";
 import { login } from "../actions/authActions";
 import { Footer } from "@/components/ui/Footer";
@@ -13,6 +13,8 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [guestLoading, setGuestLoading] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const returnTo = searchParams.get("returnTo");
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
@@ -47,6 +49,7 @@ export default function LoginPage() {
 
 
                     <form className="space-y-6" action={async (formData) => {
+                        if (returnTo) formData.append("returnTo", returnTo);
                         const res = await login(formData);
                         if (res?.error) {
                             alert(res.error); // Simple error handling for now
@@ -153,7 +156,7 @@ export default function LoginPage() {
                                             console.error("Guest profile error:", profileError);
                                         }
 
-                                        router.push('/dashboard');
+                                        router.push(returnTo || '/dashboard');
                                         router.refresh();
                                     }
                                 } catch (e) {

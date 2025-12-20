@@ -3,13 +3,15 @@
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signup } from "../actions/authActions";
 
 export default function SignupPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const returnTo = searchParams.get("returnTo");
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-[max(884px,100dvh)] flex flex-col font-display overflow-hidden">
@@ -37,6 +39,7 @@ export default function SignupPage() {
 
 
                     <form className="space-y-5" action={async (formData) => {
+                        if (returnTo) formData.append("returnTo", returnTo);
                         const res = await signup(formData);
                         if (res?.error) {
                             alert(res.error);
@@ -137,7 +140,7 @@ export default function SignupPage() {
                     <div className="mt-auto py-8 text-center">
                         <p className="text-text-muted-light dark:text-text-muted-dark">
                             Already have an account?
-                            <Link href="/login" className="text-primary font-bold hover:text-primary-dark transition-colors ml-1">
+                            <Link href={returnTo ? `/login?returnTo=${returnTo}` : "/login"} className="text-primary font-bold hover:text-primary-dark transition-colors ml-1">
                                 Log in
                             </Link>
                         </p>
