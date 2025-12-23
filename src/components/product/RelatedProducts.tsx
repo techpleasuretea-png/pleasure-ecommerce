@@ -5,6 +5,7 @@ export function RelatedProducts() {
     // Mock data for related products
     const relatedProducts = [
         {
+            id: "related-1",
             name: "Sourdough Bread",
             weight: "500g",
             price: 6.50,
@@ -13,6 +14,7 @@ export function RelatedProducts() {
             image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBC3A-a4UULzqh-2SPbYejiaLkHE3RubV6okQS4ojcHCRPhJ_paUEKrXruRD5erHtgxWLXoQfc4z_c5xWUQMkczARbRsyNYdrwnR8j9PGiAxI8d1uBSlKD743u-NkXnxtMB9EnhyXGqbvE35qt7CLdn1-XWOxfulSdRjhidkms4oXRjNzO5r438VVLu10PF_rb2FgIPLvhWiF6r7e09nRXea6m6hUufATKbH-achi-5RFKf6ogP2j35Z7m7prz58IulwJpUyMdVlc4"
         },
         {
+            id: "related-2",
             name: "Free-Range Eggs",
             weight: "1 dozen",
             price: 7.99,
@@ -21,6 +23,7 @@ export function RelatedProducts() {
             image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCCxbKs9pCH2Ka4kHpk_m1Ivt1Ou2krDDLnEjLgXZZAtFxIoUcoLbhLqzVOxEiVjcalpJNdWs5h8zpWqzsBDih-S2cqmQsZ6DF8G16d3CDH1xdZ6IFD3XVHruE5GcRG_WQ5-OJfN6kDfffgYenXPI4VRhDUgLkHiG7sCD3hyM4SVrzH2jyM0r2I5CuhtCnTSf7fji7fJ6mg-iLrNWUCrHxu4YHWejJcXrkx6nm2i934phwbc5PLqpNh_a28u7s0vAgucRx-clxI5_w"
         },
         {
+            id: "related-3",
             name: "Juicy Strawberries",
             weight: "500g",
             price: 5.50,
@@ -29,6 +32,7 @@ export function RelatedProducts() {
             image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC0Yri64ddnMB4myFp2Wrj5j7BZYIGSlBUI9X7BqnfXktqTHEopk7TEXYMDSZtvYSFzPHg4jdjCOpHj9tyiymxQIqhi6hAgsqmxPPi12uFcfBQXaC2P6SuaPuL4cRtsctqUPvDN8l1yrBgYILYbf17OhrZW9WmFYUtc5kO_Msc5wO7ijnrRjCvxkF1oD3xp-GPwU4fsFnm6cOypprDiVFbOKIx0wLATKoLDv_NzfP6qVzpHl2ikDu5Giff3XvAsT6vg21knuzQqQA8"
         },
         {
+            id: "related-4",
             name: "Organic Whole Milk",
             weight: "1L",
             price: 3.99,

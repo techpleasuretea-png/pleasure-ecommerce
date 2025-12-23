@@ -1,5 +1,4 @@
 import { Check, Lock } from "lucide-react";
-import Link from "next/link";
 
 interface CheckoutOrderSummaryProps {
     subtotal: number;
@@ -14,9 +13,11 @@ interface CheckoutOrderSummaryProps {
         image: string;
         quantity: number;
     }>;
+    onPlaceOrder: () => void;
+    isLoading?: boolean;
 }
 
-export function CheckoutOrderSummary({ subtotal, shipping, discount, total, items }: CheckoutOrderSummaryProps) {
+export function CheckoutOrderSummary({ subtotal, shipping, discount, total, items, onPlaceOrder, isLoading }: CheckoutOrderSummaryProps) {
     return (
         <div className="bg-surface-light dark:bg-surface-dark rounded-xl p-6 sticky top-8">
             <h2 className="text-xl font-bold mb-6">Order Summary</h2>
@@ -65,10 +66,14 @@ export function CheckoutOrderSummary({ subtotal, shipping, discount, total, item
             </div>
 
             {/* Place Order Button */}
-            <Link href="/order-confirmation" className="w-full mt-6 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
-                Place Order
-                <Check className="w-4 h-4" />
-            </Link>
+            <button
+                onClick={onPlaceOrder}
+                disabled={isLoading}
+                className="w-full mt-6 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-600 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+                {isLoading ? "Processing..." : "Place Order"}
+                {!isLoading && <Check className="w-4 h-4" />}
+            </button>
 
             <p className="text-xs text-center text-subtext-light dark:text-subtext-dark mt-4 flex items-center justify-center gap-1">
                 <Lock className="w-4 h-4" /> Secure Checkout

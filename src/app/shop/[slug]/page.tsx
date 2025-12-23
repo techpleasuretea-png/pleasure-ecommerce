@@ -12,6 +12,7 @@ import { ProductDetailsTabs } from "@/components/product/ProductDetailsTabs";
 import { ProductDetailsAccordion } from "@/components/product/ProductDetailsAccordion";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { Product } from "@/types/product";
+import { useCart } from "@/context/CartContext";
 
 // Mock Data for the product
 const productData: Product = {
@@ -51,9 +52,21 @@ const productData: Product = {
 
 export default function ProductDetailsPage({ params }: { params: { slug: string } }) {
     const [quantity, setQuantity] = useState(1);
+    const { addItemWithAuth } = useCart();
 
     // In a real app, we would fetch product data based on params.slug
     const product = productData;
+
+    const handleAddToCart = () => {
+        addItemWithAuth({
+            id: product.id,
+            name: product.name,
+            weight: product.weight,
+            price: product.price,
+            image: product.images[0],
+            quantity: quantity,
+        });
+    };
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
@@ -94,7 +107,7 @@ export default function ProductDetailsPage({ params }: { params: { slug: string 
                             <ProductActions
                                 quantity={quantity}
                                 setQuantity={setQuantity}
-                                onAddToCart={() => console.log("Added to cart")}
+                                onAddToCart={handleAddToCart}
                                 onBuyNow={() => console.log("Buy now")}
                             />
 

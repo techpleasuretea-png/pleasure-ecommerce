@@ -69,6 +69,7 @@ export default async function SearchPage(props: SearchPageProps) {
         const primaryImage = product.product_images?.find((img: any) => img.is_primary) || product.product_images?.[0];
 
         return {
+            id: product.id,
             name: product.name,
             weight: product.weight,
             price: parseFloat(product.selling_price),

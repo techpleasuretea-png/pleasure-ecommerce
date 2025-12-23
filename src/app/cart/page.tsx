@@ -5,65 +5,18 @@ import { Footer } from "@/components/ui/Footer";
 import { CartItem } from "@/components/cart/CartItem";
 import { CartSummary } from "@/components/cart/CartSummary";
 import { CartMobileCheckout } from "@/components/cart/CartMobileCheckout";
-import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-
-const initialItems = [
-    {
-        id: 1,
-        name: "Organic Avocados",
-        weight: "500g",
-        price: 280,
-        originalPrice: 350,
-        savings: 70,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo",
-        quantity: 1
-    },
-    {
-        id: 2,
-        name: "Organic Milk",
-        weight: "1L",
-        price: 238,
-        originalPrice: 286,
-        savings: 48,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCtUIriRHMO78Lha6iwa0djf40KrA7NUKzm65pZn7NmyUTbERKiDAsYeidSD_j3nyKWQf3KGxcIQQfDrA7BsrbKfzORwZUv8Gz4H9tY3FFL489kPbsurGIdMPxYiVbcsW3UiuFAcVOvpK1nAWgGTdg0mXv1YFHQMpZADGc0yqyhaO4w1vcPGg0xjrGrFUxS-B84PNsvXB7P1l-_MQ17WFgbZEK7YoKYGSwmWQyqKHLqHKjJZsPfTe6HwEchNm8M6d864DJGIUFmfJ8",
-        quantity: 2
-    },
-    {
-        id: 3,
-        name: "Sourdough Bread",
-        weight: "1 loaf",
-        price: 525,
-        originalPrice: 575,
-        savings: 50,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBC3A-a4UULzqh-2SPbYejiaLkHE3RubV6okQS4ojcHCRPhJ_paUEKrXruRD5erHtgxWLXoQfc4z_c5xWUQMkczARbRsyNYdrwnR8j9PGiAxI8d1uBSlKD743u-NkXnxtMB9EnhyXGqbvE35qt7CLdn1-XWOxfulSdRjhidkms4oXRjNzO5r438VVLu10PF_rb2FgIPLvhWiF6r7e09nRXea6m6hUufATKbH-achi-5RFKf6ogP2j35Z7m7prz58IulwJpUyMdVlc4",
-        quantity: 1
-    }
-];
+import { useCart } from "@/context/CartContext";
 
 export default function CartPage() {
-    const [items, setItems] = useState(initialItems);
+    const { cartItems, updateQuantity, removeFromCart, isLoading } = useCart();
 
-    const updateQuantity = (id: number, delta: number) => {
-        setItems(items.map(item => {
-            if (item.id === id) {
-                const newQuantity = Math.max(1, item.quantity + delta);
-                return { ...item, quantity: newQuantity };
-            }
-            return item;
-        }));
-    };
-
-    const removeItem = (id: number) => {
-        setItems(items.filter(item => item.id !== id));
-    };
-
-    const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const shipping = 50;
-    const discount = items.reduce((acc, item) => acc + (item.savings || 0) * item.quantity, 0);
+    const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const shipping = cartItems.length > 0 ? 50 : 0;
+    const discount = 0; // Discount calculation logic can be added later if needed
     const total = subtotal + shipping;
-    const count = items.reduce((acc, item) => acc + item.quantity, 0);
+    const count = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
@@ -99,20 +52,26 @@ export default function CartPage() {
                             </div>
 
                             {/* Items */}
-                            {items.map(item => (
-                                <CartItem
-                                    key={item.id}
-                                    {...item}
-                                    onIncrement={() => updateQuantity(item.id, 1)}
-                                    onDecrement={() => updateQuantity(item.id, -1)}
-                                    onRemove={() => removeItem(item.id)}
-                                />
-                            ))}
+                            {isLoading ? (
+                                <div className="p-12 text-center">Loading cart...</div>
+                            ) : (
+                                <>
+                                    {cartItems.map(item => (
+                                        <CartItem
+                                            key={item.id}
+                                            {...item}
+                                            onIncrement={() => updateQuantity(item.id, 1)}
+                                            onDecrement={() => updateQuantity(item.id, -1)}
+                                            onRemove={() => removeFromCart(item.id)}
+                                        />
+                                    ))}
 
-                            {items.length === 0 && (
-                                <div className="p-8 text-center text-subtext-light dark:text-subtext-dark">
-                                    Your cart is empty.
-                                </div>
+                                    {cartItems.length === 0 && (
+                                        <div className="p-8 text-center text-subtext-light dark:text-subtext-dark">
+                                            Your cart is empty.
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </div>
 
@@ -151,3 +110,4 @@ export default function CartPage() {
         </div>
     );
 }
+

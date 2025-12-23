@@ -2,7 +2,7 @@ import { Trash2, Plus, Minus } from "lucide-react";
 import Image from "next/image";
 
 interface CartItemProps {
-    id: number;
+    id: string;
     name: string;
     weight: string;
     price: number;

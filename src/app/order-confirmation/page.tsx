@@ -42,7 +42,22 @@ const orderDetails = {
     ]
 };
 
+import { createClient } from "@/lib/supabase/client";
+
 export default function OrderConfirmationPage() {
+    const [isAnonymous, setIsAnonymous] = useState(false);
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user?.is_anonymous) {
+                setIsAnonymous(true);
+            }
+        };
+        checkUser();
+    }, []);
+
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
             {/* Desktop Header */}
@@ -69,6 +84,19 @@ export default function OrderConfirmationPage() {
                         <h1 className="text-3xl md:text-4xl font-bold mb-3 font-display">Order Confirmed!</h1>
                         <p className="text-lg text-subtext-light dark:text-subtext-dark">Thank you for your purchase. Your order <span className="font-semibold text-text-light dark:text-text-dark">#{orderDetails.id}</span> has been received.</p>
                     </div>
+
+                    {/* Guest: Create Account Prompt */}
+                    {isAnonymous && (
+                        <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 mb-8 flex items-center justify-between gap-4">
+                            <div>
+                                <h3 className="text-lg font-bold text-primary mb-1">Save your order history!</h3>
+                                <p className="text-sm text-subtext-light dark:text-subtext-dark">Create an account to track this order easily and speed up future checkouts.</p>
+                            </div>
+                            <Link href="/signup" className="flex-shrink-0 bg-primary text-white font-bold py-2.5 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20">
+                                Create Account
+                            </Link>
+                        </div>
+                    )}
 
                     <div className="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-gray-100 dark:border-gray-800 mb-8">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
@@ -160,6 +188,16 @@ export default function OrderConfirmationPage() {
                     <h2 className="text-2xl font-bold text-text-light dark:text-text-dark">Order Placed Successfully!</h2>
                     <p className="text-text-muted-light dark:text-text-muted-dark">Your order <span className="text-text-light dark:text-text-dark font-semibold">#{orderDetails.id}</span> has been placed.</p>
                 </div>
+
+                {isAnonymous && (
+                    <div className="w-full bg-primary/5 border border-primary/20 rounded-xl p-4 text-center">
+                        <h3 className="font-bold text-primary mb-1">Don't lose your order!</h3>
+                        <p className="text-xs text-subtext-light dark:text-subtext-dark mb-3">Create an account to track this order.</p>
+                        <Link href="/signup" className="block w-full bg-primary text-white font-bold py-2 rounded-lg text-sm">
+                            Create Account
+                        </Link>
+                    </div>
+                )}
 
                 <div className="w-full bg-surface-light dark:bg-surface-dark border border-gray-100 dark:border-gray-800 rounded-2xl p-6 space-y-6 shadow-sm">
                     <div className="flex items-start gap-4">

@@ -27,6 +27,7 @@ export async function FeaturedProducts() {
                 {products?.map((product: any) => (
                     <ProductCard
                         key={product.id}
+                        id={product.id}
                         name={product.name}
                         weight={product.weight}
                         price={Number(product.selling_price)}

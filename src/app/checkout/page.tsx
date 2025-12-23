@@ -8,6 +8,8 @@ import { CheckoutMobileBar } from "@/components/checkout/CheckoutMobileBar";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 // Mock data to match what would come from Cart
 const cartItems = [
@@ -39,12 +41,43 @@ const cartItems = [
 
 export default function CheckoutPage() {
     const [shippingMethod, setShippingMethod] = useState("inside-dhaka");
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+    const supabase = createClient();
 
     const subtotal = 29.47;
     // Calculate shipping based on selection
     const shipping = shippingMethod === "inside-dhaka" ? 60.00 : 120.00;
     const discount = 3.50;
     const total = subtotal + shipping - discount;
+
+    const handlePlaceOrder = async () => {
+        setIsLoading(true);
+        try {
+            // 1. Get Current User (Auth or Anonymous)
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (user) {
+                console.log("Placing order for user:", user.id, "Is Anonymous:", user.is_anonymous);
+                // Here is where you would call the backend API to create the order
+                // e.g. await createOrder({ userId: user.id, items: cartItems, total, shippingMethod });
+
+                // For now, we simulate success and redirect
+                // We'll assume the order is created with the current UserID.
+            } else {
+                console.error("No user found during checkout. This shouldn't happen with Auto-Guest.");
+            }
+
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            router.push("/order-confirmation");
+        } catch (error) {
+            console.error("Error placing order:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
@@ -84,13 +117,19 @@ export default function CheckoutPage() {
                             discount={discount}
                             total={total}
                             items={cartItems}
+                            onPlaceOrder={handlePlaceOrder}
+                            isLoading={isLoading}
                         />
                     </div>
                 </div>
             </main>
 
             {/* Mobile Bottom Bar */}
-            <CheckoutMobileBar total={total} />
+            <CheckoutMobileBar
+                total={total}
+                onPlaceOrder={handlePlaceOrder}
+                isLoading={isLoading}
+            />
 
             {/* Desktop Footer */}
             <div className="hidden md:block">

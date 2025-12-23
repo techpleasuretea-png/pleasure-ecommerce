@@ -109,6 +109,7 @@ export function ProductInfiniteList({ initialProducts, searchParams }: ProductIn
                 {products.map((product) => (
                     <ProductCard
                         key={product.id}
+                        id={product.id}
                         name={product.name}
                         weight={product.weight}
                         price={product.price}
