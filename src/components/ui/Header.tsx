@@ -6,6 +6,7 @@ import { Search, User, Heart, ShoppingBag, Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { MobileHeader } from "../mobile/MobileHeader";
+import { useCart } from "@/context/CartContext";
 
 export function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,6 +15,10 @@ export function Header() {
     const router = useRouter();
     const pathname = usePathname();
     const [user, setUser] = useState<any>(null);
+    const { cartItems } = useCart();
+
+    const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+    const totalPrice = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
     useEffect(() => {
         const checkUser = async () => {
@@ -104,14 +109,21 @@ export function Header() {
                                     <Heart className="w-6 h-6" />
                                 </button>
 
-                                <div className="flex items-center gap-2 cursor-pointer p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-lg transition-colors">
+                                <div
+                                    className="flex items-center gap-2 cursor-pointer p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-lg transition-colors"
+                                    onClick={() => router.push('/cart')}
+                                >
                                     <div className="relative">
                                         <ShoppingBag className="w-6 h-6" />
-                                        <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">2</span>
+                                        {totalItems > 0 && (
+                                            <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                                {totalItems}
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="hidden xl:block text-sm">
                                         <span className="text-xs text-subtext-light dark:text-subtext-dark block">Cart</span>
-                                        <p className="font-semibold">৳30.48</p>
+                                        <p className="font-semibold">৳{totalPrice.toFixed(2)}</p>
                                     </div>
                                 </div>
                             </div>
