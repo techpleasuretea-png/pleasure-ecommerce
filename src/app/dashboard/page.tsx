@@ -1,8 +1,15 @@
-"use client";
-
 import { ShoppingBag, MapPin, CreditCard, Clock, XCircle, LogOut } from "lucide-react";
+import { getDashboardStats } from "@/app/actions/dashboardActions";
+import { redirect } from "next/navigation";
+import Link from "next/link";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+    const stats = await getDashboardStats();
+
+    if (!stats) {
+        redirect("/login");
+    }
+
     return (
         <div className="space-y-6">
             <h1 className="text-2xl font-bold font-display text-text-light dark:text-text-dark">Overview</h1>
@@ -15,7 +22,7 @@ export default function DashboardPage() {
                         </div>
                         <div>
                             <p className="text-xs text-subtext-light dark:text-subtext-dark uppercase font-bold tracking-wider">Total Orders</p>
-                            <h3 className="text-xl font-bold text-text-light dark:text-text-dark">12</h3>
+                            <h3 className="text-xl font-bold text-text-light dark:text-text-dark">{stats.totalOrders}</h3>
                         </div>
                     </div>
                 </div>
@@ -26,7 +33,7 @@ export default function DashboardPage() {
                         </div>
                         <div>
                             <p className="text-xs text-subtext-light dark:text-subtext-dark uppercase font-bold tracking-wider">Pending</p>
-                            <h3 className="text-xl font-bold text-text-light dark:text-text-dark">1</h3>
+                            <h3 className="text-xl font-bold text-text-light dark:text-text-dark">{stats.pendingOrders}</h3>
                         </div>
                     </div>
                 </div>
@@ -37,7 +44,7 @@ export default function DashboardPage() {
                         </div>
                         <div>
                             <p className="text-xs text-subtext-light dark:text-subtext-dark uppercase font-bold tracking-wider">Cancel Order</p>
-                            <h3 className="text-xl font-bold text-text-light dark:text-text-dark">0</h3>
+                            <h3 className="text-xl font-bold text-text-light dark:text-text-dark">{stats.cancelledOrders}</h3>
                         </div>
                     </div>
                 </div>
@@ -51,43 +58,33 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="space-y-6">
-                    <div className="flex items-center gap-4 pb-6 border-b border-gray-50 dark:border-gray-800 last:pb-0 last:border-0">
-                        <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-subtext-light dark:text-subtext-dark flex-shrink-0">
-                            <ShoppingBag className="w-6 h-6" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <div className="flex justify-between items-start mb-1">
-                                <h4 className="font-semibold text-text-light dark:text-text-dark truncate">Order #ORD-3329</h4>
-                                <span className="text-primary font-bold">৳34.47</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-subtext-light dark:text-subtext-dark">
-                                <span>Oct 24, 2025</span>
-                                <span>•</span>
-                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                                    Delivered
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-4 pb-6 border-b border-gray-50 dark:border-gray-800 last:pb-0 last:border-0">
-                        <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-subtext-light dark:text-subtext-dark flex-shrink-0">
-                            <ShoppingBag className="w-6 h-6" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <div className="flex justify-between items-start mb-1">
-                                <h4 className="font-semibold text-text-light dark:text-text-dark truncate">Order #ORD-3328</h4>
-                                <span className="text-primary font-bold">৳125.00</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-subtext-light dark:text-subtext-dark">
-                                <span>Oct 20, 2025</span>
-                                <span>•</span>
-                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                                    Delivered
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    {stats.recentOrders.length === 0 ? (
+                        <p className="text-subtext-light dark:text-subtext-dark text-sm">No recent orders found.</p>
+                    ) : (
+                        stats.recentOrders.map((order) => (
+                            <Link href={`/dashboard/orders/${order.id}`} key={order.id} className="flex items-center gap-4 pb-6 border-b border-gray-50 dark:border-gray-800 last:pb-0 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors rounded-xl p-2 -mx-2">
+                                <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-subtext-light dark:text-subtext-dark flex-shrink-0">
+                                    <ShoppingBag className="w-6 h-6" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex justify-between items-start mb-1">
+                                        <h4 className="font-semibold text-text-light dark:text-text-dark truncate">Order #{order.id.slice(0, 8)}...</h4>
+                                        <span className="text-primary font-bold">৳{order.total_amount?.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm text-subtext-light dark:text-subtext-dark">
+                                        <span>{new Date(order.created_at).toLocaleDateString()}</span>
+                                        <span>•</span>
+                                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${order.status === 'delivered' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                                            order.status === 'cancelled' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
+                                                'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                                            }`}>
+                                            {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                                        </span>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))
+                    )}
                 </div>
             </div>
         </div>
