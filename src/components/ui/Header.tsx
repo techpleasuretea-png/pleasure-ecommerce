@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { MobileHeader } from "../mobile/MobileHeader";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 export function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -17,9 +18,11 @@ export function Header() {
     const searchParams = useSearchParams();
     const [user, setUser] = useState<any>(null);
     const { cartItems } = useCart();
+    const { wishlistItems } = useWishlist();
 
     const isNewArrivals = searchParams.get("newArrivals") === "true";
-    const isShop = pathname.startsWith("/shop") && !isNewArrivals;
+    const isOnSale = searchParams.get("onSale") === "true";
+    const isShop = pathname.startsWith("/shop") && !isNewArrivals && !isOnSale;
 
     const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
     const totalPrice = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -76,8 +79,8 @@ export function Header() {
                                     New Arrivals
                                 </Link>
                                 <Link
-                                    className={`${pathname === "/offers" ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
-                                    href="/offers"
+                                    className={`${isOnSale ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                    href="/shop?onSale=true"
                                 >
                                     Offers
                                 </Link>
@@ -109,8 +112,16 @@ export function Header() {
                                 >
                                     <User className="w-6 h-6" />
                                 </button>
-                                <button className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors">
+                                <button
+                                    onClick={() => router.push('/wishlist')}
+                                    className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors relative"
+                                >
                                     <Heart className="w-6 h-6" />
+                                    {wishlistItems.length > 0 && (
+                                        <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                            {wishlistItems.length}
+                                        </span>
+                                    )}
                                 </button>
 
                                 <div

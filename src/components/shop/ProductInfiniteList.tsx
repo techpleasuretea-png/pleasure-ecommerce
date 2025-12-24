@@ -15,6 +15,7 @@ interface Product {
     image: string;
     featured?: boolean;
     created_at?: string;
+    stock?: number;
 }
 
 interface ProductInfiniteListProps {
@@ -118,6 +119,7 @@ export function ProductInfiniteList({ initialProducts, searchParams }: ProductIn
                         discount={product.discount}
                         image={product.image}
                         created_at={product.created_at}
+                        stock={product.stock}
                     />
                 ))}
             </div>

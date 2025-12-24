@@ -88,7 +88,7 @@ export function MobileMenuSidebar({ isOpen, onClose }: MobileMenuSidebarProps) {
                                 <span className="font-bold text-sm">New Arrivals</span>
                             </Link>
                             <Link
-                                href="/offers"
+                                href="/shop?onSale=true"
                                 className="group flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-primary/5 active:bg-primary/10 text-[#333333] dark:text-white"
                                 onClick={onClose}
                             >

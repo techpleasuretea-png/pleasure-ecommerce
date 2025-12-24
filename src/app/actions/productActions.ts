@@ -132,7 +132,8 @@ export async function fetchProducts({
                 discount: product.discount,
                 image: primaryImage?.image_url || "/placeholder.png",
                 featured: product.is_featured,
-                created_at: product.created_at
+                created_at: product.created_at,
+                stock: product.stock
             };
         });
 

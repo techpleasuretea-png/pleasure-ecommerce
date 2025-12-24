@@ -1,11 +1,12 @@
 "use client";
 
-import { Plus, ShoppingCart, Minus } from "lucide-react";
+import { Plus, ShoppingCart, Minus, Heart } from "lucide-react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 interface ProductCardProps {
     id: string; // Added ID to props
@@ -15,13 +16,15 @@ interface ProductCardProps {
     originalPrice?: number;
     discount?: string;
     image: string;
+    stock?: number; // Added stock prop
     created_at?: string; // Added created_at prop
 }
 
-export function ProductCard({ id, name, weight, price, originalPrice, discount, image, created_at }: ProductCardProps) {
+export function ProductCard({ id, name, weight, price, originalPrice, discount, image, created_at, stock }: ProductCardProps) {
     const router = useRouter();
     const pathname = usePathname();
     const { cartItems, addToCart, updateQuantity, isLoading: isCartLoading, addItemWithAuth } = useCart();
+    const { addToWishlist, isInWishlist } = useWishlist();
 
     // Calculate isNew
     const isNew = created_at ? (new Date().getTime() - new Date(created_at).getTime()) / (1000 * 3600 * 24) <= 30 : false;
@@ -85,7 +88,15 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
 
                 {/* Desktop Buttons */}
                 <div className="hidden md:flex gap-3 mt-4">
-                    {quantity === 0 ? (
+                    {stock !== undefined && stock <= 0 ? (
+                        <button
+                            onClick={() => addToWishlist({ id, name, weight, price, image, stock })}
+                            className="w-full bg-surface-light dark:bg-surface-dark border border-primary text-primary font-bold py-2.5 rounded-lg text-sm hover:bg-primary hover:text-white shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                        >
+                            <Heart className={`w-4 h-4 ${isInWishlist(id) ? 'fill-current' : ''}`} />
+                            {isInWishlist(id) ? "In Wishlist" : "Add to Wishlist"}
+                        </button>
+                    ) : quantity === 0 ? (
                         <>
                             <button
                                 onClick={handleAddToCart}
@@ -118,7 +129,15 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
 
                 {/* Mobile Buttons */}
                 <div className="flex md:hidden items-center gap-2 mt-3">
-                    {quantity === 0 ? (
+                    {stock !== undefined && stock <= 0 ? (
+                        <button
+                            onClick={() => addToWishlist({ id, name, weight, price, image, stock })}
+                            className="flex-1 bg-surface-light dark:bg-surface-dark border border-primary text-primary font-bold h-10 rounded-lg text-sm hover:bg-primary hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2"
+                        >
+                            <Heart className={`w-5 h-5 ${isInWishlist(id) ? 'fill-current' : ''}`} />
+                            {isInWishlist(id) ? "In Wishlist" : "Add to Wishlist"}
+                        </button>
+                    ) : quantity === 0 ? (
                         <>
                             <button className="flex-1 bg-primary text-white font-bold h-10 rounded-lg text-sm hover:bg-opacity-90 active:scale-95 transition-all">Buy</button>
                             <button

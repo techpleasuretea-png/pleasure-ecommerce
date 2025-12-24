@@ -34,6 +34,8 @@ export async function FeaturedProducts() {
                         originalPrice={product.mrp ? Number(product.mrp) : undefined}
                         discount={product.discount}
                         image={getProductImage(product.product_images)}
+                        stock={product.stock}
+                        created_at={product.created_at}
                     />
                 ))}
             </div>
