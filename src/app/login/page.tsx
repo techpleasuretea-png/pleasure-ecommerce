@@ -9,7 +9,9 @@ import { login } from "../actions/authActions";
 import { Footer } from "@/components/ui/Footer";
 import { createClient } from "@/lib/supabase/client";
 
-export default function LoginPage() {
+import { Suspense } from "react";
+
+function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [guestLoading, setGuestLoading] = useState(false);
     const router = useRouter();
@@ -186,5 +188,17 @@ export default function LoginPage() {
                 <Footer />
             </div>
         </div >
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+        }>
+            <LoginForm />
+        </Suspense>
     );
 }
