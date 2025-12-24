@@ -1,5 +1,6 @@
 
 import { Header } from "@/components/ui/Header";
+import { Suspense } from "react";
 import { Footer } from "@/components/ui/Footer";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopSidebar } from "@/components/shop/ShopSidebar";
@@ -93,66 +94,72 @@ export default async function SearchPage(props: SearchPageProps) {
     // popularity/default fallback
 
     return (
-        <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
-            <Header />
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+        }>
+            <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
+                <Header />
 
-            <main className="flex-1 pb-24 md:pb-8">
-                {/* Mobile Filters Bar - Reused from Shop */}
-                <ShopMobileBar categories={categories} />
+                <main className="flex-1 pb-24 md:pb-8">
+                    {/* Mobile Filters Bar - Reused from Shop */}
+                    <ShopMobileBar categories={categories} />
 
-                <div className="mx-auto max-w-screen-xl px-4 md:px-8 py-4 md:py-8">
-                    <div className="flex flex-col md:flex-row gap-8">
-                        {/* Desktop Sidebar - Reused from Shop */}
-                        <div className="hidden md:block w-80 shrink-0">
-                            <ShopSidebar categories={categories} />
-                        </div>
-
-                        {/* Main Content */}
-                        <div className="flex-1">
-                            {/* Desktop Sort Dropdown & Results Header */}
-                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                                <div>
-                                    <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                                        {query ? `Search results for "${query}"` : "All Products"}
-                                    </h1>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        Found {filteredProducts.length} items
-                                    </p>
-                                </div>
-
-                                <ShopSort />
+                    <div className="mx-auto max-w-screen-xl px-4 md:px-8 py-4 md:py-8">
+                        <div className="flex flex-col md:flex-row gap-8">
+                            {/* Desktop Sidebar - Reused from Shop */}
+                            <div className="hidden md:block w-80 shrink-0">
+                                <ShopSidebar categories={categories} />
                             </div>
 
-                            {/* Product Grid */}
-                            {filteredProducts.length > 0 ? (
-                                <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 md:gap-6">
-                                    {filteredProducts.map((product, idx) => (
-                                        <ProductCard key={idx} {...product} />
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="flex flex-col items-center justify-center py-16 text-center">
-                                    <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
-                                        <Search className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                            {/* Main Content */}
+                            <div className="flex-1">
+                                {/* Desktop Sort Dropdown & Results Header */}
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                                    <div>
+                                        <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                                            {query ? `Search results for "${query}"` : "All Products"}
+                                        </h1>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                                            Found {filteredProducts.length} items
+                                        </p>
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">No products found</h3>
-                                    <p className="text-gray-500 dark:text-gray-400 max-w-sm">
-                                        We couldn't find any products matching "{query}". Try checking for typos or using different keywords.
-                                    </p>
+
+                                    <ShopSort />
                                 </div>
-                            )}
+
+                                {/* Product Grid */}
+                                {filteredProducts.length > 0 ? (
+                                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 md:gap-6">
+                                        {filteredProducts.map((product, idx) => (
+                                            <ProductCard key={idx} {...product} />
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-16 text-center">
+                                        <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                                            <Search className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                                        </div>
+                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">No products found</h3>
+                                        <p className="text-gray-500 dark:text-gray-400 max-w-sm">
+                                            We couldn't find any products matching "{query}". Try checking for typos or using different keywords.
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
+                </main>
+
+                {/* Shop Mobile Footer (Mobile Only) */}
+                <ShopMobileFooter />
+
+                {/* Global Footer (Desktop Only) */}
+                <div className="hidden md:block">
+                    <Footer />
                 </div>
-            </main>
-
-            {/* Shop Mobile Footer (Mobile Only) */}
-            <ShopMobileFooter />
-
-            {/* Global Footer (Desktop Only) */}
-            <div className="hidden md:block">
-                <Footer />
             </div>
-        </div>
+        </Suspense>
     );
 }

@@ -2,7 +2,7 @@
 
 import { Plus, ShoppingCart, Minus } from "lucide-react";
 import Image from "next/image";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useCart } from "@/context/CartContext";
@@ -20,7 +20,6 @@ interface ProductCardProps {
 export function ProductCard({ id, name, weight, price, originalPrice, discount, image }: ProductCardProps) {
     const router = useRouter();
     const pathname = usePathname();
-    const searchParams = useSearchParams();
     const { cartItems, addToCart, updateQuantity, isLoading: isCartLoading, addItemWithAuth } = useCart();
 
     // Context quantity as source of truth for reactivity

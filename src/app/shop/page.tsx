@@ -1,4 +1,5 @@
 import { Header } from "@/components/ui/Header";
+import { Suspense } from "react";
 import { Footer } from "@/components/ui/Footer";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopSidebar } from "@/components/shop/ShopSidebar";
@@ -56,44 +57,50 @@ export default async function ShopPage(props: ShopPageProps) {
     const { products: initialProducts } = await fetchProducts(filters);
 
     return (
-        <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
-            <Header />
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+        }>
+            <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
+                <Header />
 
-            <main className="flex-1 pb-24 md:pb-8">
-                {/* Mobile Filters Bar */}
-                <ShopMobileBar categories={categories} />
+                <main className="flex-1 pb-24 md:pb-8">
+                    {/* Mobile Filters Bar */}
+                    <ShopMobileBar categories={categories} />
 
-                <div className="mx-auto max-w-screen-xl px-4 md:px-8 py-4 md:py-8">
-                    <div className="flex flex-col md:flex-row gap-8">
-                        {/* Desktop Sidebar */}
-                        <div className="hidden md:block w-80 shrink-0">
-                            <ShopSidebar categories={categories} />
-                        </div>
+                    <div className="mx-auto max-w-screen-xl px-4 md:px-8 py-4 md:py-8">
+                        <div className="flex flex-col md:flex-row gap-8">
+                            {/* Desktop Sidebar */}
+                            <div className="hidden md:block w-80 shrink-0">
+                                <ShopSidebar categories={categories} />
+                            </div>
 
-                        {/* Main Content */}
-                        <div className="flex-1">
-                            {/* Desktop Sort Dropdown */}
-                            <ShopSort />
+                            {/* Main Content */}
+                            <div className="flex-1">
+                                {/* Desktop Sort Dropdown */}
+                                <ShopSort />
 
-                            {/* Product Grid */}
-                            {/* Product List with Infinite Scroll */}
-                            <ProductInfiniteList
-                                initialProducts={initialProducts}
-                                searchParams={searchParams}
-                                key={JSON.stringify(searchParams)}
-                            />
+                                {/* Product Grid */}
+                                {/* Product List with Infinite Scroll */}
+                                <ProductInfiniteList
+                                    initialProducts={initialProducts}
+                                    searchParams={searchParams}
+                                    key={JSON.stringify(searchParams)}
+                                />
+                            </div>
                         </div>
                     </div>
+                </main>
+
+                {/* Shop Mobile Footer (Mobile Only) */}
+                <ShopMobileFooter />
+
+                {/* Global Footer (Desktop Only) */}
+                <div className="hidden md:block">
+                    <Footer />
                 </div>
-            </main>
-
-            {/* Shop Mobile Footer (Mobile Only) */}
-            <ShopMobileFooter />
-
-            {/* Global Footer (Desktop Only) */}
-            <div className="hidden md:block">
-                <Footer />
             </div>
-        </div>
+        </Suspense>
     );
 }
