@@ -4,12 +4,13 @@ import { Header } from "@/components/ui/Header";
 import { Footer } from "@/components/ui/Footer";
 import { CheckCircle, Truck, CreditCard, ArrowRight, ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 interface OrderDetails {
     id: string;
+    orderNumber?: number;
     date: string;
     total: number;
     subtotal: number;
@@ -25,8 +26,6 @@ interface OrderDetails {
     }>;
     status: string;
 }
-
-import { Suspense } from "react";
 
 function OrderConfirmationContent() {
     const searchParams = useSearchParams();
@@ -58,7 +57,7 @@ function OrderConfirmationContent() {
                 const { data: order, error: orderError } = await supabase
                     .from('orders')
                     .select(`
-                        id, created_at, total_amount, shipping_cost, payment_method, status,
+                        id, order_number, created_at, total_amount, shipping_cost, payment_method, status,
                         order_items (
                             id, quantity, price,
                             product: products (
@@ -98,6 +97,7 @@ function OrderConfirmationContent() {
 
                 setOrderDetails({
                     id: order.id,
+                    orderNumber: order.order_number,
                     date: new Date(order.created_at).toLocaleDateString(),
                     total: order.total_amount,
                     subtotal: subtotal,
@@ -166,7 +166,7 @@ function OrderConfirmationContent() {
                             <CheckCircle className="w-16 h-16" />
                         </div>
                         <h1 className="text-3xl md:text-4xl font-bold mb-3 font-display">Order Confirmed!</h1>
-                        <p className="text-lg text-subtext-light dark:text-subtext-dark">Thank you for your purchase. Your order <span className="font-semibold text-text-light dark:text-text-dark">#{orderDetails?.id?.slice(0, 8)}...</span> has been received.</p>
+                        <p className="text-lg text-subtext-light dark:text-subtext-dark">Thank you for your purchase. Your order <span className="font-semibold text-text-light dark:text-text-dark">#{orderDetails.orderNumber || orderDetails.id.slice(0, 8)}</span> has been received.</p>
                     </div>
 
                     {/* Guest: Create Account Prompt */}
@@ -186,7 +186,7 @@ function OrderConfirmationContent() {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
                             <div>
                                 <p className="text-subtext-light dark:text-subtext-dark mb-1">Order Number</p>
-                                <p className="font-semibold truncate" title={orderDetails?.id}>#{orderDetails?.id?.slice(0, 8)}</p>
+                                <p className="font-semibold truncate" title={orderDetails?.id}>#{orderDetails.orderNumber || orderDetails.id.slice(0, 8)}</p>
                             </div>
                             <div>
                                 <p className="text-subtext-light dark:text-subtext-dark mb-1">Date</p>
@@ -271,7 +271,7 @@ function OrderConfirmationContent() {
 
                 <div className="text-center space-y-2">
                     <h2 className="text-2xl font-bold text-text-light dark:text-text-dark">Order Placed Successfully!</h2>
-                    <p className="text-text-muted-light dark:text-text-muted-dark">Your order <span className="text-text-light dark:text-text-dark font-semibold">#{orderDetails.id.slice(0, 8)}</span> has been placed.</p>
+                    <p className="text-text-muted-light dark:text-text-muted-dark">Your order <span className="text-text-light dark:text-text-dark font-semibold">#{orderDetails.orderNumber || orderDetails.id.slice(0, 8)}</span> has been placed.</p>
                 </div>
 
                 {isAnonymous && (
@@ -343,4 +343,3 @@ export default function OrderConfirmationPage() {
         </Suspense>
     );
 }
-

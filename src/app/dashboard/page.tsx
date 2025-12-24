@@ -68,7 +68,7 @@ export default async function DashboardPage() {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex justify-between items-start mb-1">
-                                        <h4 className="font-semibold text-text-light dark:text-text-dark truncate">Order #{order.id.slice(0, 8)}...</h4>
+                                        <h4 className="font-semibold text-text-light dark:text-text-dark truncate">Order #{order.order_number || order.id.slice(0, 8)}</h4>
                                         <span className="text-primary font-bold">৳{order.total_amount?.toFixed(2)}</span>
                                     </div>
                                     <div className="flex items-center gap-2 text-sm text-subtext-light dark:text-subtext-dark">

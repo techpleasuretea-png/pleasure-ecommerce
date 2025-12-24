@@ -1,6 +1,3 @@
-"use client";
-
-import { use, useState } from "react";
 import {
     ArrowLeft,
     Truck,
@@ -12,79 +9,38 @@ import {
     HelpCircle,
     Phone,
     MessageCircle,
-    ChevronDown,
-    ChevronUp,
-    Copy
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { getOrderById } from "@/app/actions/orderActions";
 
-// Mock Data for a specific order
-const orderData = {
-    id: "ORD-3329",
-    date: "Oct 24, 2025, 10:30 AM",
-    status: "On the Way",
-    trackingNumber: "TRK-889231002",
-    items: [
-        {
-            id: 1,
-            name: "Organic Avocados",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo",
-            price: 5.99,
-            quantity: 2,
-            unit: "kg"
-        },
-        {
-            id: 2,
-            name: "Sourdough Bread",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBC3A-a4UULzqh-2SPbYejiaLkHE3RubV6okQS4ojcHCRPhJ_paUEKrXruRD5erHtgxWLXoQfc4z_c5xWUQMkczARbRsyNYdrwnR8j9PGiAxI8d1uBSlKD743u-NkXnxtMB9EnhyXGqbvE35qt7CLdn1-XWOxfulSdRjhidkms4oXRjNzO5r438VVLu10PF_rb2FgIPLvhWiF6r7e09nRXea6m6hUufATKbH-achi-5RFKf6ogP2j35Z7m7prz58IulwJpUyMdVlc4",
-            price: 4.50,
-            quantity: 1,
-            unit: "pcs"
-        },
-        {
-            id: 3,
-            name: "Wild-Caught Salmon",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAMpbXKMQJF9FLP_tSEiqFMxcBfGIA2thlOXd4f9YcbQT10Wuk2j13tsBCrQyzYrqEZFDCeo-fDUhy6Ujs6l6wG0QL4FeNSkaPQnRRVvD8Htx22Hg5M-ZPu1hUOpgYmJix1z_h5fe5uGTapm77FUCOvWKsEx0SHERUw6XCm7g3WCaWoV126ePVB3NYt0H1jDsq1k881XFGjIzCKD2_Z5Qs6eHJYLJIPs_ivhpQYwTELBBa8Dc90-ILG6vRzWpWqquMtUzgpJq2tZc4",
-            price: 23.98,
-            quantity: 1,
-            unit: "kg"
-        },
-    ],
-    timeline: [
-        { status: "Order Placed", date: "Oct 24, 10:30 AM", completed: true, icon: Package },
-        { status: "Processing", date: "Oct 24, 11:45 AM", completed: true, icon: Calendar },
-        { status: "On the Way", date: "Oct 25, 08:20 AM", completed: true, current: true, icon: Truck },
-        { status: "Delivered", date: "Estimated Oct 25, 02:00 PM", completed: false, icon: CheckCircle2 },
-    ],
-    shippingAddress: {
-        name: "Ashraful Alam",
-        street: "House 12, Road 5, Dhanmondi",
-        city: "Dhaka",
-        postalCode: "1209",
-        phone: "+880 1712 345678"
-    },
-    paymentMethod: {
-        type: "Cash on Delivery",
-        last4: null
-    },
-    summary: {
-        subtotal: 34.47,
-        delivery: 2.50,
-        discount: 0.00,
-        total: 36.97
+export default async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const { success, order, error } = await getOrderById(id);
+
+    if (!success || !order) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20">
+                <h1 className="text-xl font-bold text-red-500 mb-2">Order Not Found</h1>
+                <p className="text-gray-500 mb-6">Could not find order with ID #{id}</p>
+                <Link href="/dashboard/orders" className="text-primary hover:underline flex items-center gap-2">
+                    <ArrowLeft className="w-4 h-4" /> Back to Orders
+                </Link>
+            </div>
+        );
     }
-};
 
-export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = use(params);
-    const router = useRouter();
+    // Map DB status to timeline steps
+    // Simple mapping for now
+    const currentStatus = order.status?.toLowerCase();
+    const timeline = [
+        { status: "Order Placed", date: new Date(order.created_at).toLocaleString(), completed: true, icon: Package },
+        { status: "Processing", date: "", completed: currentStatus !== "pending" && currentStatus !== "cancelled", icon: Calendar },
+        { status: "On the Way", date: "", completed: currentStatus === "shipped" || currentStatus === "delivered", current: currentStatus === "shipped", icon: Truck },
+        { status: "Delivered", date: "", completed: currentStatus === "delivered", current: currentStatus === "delivered", icon: CheckCircle2 },
+    ];
 
-
-    // In a real app, we would fetch order details based on `id`
-    // const order = orders.find(o => o.id === id) || orderData;
-    const order = orderData;
+    const address = order.user_addresses?.address_line || "Address not available";
 
     return (
         <div className="space-y-6 pb-20 md:pb-0">
@@ -100,20 +56,14 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-bold font-display text-text-light dark:text-text-dark flex items-center gap-3">
-                            Order #{id}
-
+                            Order #{order.order_number || order.id.slice(0, 8)}
                             <button className="md:hidden ml-2 px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                 Invoice
                             </button>
                         </h1>
                         <p className="text-xs md:text-sm text-subtext-light dark:text-subtext-dark mt-1">
-                            Placed on {order.date}
+                            Placed on {new Date(order.created_at).toLocaleString()}
                         </p>
-                    </div>
-                    <div className="hidden md:flex gap-2 md:gap-3 w-full md:w-auto">
-                        <button className="flex-1 md:flex-none justify-center px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                            Invoice
-                        </button>
                     </div>
                 </div>
             </div>
@@ -124,15 +74,12 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                     <div className="hidden md:block bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                         <h2 className="text-lg font-bold text-text-light dark:text-text-dark mb-6">Order Status</h2>
                         <div className="relative">
-                            {/* Timeline Line */}
                             <div className="absolute top-[16px] md:top-[24px] left-0 w-full h-1 bg-gray-100 dark:bg-gray-800 -z-0" />
-
                             <div className="flex flex-row justify-between relative z-10">
-                                {order.timeline.map((step, index) => {
+                                {timeline.map((step, index) => {
                                     const isCompleted = step.completed;
                                     const isCurrent = step.current;
                                     const Icon = step.icon;
-
                                     return (
                                         <div key={index} className={`flex flex-col items-center gap-2 md:gap-3 flex-1 ${isCompleted || isCurrent ? 'text-primary' : 'text-gray-400 dark:text-gray-600'}`}>
                                             <div className={`w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center border-2 md:border-4 transition-all duration-300 bg-white dark:bg-surface-dark z-10 ${isCompleted ? 'border-primary text-primary' :
@@ -145,9 +92,6 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                                                 <p className={`font-bold text-[10px] md:text-base leading-tight ${isCompleted || isCurrent ? 'text-text-light dark:text-text-dark' : 'text-gray-400'}`}>
                                                     {step.status}
                                                 </p>
-                                                <p className="text-[10px] md:text-sm text-subtext-light dark:text-subtext-dark mt-0.5 hidden md:block">
-                                                    {step.date}
-                                                </p>
                                             </div>
                                         </div>
                                     );
@@ -158,14 +102,14 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
 
                     {/* Order Items */}
                     <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
-                        <h2 className="text-lg font-bold text-text-light dark:text-text-dark mb-4">Order Items ({order.items.length})</h2>
+                        <h2 className="text-lg font-bold text-text-light dark:text-text-dark mb-4">Order Items ({order.order_items.length})</h2>
                         <div className="space-y-4">
-                            {order.items.map((item) => (
+                            {order.order_items.map((item: any) => (
                                 <div key={item.id} className="flex gap-4 border-b border-gray-50 dark:border-gray-800 last:border-0 pb-4 last:pb-0">
                                     <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex-shrink-0">
                                         <Image
-                                            src={item.image}
-                                            alt={item.name}
+                                            src={item.products?.product_images?.[0]?.image_url || "/placeholder.png"}
+                                            alt={item.products?.name || "Product"}
                                             fill
                                             className="object-cover"
                                         />
@@ -173,7 +117,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                                     <div className="flex-1 flex flex-col md:flex-row md:justify-between md:items-center gap-1 md:gap-4">
                                         <div className="flex-1">
                                             <h3 className="font-bold text-text-light dark:text-text-dark text-sm md:text-base line-clamp-2">
-                                                {item.name} <span className="text-subtext-light dark:text-subtext-dark font-normal text-xs">{item.unit}</span>
+                                                {item.products?.name}
                                             </h3>
                                             <p className="text-xs md:text-sm text-subtext-light dark:text-subtext-dark mt-0.5 md:mt-1">
                                                 {item.quantity} x ৳{item.price.toFixed(2)}
@@ -196,10 +140,9 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                                 Delivery Details
                             </h2>
                             <div className="space-y-1 text-sm text-subtext-light dark:text-subtext-dark">
-                                <p className="font-bold text-text-light dark:text-text-dark text-base mb-2">{order.shippingAddress.name}</p>
-                                <p>{order.shippingAddress.street}</p>
-                                <p>{order.shippingAddress.city} - {order.shippingAddress.postalCode}</p>
-                                <p>{order.shippingAddress.phone}</p>
+                                <p className="font-bold text-text-light dark:text-text-dark text-base mb-2">{order.recipient_name}</p>
+                                <p>{address}</p>
+                                <p>{order.recipient_mobile}</p>
                             </div>
                         </div>
 
@@ -210,10 +153,10 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                             </h2>
                             <div className="space-y-1 text-sm text-subtext-light dark:text-subtext-dark">
                                 <p>Payment Method</p>
-                                <p className="font-bold text-text-light dark:text-text-dark text-base mb-2">{order.paymentMethod.type}</p>
+                                <p className="font-bold text-text-light dark:text-text-dark text-base mb-2">{order.payment_method}</p>
                                 <p className="flex items-center gap-2 bg-green-50 dark:bg-green-900/10 text-green-700 dark:text-green-500 w-fit px-3 py-1 rounded-full text-xs font-bold">
                                     <CheckCircle2 className="w-3 h-3" />
-                                    Payment Pending (COD)
+                                    {order.status === 'delivered' ? 'Paid' : 'Payment Pending'}
                                 </p>
                             </div>
                         </div>
@@ -227,23 +170,23 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                         <div className="space-y-3 pb-6 border-b border-gray-100 dark:border-gray-800">
                             <div className="flex justify-between text-sm">
                                 <span className="text-subtext-light dark:text-subtext-dark">Subtotal</span>
-                                <span className="font-medium text-text-light dark:text-text-dark">৳{order.summary.subtotal.toFixed(2)}</span>
+                                <span className="font-medium text-text-light dark:text-text-dark">৳{(order.total_amount - order.shipping_cost + (order.total_discount || 0)).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-subtext-light dark:text-subtext-dark">Delivery Fee</span>
-                                <span className="font-medium text-text-light dark:text-text-dark">৳{order.summary.delivery.toFixed(2)}</span>
+                                <span className="font-medium text-text-light dark:text-text-dark">৳{order.shipping_cost?.toFixed(2)}</span>
                             </div>
 
-                            {order.summary.discount > 0 && (
+                            {order.total_discount > 0 && (
                                 <div className="flex justify-between text-sm text-primary">
                                     <span>Discount</span>
-                                    <span className="font-medium">-৳{order.summary.discount.toFixed(2)}</span>
+                                    <span className="font-medium">-৳{order.total_discount.toFixed(2)}</span>
                                 </div>
                             )}
                         </div>
                         <div className="flex justify-between items-center py-4">
                             <span className="font-bold text-text-light dark:text-text-dark">Total</span>
-                            <span className="font-bold text-xl text-primary">৳{order.summary.total.toFixed(2)}</span>
+                            <span className="font-bold text-xl text-primary">৳{order.total_amount.toFixed(2)}</span>
                         </div>
                     </div>
 
@@ -277,17 +220,11 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
             {/* Mobile Sticky Footer Status Timeline */}
             <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 z-[100] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe">
                 <div className="flex items-center justify-between px-6 py-4 relative">
-                    {/* Connecting Line */}
                     <div className="absolute top-[28px] left-6 right-6 h-0.5 bg-gray-100 dark:bg-gray-700 -z-0" />
-
-                    {order.timeline.map((step, index) => {
+                    {timeline.map((step, index) => {
                         const isCompleted = step.completed;
                         const isCurrent = step.current;
                         const Icon = step.icon;
-                        // Simplified logic for icon color/styling for footer
-                        const activeColor = isCompleted || isCurrent ? 'text-primary' : 'text-gray-300 dark:text-gray-600';
-                        const lineColor = isCompleted ? 'bg-primary' : 'bg-gray-100 dark:bg-gray-700';
-
                         return (
                             <div key={index} className="flex flex-col items-center gap-1.5 relative z-10 flex-1">
                                 <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors ${isCompleted ? 'border-primary bg-primary text-white' :

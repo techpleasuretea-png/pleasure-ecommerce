@@ -106,3 +106,96 @@ export async function createOrder(data: CreateOrderInput) {
         return { success: false, error: error.message };
     }
 }
+
+export async function getUserOrders() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        return { success: false, error: "User not authenticated" };
+    }
+
+    try {
+        const { data: orders, error } = await supabase
+            .from('orders')
+            .select(`
+                id,
+                order_number,
+                created_at,
+                status,
+                total_amount,
+                order_items (
+                    id,
+                    quantity,
+                    price,
+                    products (
+                        name,
+                        product_images (
+                            image_url
+                        )
+                    )
+                )
+            `)
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error("Error fetching user orders:", error);
+            throw new Error(`Failed to fetch orders: ${error.message}`);
+        }
+
+        return { success: true, orders };
+    } catch (error: any) {
+        console.error("Get User Orders Exception:", error);
+        return { success: false, error: error.message };
+    }
+}
+
+export async function getOrderById(orderId: string) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        return { success: false, error: "User not authenticated" };
+    }
+
+    try {
+        const { data: order, error } = await supabase
+            .from('orders')
+            .select(`
+                *,
+                order_number,
+                order_items (
+                    id,
+                    quantity,
+                    price,
+                    products (
+                        name,
+                        product_images (
+                            image_url
+                        )
+                    )
+                ),
+                shipping_method (
+                    name,
+                    cost
+                ),
+                user_addresses (
+                    address_line
+                )
+            `)
+            .eq('id', orderId)
+            .eq('user_id', user.id)
+            .single();
+
+        if (error) {
+            console.error("Error fetching order:", error);
+            return { success: false, error: "Order not found" };
+        }
+
+        return { success: true, order };
+    } catch (error: any) {
+        console.error("Get Order By ID Exception:", error);
+        return { success: false, error: error.message };
+    }
+}
