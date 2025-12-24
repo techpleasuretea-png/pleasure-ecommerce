@@ -112,8 +112,8 @@ export function Header() {
                                 >
                                     <User className="w-6 h-6" />
                                 </button>
-                                <button
-                                    onClick={() => router.push('/wishlist')}
+                                <Link
+                                    href="/dashboard/wishlist"
                                     className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors relative"
                                 >
                                     <Heart className="w-6 h-6" />
@@ -122,7 +122,7 @@ export function Header() {
                                             {wishlistItems.length}
                                         </span>
                                     )}
-                                </button>
+                                </Link>
 
                                 <div
                                     className="flex items-center gap-2 cursor-pointer p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-lg transition-colors"

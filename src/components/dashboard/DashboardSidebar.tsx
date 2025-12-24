@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, MapPin, User, LogOut, Phone } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, MapPin, User, LogOut, Phone, Heart } from "lucide-react";
 import { logout } from "@/app/actions/authActions";
 import { useState, useEffect } from "react";
 
@@ -16,6 +16,11 @@ const sidebarItems = [
         title: "My Orders",
         href: "/dashboard/orders",
         icon: ShoppingBag,
+    },
+    {
+        title: "My Wishlist",
+        href: "/dashboard/wishlist",
+        icon: Heart,
     },
     {
         title: "Delivery Details",
