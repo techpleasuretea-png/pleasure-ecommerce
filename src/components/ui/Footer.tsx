@@ -16,8 +16,8 @@ export function Footer() {
                         {/* Brand Column */}
                         <div className="col-span-1">
                             <div className="flex items-center gap-2 mb-4">
-                                <Image src="/icon.svg" alt="Organico Logo" width={32} height={32} className="w-8 h-8" />
-                                <span className="text-2xl font-bold font-display">Organico</span>
+                                <Image src="/icon.svg" alt="Pleasure Logo" width={32} height={32} className="w-8 h-8" />
+                                <span className="text-2xl font-bold font-display">Pleasure</span>
                             </div>
                             <p className="text-sm text-subtext-light dark:text-subtext-dark mb-6 leading-relaxed">
                                 Freshness you can taste. Values you can trust. We bring nature's best directly to your kitchen.

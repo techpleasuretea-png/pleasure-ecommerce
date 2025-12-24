@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import Image from "next/image";
 import { Search, ShoppingBag, Menu, User, Phone } from "lucide-react";
 
@@ -23,9 +25,9 @@ export function MobileHeader() {
                             <Menu className="w-8 h-8" />
                         </button>
                     </div>
-                    <div className="flex-1 flex justify-center">
-                        <Image src="/logo.svg" alt="Organico Logo" width={100} height={32} className="h-8 w-auto" />
-                    </div>
+                    <Link href="/" className="flex-1 flex justify-center">
+                        <Image src="/logo.svg" alt="Pleasure Logo" width={100} height={32} className="h-8 w-auto" />
+                    </Link>
                     <div className="flex shrink-0 items-center justify-end gap-3">
                         <a
                             className="flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-white shadow-sm transition-transform active:scale-95"

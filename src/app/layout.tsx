@@ -10,8 +10,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-    title: "Organico - Organic Food Store",
-    description: "Fresh organic products delivered to your doorstep.",
+    title: "Pleasure - Daily Dose of Nature",
+    description: "Daily Dose of Nature",
 };
 
 export default function RootLayout({
