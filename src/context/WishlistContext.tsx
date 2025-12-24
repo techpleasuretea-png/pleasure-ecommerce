@@ -102,15 +102,26 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     const addToWishlist = async (product: any) => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-            router.push("/login"); // Or open login modal
+            router.push("/login");
             return;
         }
 
         // Optimistic update
         const tempId = Math.random().toString();
-        // Assuming we might not have all product details here, be careful.
-        // Better to wait for DB response or handle manually.
-        // For simple UI, we assume success or handle error.
+        const optimisticItem: WishlistItem = {
+            id: tempId,
+            product_id: product.id,
+            product: {
+                id: product.id,
+                name: product.name,
+                image: product.image,
+                price: product.price,
+                slug: product.slug || "", // Fallback if slug is missing
+                stock: product.stock || 0
+            }
+        };
+
+        setWishlistItems((prev) => [...prev, optimisticItem]);
 
         const { error } = await supabase
             .from("wishlist_items")
@@ -121,15 +132,18 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
         if (error) {
             console.error("Error adding to wishlist:", error);
-            // Revert optimistic update if we did one
-        } else {
-            // Refetch or manual update. The subscription should handle it too.
+            // Revert optimistic update
+            setWishlistItems((prev) => prev.filter((item) => item.id !== tempId));
         }
     };
 
     const removeFromWishlist = async (productId: string) => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
+
+        // Optimistic update
+        const itemToRemove = wishlistItems.find((item) => item.product_id === productId);
+        setWishlistItems((prev) => prev.filter((item) => item.product_id !== productId));
 
         const { error } = await supabase
             .from("wishlist_items")
@@ -139,6 +153,10 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
         if (error) {
             console.error("Error removing from wishlist", error);
+            // Revert optimistic update
+            if (itemToRemove) {
+                setWishlistItems((prev) => [...prev, itemToRemove]);
+            }
         }
     };
 

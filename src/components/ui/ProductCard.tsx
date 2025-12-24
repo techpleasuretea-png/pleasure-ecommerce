@@ -24,7 +24,7 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
     const router = useRouter();
     const pathname = usePathname();
     const { cartItems, addToCart, updateQuantity, isLoading: isCartLoading, addItemWithAuth } = useCart();
-    const { addToWishlist, isInWishlist } = useWishlist();
+    const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
     // Calculate isNew
     const isNew = created_at ? (new Date().getTime() - new Date(created_at).getTime()) / (1000 * 3600 * 24) <= 30 : false;
@@ -90,11 +90,20 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
                 <div className="hidden md:flex gap-3 mt-4">
                     {stock !== undefined && stock <= 0 ? (
                         <button
-                            onClick={() => addToWishlist({ id, name, weight, price, image, stock })}
-                            className="w-full bg-surface-light dark:bg-surface-dark border border-primary text-primary font-bold py-2.5 rounded-lg text-sm hover:bg-primary hover:text-white shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                            onClick={() => {
+                                if (isInWishlist(id)) {
+                                    removeFromWishlist(id);
+                                } else {
+                                    addToWishlist({ id, name, weight, price, image, stock });
+                                }
+                            }}
+                            className={`w-full font-bold py-2.5 rounded-lg text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 ${isInWishlist(id)
+                                ? "bg-red-500 text-white border border-red-500 hover:bg-red-600"
+                                : "bg-surface-light dark:bg-surface-dark border border-primary text-primary hover:bg-primary hover:text-white"
+                                }`}
                         >
                             <Heart className={`w-4 h-4 ${isInWishlist(id) ? 'fill-current' : ''}`} />
-                            {isInWishlist(id) ? "In Wishlist" : "Add to Wishlist"}
+                            {isInWishlist(id) ? "Remove from Wishlist" : "Add to Wishlist"}
                         </button>
                     ) : quantity === 0 ? (
                         <>
@@ -131,11 +140,20 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
                 <div className="flex md:hidden items-center gap-2 mt-3">
                     {stock !== undefined && stock <= 0 ? (
                         <button
-                            onClick={() => addToWishlist({ id, name, weight, price, image, stock })}
-                            className="flex-1 bg-surface-light dark:bg-surface-dark border border-primary text-primary font-bold h-10 rounded-lg text-sm hover:bg-primary hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2"
+                            onClick={() => {
+                                if (isInWishlist(id)) {
+                                    removeFromWishlist(id);
+                                } else {
+                                    addToWishlist({ id, name, weight, price, image, stock });
+                                }
+                            }}
+                            className={`flex-1 font-bold h-10 rounded-lg text-sm transition-all active:scale-95 flex items-center justify-center gap-2 ${isInWishlist(id)
+                                ? "bg-red-500 text-white border border-red-500 hover:bg-red-600"
+                                : "bg-surface-light dark:bg-surface-dark border border-primary text-primary hover:bg-primary hover:text-white"
+                                }`}
                         >
                             <Heart className={`w-5 h-5 ${isInWishlist(id) ? 'fill-current' : ''}`} />
-                            {isInWishlist(id) ? "In Wishlist" : "Add to Wishlist"}
+                            {isInWishlist(id) ? "Remove" : "Add to Wishlist"}
                         </button>
                     ) : quantity === 0 ? (
                         <>
