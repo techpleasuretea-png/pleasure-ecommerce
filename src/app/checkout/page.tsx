@@ -15,10 +15,19 @@ import { useCart } from "@/context/CartContext";
 import { useShippingMethods } from "@/hooks/useShippingMethods";
 
 export default function CheckoutPage() {
-    const { cartItems } = useCart();
+    const { cartItems, clearCart } = useCart();
     const { shippingMethods, isLoading: isShippingLoading } = useShippingMethods();
     const [selectedShippingId, setSelectedShippingId] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
+
+    const [formData, setFormData] = useState({
+        name: "",
+        mobile: "",
+        address: ""
+    });
+
+    const router = useRouter();
+    const supabase = createClient();
 
     // Set default shipping method once loaded
     useEffect(() => {
@@ -27,8 +36,31 @@ export default function CheckoutPage() {
         }
     }, [shippingMethods, selectedShippingId]);
 
-    const router = useRouter();
-    const supabase = createClient();
+    // Pre-fill user data
+    useEffect(() => {
+        const loadUserData = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
+                if (profile) {
+                    setFormData(prev => ({
+                        ...prev,
+                        name: profile.full_name || "",
+                    }));
+                }
+                const { data: phoneData } = await supabase.from('user_phones').select('phone_number').eq('user_id', user.id).limit(1).maybeSingle();
+                if (phoneData) {
+                    setFormData(prev => ({ ...prev, mobile: phoneData.phone_number }));
+                }
+                const { data: addressData } = await supabase.from('user_addresses').select('address_line').eq('user_id', user.id).order('is_default', { ascending: false }).limit(1).maybeSingle();
+                if (addressData) {
+                    setFormData(prev => ({ ...prev, address: addressData.address_line }));
+                }
+            }
+        };
+        loadUserData();
+    }, []);
+
 
     const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -47,29 +79,62 @@ export default function CheckoutPage() {
     const discount = 0;
     const total = subtotal + shippingCost - discount;
 
+    const handleFormDataChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
+    };
+
     const handlePlaceOrder = async () => {
+        if (!formData.name || !formData.mobile || !formData.address) {
+            alert("Please fill in all delivery details.");
+            return;
+        }
+
         setIsLoading(true);
         try {
-            // 1. Get Current User (Auth or Anonymous)
             const { data: { user } } = await supabase.auth.getUser();
-
-            if (user) {
-                console.log("Placing order for user:", user.id, "Is Anonymous:", user.is_anonymous);
-                // Here is where you would call the backend API to create the order
-                // e.g. await createOrder({ userId: user.id, items: cartItems, total, shippingMethod: selectedShippingId });
-
-                // For now, we simulate success and redirect
-                // We'll assume the order is created with the current UserID.
-            } else {
-                console.error("No user found during checkout. This shouldn't happen with Auto-Guest.");
+            if (!user) {
+                console.error("No user found");
+                return;
             }
 
-            // Simulate network delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Import dynamically or at top. Since this is client component, we import server action?
+            // Next.js allows importing server actions in client components.
+            // But we need to make sure the import path is correct and it's treated as a module.
+            const { createOrder } = await import("@/app/actions/orderActions");
 
-            router.push("/order-confirmation");
+            const orderInput = {
+                userId: user.id,
+                items: cartItems.map(item => ({
+                    product_id: item.id, // Assuming item.id is the UUID from products table. CAREFUL: Cart might use different ID?
+                    quantity: item.quantity,
+                    price: item.price
+                })),
+                subtotal,
+                shippingCost,
+                discount,
+                total,
+                shippingMethodId: selectedShippingId,
+                paymentMethod: "cod", // Hardcoded for now as per UI
+                name: formData.name,
+                mobile: formData.mobile,
+                address: formData.address,
+                isAnonymous: !!user.is_anonymous
+            };
+
+            const result = await createOrder(orderInput);
+
+            if (result.success && result.orderId) {
+                // Clear cart (if function available)
+                await clearCart();
+                router.push(`/order-confirmation?id=${result.orderId}`);
+            } else {
+                console.error("Order creation failed:", result.error);
+                alert("Failed to place order. Please try again.");
+            }
+
         } catch (error) {
             console.error("Error placing order:", error);
+            alert("An error occurred while placing the order.");
         } finally {
             setIsLoading(false);
         }
@@ -107,6 +172,8 @@ export default function CheckoutPage() {
                                 onShippingChange={setSelectedShippingId}
                                 shippingMethods={shippingMethods}
                                 subtotal={subtotal}
+                                formData={formData}
+                                onFormDataChange={handleFormDataChange}
                             />
                         )}
                     </div>

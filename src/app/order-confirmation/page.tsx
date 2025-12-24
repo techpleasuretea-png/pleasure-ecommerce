@@ -2,61 +2,141 @@
 
 import { Header } from "@/components/ui/Header";
 import { Footer } from "@/components/ui/Footer";
-import { CheckCircle, Truck, CreditCard, ArrowRight, ArrowLeft, Check, ShoppingBag } from "lucide-react";
+import { CheckCircle, Truck, CreditCard, ArrowRight, ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-
-// Mock data - In a real app, this would be fetched based on the order ID
-const orderDetails = {
-    id: "ORD-3329",
-    date: "Oct 24, 2025",
-    total: 34.47,
-    subtotal: 29.47,
-    shipping: 5.00,
-    paymentMethod: "Credit Card",
-    items: [
-        {
-            id: 1,
-            name: "Organic Avocados",
-            weight: "500g",
-            price: 9.98,
-            quantity: 2,
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo"
-        },
-        {
-            id: 2,
-            name: "Sourdough Bread",
-            weight: "500g",
-            price: 6.50,
-            quantity: 1,
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBC3A-a4UULzqh-2SPbYejiaLkHE3RubV6okQS4ojcHCRPhJ_paUEKrXruRD5erHtgxWLXoQfc4z_c5xWUQMkczARbRsyNYdrwnR8j9PGiAxI8d1uBSlKD743u-NkXnxtMB9EnhyXGqbvE35qt7CLdn1-XWOxfulSdRjhidkms4oXRjNzO5r438VVLu10PF_rb2FgIPLvhWiF6r7e09nRXea6m6hUufATKbH-achi-5RFKf6ogP2j35Z7m7prz58IulwJpUyMdVlc4"
-        },
-        {
-            id: 3,
-            name: "Wild-Caught Salmon",
-            weight: "200g",
-            price: 12.99,
-            quantity: 1,
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAMpbXKMQJF9FLP_tSEiqFMxcBfGIA2thlOXd4f9YcbQT10Wuk2j13tsBCrQyzYrqEZFDCeo-fDUhy6Ujs6l6wG0QL4FeNSkaPQnRRVvD8Htx22Hg5M-ZPu1hUOpgYmJix1z_h5fe5uGTapm77FUCOvWKsEx0SHERUw6XCm7g3WCaWoV126ePVB3NYt0H1jDsq1k881XFGjIzCKD2_Z5Qs6eHJYLJIPs_ivhpQYwTELBBa8Dc90-ILG6vRzWpWqquMtUzgpJq2tZc4"
-        }
-    ]
-};
-
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+interface OrderDetails {
+    id: string;
+    date: string;
+    total: number;
+    subtotal: number;
+    shipping: number;
+    paymentMethod: string;
+    items: Array<{
+        id: string; // product_id or item_id
+        name: string;
+        weight: string; // might need to join product data
+        price: number;
+        quantity: number;
+        image: string;
+    }>;
+    status: string;
+}
+
 export default function OrderConfirmationPage() {
+    const searchParams = useSearchParams();
+    const orderId = searchParams.get('id');
+    const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
     const [isAnonymous, setIsAnonymous] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const checkUser = async () => {
+        const fetchOrder = async () => {
+            if (!orderId) {
+                setError("No Order ID provided.");
+                setIsLoading(false);
+                return;
+            }
+
             const supabase = createClient();
+
+            // Check auth status
             const { data: { user } } = await supabase.auth.getUser();
             if (user?.is_anonymous) {
                 setIsAnonymous(true);
             }
+
+            try {
+                // Fetch Order with Items and Products
+                // Using a join query
+                const { data: order, error: orderError } = await supabase
+                    .from('orders')
+                    .select(`
+                        id, created_at, total_amount, shipping_cost, payment_method, status,
+                        order_items (
+                            id, quantity, price,
+                            product: products (
+                                name,
+                                product_images (
+                                    image_url
+                                )
+                            )
+                        )
+                    `)
+                    .eq('id', orderId)
+                    .single();
+
+                if (orderError) throw orderError;
+                if (!order) throw new Error("Order not found");
+
+                // Transform data to match UI
+                // Calculate subtotal from items to be sure, or back-calculate
+                // Total = Subtotal + Shipping - Discount (stored as total_amount)
+                // Subtotal = sum(item.price * quantity)
+
+                const items = order.order_items.map((item: any) => {
+                    const productImages = item.product?.product_images as any[];
+                    const imageUrl = productImages?.length > 0 ? productImages[0].image_url : "/placeholder.png";
+
+                    return {
+                        id: item.id,
+                        name: item.product?.name || "Unknown Product",
+                        weight: "N/A",
+                        price: item.price,
+                        quantity: item.quantity,
+                        image: imageUrl
+                    };
+                });
+
+                const subtotal = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+
+                setOrderDetails({
+                    id: order.id,
+                    date: new Date(order.created_at).toLocaleDateString(),
+                    total: order.total_amount,
+                    subtotal: subtotal,
+                    shipping: order.shipping_cost,
+                    paymentMethod: order.payment_method === 'cod' ? 'Cash on Delivery' : order.payment_method,
+                    items: items,
+                    status: order.status
+                });
+
+            } catch (err: any) {
+                console.error("Error fetching order:", err);
+                setError(`Failed to load order details: ${err.message || err}`);
+            } finally {
+                setIsLoading(false);
+            }
         };
-        checkUser();
-    }, []);
+
+        fetchOrder();
+    }, [orderId]);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-background-light dark:bg-background-dark gap-4">
+                <h1 className="text-2xl font-bold text-red-500">Error</h1>
+                <p className="text-text-light dark:text-text-dark">{error || "Order not found"}</p>
+                {/* Debug Info */}
+                <p className="text-xs text-gray-500 font-mono mt-2">
+                    Debug: Order ID ending in {orderId?.slice(-4)}
+                </p>
+                <Link href="/" className="text-primary hover:underline">Return Home</Link>
+            </div>
+        );
+    }
 
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
@@ -82,7 +162,7 @@ export default function OrderConfirmationPage() {
                             <CheckCircle className="w-16 h-16" />
                         </div>
                         <h1 className="text-3xl md:text-4xl font-bold mb-3 font-display">Order Confirmed!</h1>
-                        <p className="text-lg text-subtext-light dark:text-subtext-dark">Thank you for your purchase. Your order <span className="font-semibold text-text-light dark:text-text-dark">#{orderDetails.id}</span> has been received.</p>
+                        <p className="text-lg text-subtext-light dark:text-subtext-dark">Thank you for your purchase. Your order <span className="font-semibold text-text-light dark:text-text-dark">#{orderDetails.id.slice(0, 8)}...</span> has been received.</p>
                     </div>
 
                     {/* Guest: Create Account Prompt */}
@@ -102,7 +182,7 @@ export default function OrderConfirmationPage() {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
                             <div>
                                 <p className="text-subtext-light dark:text-subtext-dark mb-1">Order Number</p>
-                                <p className="font-semibold">#{orderDetails.id}</p>
+                                <p className="font-semibold truncate" title={orderDetails.id}>#{orderDetails.id.slice(0, 8)}</p>
                             </div>
                             <div>
                                 <p className="text-subtext-light dark:text-subtext-dark mb-1">Date</p>
@@ -123,9 +203,10 @@ export default function OrderConfirmationPage() {
                         <Truck className="text-blue-500 w-8 h-8" />
                         <div className="flex-1">
                             <p className="font-semibold text-text-light dark:text-text-dark">Estimated Delivery</p>
-                            <p className="text-sm text-subtext-light dark:text-subtext-dark">Friday, Oct 25th, 2025</p>
+                            <p className="text-sm text-subtext-light dark:text-subtext-dark">3-5 Business Days</p>
                         </div>
-                        <a className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline" href="#">Track Order</a>
+                        {/* Tracking Link - simplified for now */}
+                        <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 opacity-50 cursor-not-allowed">Track Order</span>
                     </div>
 
                     <div className="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 mb-10">
@@ -140,7 +221,7 @@ export default function OrderConfirmationPage() {
                                             <img alt={item.name} className="w-full h-full object-cover" src={item.image} />
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-sm sm:text-base">{item.name} - {item.weight}</p>
+                                            <p className="font-semibold text-sm sm:text-base">{item.name}</p>
                                             <p className="text-sm text-subtext-light dark:text-subtext-dark">Qty: {item.quantity}</p>
                                         </div>
                                     </div>
@@ -186,7 +267,7 @@ export default function OrderConfirmationPage() {
 
                 <div className="text-center space-y-2">
                     <h2 className="text-2xl font-bold text-text-light dark:text-text-dark">Order Placed Successfully!</h2>
-                    <p className="text-text-muted-light dark:text-text-muted-dark">Your order <span className="text-text-light dark:text-text-dark font-semibold">#{orderDetails.id}</span> has been placed.</p>
+                    <p className="text-text-muted-light dark:text-text-muted-dark">Your order <span className="text-text-light dark:text-text-dark font-semibold">#{orderDetails.id.slice(0, 8)}</span> has been placed.</p>
                 </div>
 
                 {isAnonymous && (
@@ -206,7 +287,7 @@ export default function OrderConfirmationPage() {
                         </div>
                         <div>
                             <p className="text-xs uppercase font-bold text-text-muted-light dark:text-text-muted-dark tracking-wide">Estimated Delivery</p>
-                            <p className="text-sm font-semibold text-text-light dark:text-text-dark mt-1">Tomorrow, 10:00 AM - 2:00 PM</p>
+                            <p className="text-sm font-semibold text-text-light dark:text-text-dark mt-1">3-5 Business Days</p>
                         </div>
                     </div>
 
@@ -219,7 +300,7 @@ export default function OrderConfirmationPage() {
                             </div>
                             <div>
                                 <p className="text-xs uppercase font-bold text-text-muted-light dark:text-text-muted-dark tracking-wide">Payment Method</p>
-                                <p className="text-sm font-semibold text-text-light dark:text-text-dark mt-1">Cash on Delivery</p>
+                                <p className="text-sm font-semibold text-text-light dark:text-text-dark mt-1">{orderDetails.paymentMethod}</p>
                             </div>
                         </div>
                         <div className="text-right">
@@ -230,9 +311,9 @@ export default function OrderConfirmationPage() {
                 </div>
 
                 <div className="w-full space-y-4 pt-4">
-                    <button className="w-full bg-white dark:bg-transparent border-2 border-primary text-primary hover:bg-green-50 dark:hover:bg-green-900/20 font-bold rounded-2xl py-4 px-6 transition-colors duration-200">
-                        View Order Details
-                    </button>
+                    {/* View Order Details button capability is now implied by the page content, maybe scroll to items? 
+                         or just link to /dashboard/orders/[id] if authenticated? 
+                         For now, leave as button or link to home */}
                     <Link href="/" className="flex items-center justify-center w-full bg-primary hover:bg-primary-dark text-white font-bold rounded-2xl py-4 px-6 shadow-lg shadow-green-200/50 dark:shadow-none transition-all duration-200 transform active:scale-[0.98]">
                         Continue Shopping
                     </Link>
@@ -246,3 +327,4 @@ export default function OrderConfirmationPage() {
         </div>
     );
 }
+

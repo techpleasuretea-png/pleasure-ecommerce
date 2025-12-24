@@ -7,50 +7,15 @@ interface CheckoutFormProps {
     onShippingChange: (value: string) => void;
     shippingMethods: ShippingMethod[];
     subtotal: number;
+    formData: {
+        name: string;
+        mobile: string;
+        address: string;
+    };
+    onFormDataChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods, subtotal }: CheckoutFormProps) {
-    const [formData, setFormData] = useState({
-        name: "",
-        mobile: "",
-        address: ""
-    });
-
-    useEffect(() => {
-        const loadUserData = async () => {
-            const { createClient } = await import("@/lib/supabase/client");
-            const supabase = createClient();
-            const { data: { user } } = await supabase.auth.getUser();
-
-            if (user) {
-                // Fetch profile
-                const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
-                if (profile) {
-                    setFormData(prev => ({
-                        ...prev,
-                        name: profile.full_name || "",
-                    }));
-                }
-
-                // Fetch mobile
-                const { data: phoneData } = await supabase.from('user_phones').select('phone_number').eq('user_id', user.id).limit(1).maybeSingle();
-                if (phoneData) {
-                    setFormData(prev => ({ ...prev, mobile: phoneData.phone_number }));
-                }
-
-                // Fetch address
-                const { data: addressData } = await supabase.from('user_addresses').select('address_line').eq('user_id', user.id).order('is_default', { ascending: false }).limit(1).maybeSingle();
-                if (addressData) {
-                    setFormData(prev => ({ ...prev, address: addressData.address_line }));
-                }
-            }
-        };
-        loadUserData();
-    }, []);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
-    };
+export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods, subtotal, formData, onFormDataChange }: CheckoutFormProps) {
 
     return (
         <div className="space-y-8">
@@ -67,10 +32,10 @@ export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods
                             <input
                                 className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
                                 id="name"
-                                placeholder="full name"
+                                placeholder="John Doe"
                                 type="text"
                                 value={formData.name}
-                                onChange={handleChange}
+                                onChange={onFormDataChange}
                             />
                         </div>
                         <div>
@@ -81,7 +46,7 @@ export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods
                                 placeholder="+880 1XXX XXXXXX"
                                 type="tel"
                                 value={formData.mobile}
-                                onChange={handleChange}
+                                onChange={onFormDataChange}
                             />
                         </div>
                     </div>
@@ -93,7 +58,7 @@ export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods
                             placeholder="House no, Road no, Area, City"
                             rows={3}
                             value={formData.address}
-                            onChange={handleChange}
+                            onChange={onFormDataChange}
                         ></textarea>
                     </div>
 
