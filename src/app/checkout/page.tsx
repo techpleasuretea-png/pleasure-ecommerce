@@ -7,24 +7,45 @@ import { CheckoutOrderSummary } from "@/components/checkout/CheckoutOrderSummary
 import { CheckoutMobileBar } from "@/components/checkout/CheckoutMobileBar";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 import { useCart } from "@/context/CartContext";
+import { useShippingMethods } from "@/hooks/useShippingMethods";
 
 export default function CheckoutPage() {
     const { cartItems } = useCart();
-    const [shippingMethod, setShippingMethod] = useState("inside-dhaka");
+    const { shippingMethods, isLoading: isShippingLoading } = useShippingMethods();
+    const [selectedShippingId, setSelectedShippingId] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
+
+    // Set default shipping method once loaded
+    useEffect(() => {
+        if (shippingMethods.length > 0 && !selectedShippingId) {
+            setSelectedShippingId(shippingMethods[0].id);
+        }
+    }, [shippingMethods, selectedShippingId]);
+
     const router = useRouter();
     const supabase = createClient();
 
     const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    // Calculate shipping based on selection
-    const shipping = shippingMethod === "inside-dhaka" ? 60.00 : 120.00;
+
+    // Calculate shipping based on selection & discount logic
+    const selectedMethod = shippingMethods.find(m => m.id === selectedShippingId);
+    let shippingCost = 0;
+
+    if (selectedMethod) {
+        if (selectedMethod.discount_threshold !== null && subtotal >= selectedMethod.discount_threshold) {
+            shippingCost = selectedMethod.discounted_cost ?? 0;
+        } else {
+            shippingCost = selectedMethod.cost;
+        }
+    }
+
     const discount = 0;
-    const total = subtotal + shipping - discount;
+    const total = subtotal + shippingCost - discount;
 
     const handlePlaceOrder = async () => {
         setIsLoading(true);
@@ -35,7 +56,7 @@ export default function CheckoutPage() {
             if (user) {
                 console.log("Placing order for user:", user.id, "Is Anonymous:", user.is_anonymous);
                 // Here is where you would call the backend API to create the order
-                // e.g. await createOrder({ userId: user.id, items: cartItems, total, shippingMethod });
+                // e.g. await createOrder({ userId: user.id, items: cartItems, total, shippingMethod: selectedShippingId });
 
                 // For now, we simulate success and redirect
                 // We'll assume the order is created with the current UserID.
@@ -78,17 +99,23 @@ export default function CheckoutPage() {
                 <div className="flex flex-col lg:flex-row gap-8 items-start">
                     {/* Checkout Form (Delivery & Payment) */}
                     <div className="w-full lg:w-2/3">
-                        <CheckoutForm
-                            shippingMethod={shippingMethod}
-                            onShippingChange={setShippingMethod}
-                        />
+                        {isShippingLoading ? (
+                            <div className="p-8 text-center">Loading shipping options...</div>
+                        ) : (
+                            <CheckoutForm
+                                shippingMethod={selectedShippingId}
+                                onShippingChange={setSelectedShippingId}
+                                shippingMethods={shippingMethods}
+                                subtotal={subtotal}
+                            />
+                        )}
                     </div>
 
                     {/* Desktop Sidebar Summary */}
                     <div className="hidden lg:block w-full lg:w-1/3">
                         <CheckoutOrderSummary
                             subtotal={subtotal}
-                            shipping={shipping}
+                            shipping={shippingCost}
                             discount={discount}
                             total={total}
                             items={cartItems}
