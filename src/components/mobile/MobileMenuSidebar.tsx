@@ -1,6 +1,6 @@
 "use client";
 
-import { X, User, ChevronRight, FileText, Headphones, Phone, LogOut } from "lucide-react";
+import { X, User, ChevronRight, FileText, Headphones, Phone, LogOut, Home, ShoppingBag, Sparkles, Tag } from "lucide-react";
 import Link from "next/link";
 
 interface MobileMenuSidebarProps {
@@ -54,6 +54,52 @@ export function MobileMenuSidebar({ isOpen, onClose }: MobileMenuSidebarProps) {
 
                 {/* Navigation (Categories) */}
                 <nav className="flex-1 overflow-y-auto px-4 py-4 min-h-0">
+                    <div className="mb-6">
+                        <p className="px-1 text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Menu</p>
+                        <div className="space-y-1">
+                            <Link
+                                href="/"
+                                className="group flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-primary/5 active:bg-primary/10 text-[#333333] dark:text-white"
+                                onClick={onClose}
+                            >
+                                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                                    <Home className="w-5 h-5" />
+                                </div>
+                                <span className="font-bold text-sm">Home</span>
+                            </Link>
+                            <Link
+                                href="/shop"
+                                className="group flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-primary/5 active:bg-primary/10 text-[#333333] dark:text-white"
+                                onClick={onClose}
+                            >
+                                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                                    <ShoppingBag className="w-5 h-5" />
+                                </div>
+                                <span className="font-bold text-sm">Shop</span>
+                            </Link>
+                            <Link
+                                href="/shop?newArrivals=true"
+                                className="group flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-primary/5 active:bg-primary/10 text-[#333333] dark:text-white"
+                                onClick={onClose}
+                            >
+                                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-500 dark:bg-purple-900/20 dark:text-purple-400">
+                                    <Sparkles className="w-5 h-5" />
+                                </div>
+                                <span className="font-bold text-sm">New Arrivals</span>
+                            </Link>
+                            <Link
+                                href="/offers"
+                                className="group flex items-center gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-primary/5 active:bg-primary/10 text-[#333333] dark:text-white"
+                                onClick={onClose}
+                            >
+                                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-50 text-orange-500 dark:bg-orange-900/20 dark:text-orange-400">
+                                    <Tag className="w-5 h-5" />
+                                </div>
+                                <span className="font-bold text-sm">Offers</span>
+                            </Link>
+                        </div>
+                    </div>
+
                     <div className="flex items-center justify-between mb-3 px-1">
                         <p className="text-xs font-bold text-gray-400 uppercase tracking-wide">Categories</p>
                     </div>

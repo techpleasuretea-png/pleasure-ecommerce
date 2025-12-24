@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, User, Heart, ShoppingBag, Menu } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { MobileHeader } from "../mobile/MobileHeader";
 import { useCart } from "@/context/CartContext";
 
@@ -14,8 +14,12 @@ export function Header() {
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
     const pathname = usePathname();
+    const searchParams = useSearchParams();
     const [user, setUser] = useState<any>(null);
     const { cartItems } = useCart();
+
+    const isNewArrivals = searchParams.get("newArrivals") === "true";
+    const isShop = pathname.startsWith("/shop") && !isNewArrivals;
 
     const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
     const totalPrice = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -60,14 +64,14 @@ export function Header() {
                                     Home
                                 </Link>
                                 <Link
-                                    className={`${pathname.startsWith("/shop") ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                    className={`${isShop ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
                                     href="/shop"
                                 >
                                     Shop
                                 </Link>
                                 <Link
-                                    className={`${pathname === "/new-arrivals" ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
-                                    href="/new-arrivals"
+                                    className={`${isNewArrivals ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                    href="/shop?newArrivals=true"
                                 >
                                     New Arrivals
                                 </Link>

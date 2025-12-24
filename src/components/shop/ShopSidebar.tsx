@@ -18,6 +18,7 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
     const searchParams = useSearchParams();
     const [featured, setFeatured] = useState(false);
     const [onSale, setOnSale] = useState(false);
+    const [newArrivals, setNewArrivals] = useState(false);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [showAllCategories, setShowAllCategories] = useState(false);
     const [minPrice, setMinPrice] = useState("");
@@ -26,6 +27,7 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
     useEffect(() => {
         setFeatured(searchParams.get("featured") === "true");
         setOnSale(searchParams.get("onSale") === "true");
+        setNewArrivals(searchParams.get("newArrivals") === "true");
 
         const catParam = searchParams.get("category");
         if (catParam) {
@@ -54,6 +56,9 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
         if (onSale) params.set("onSale", "true");
         else params.delete("onSale");
 
+        if (newArrivals) params.set("newArrivals", "true");
+        else params.delete("newArrivals");
+
         if (selectedCategories.length > 0) params.set("category", selectedCategories.join(","));
         else params.delete("category");
 
@@ -63,6 +68,7 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
     const handleClearFilters = () => {
         setFeatured(false);
         setOnSale(false);
+        setNewArrivals(false);
         setSelectedCategories([]);
         setShowAllCategories(false);
         setMinPrice("");
@@ -73,6 +79,7 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
     const handleFilterChange = (key: string, value: boolean) => {
         if (key === "featured") setFeatured(value);
         if (key === "onSale") setOnSale(value);
+        if (key === "newArrivals") setNewArrivals(value);
 
         if (!mobile) {
             const params = new URLSearchParams(searchParams.toString());
@@ -133,6 +140,17 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
                                 }`}
                         >
                             Price Offer
+                        </button>
+
+                        {/* New Arrivals Chip */}
+                        <button
+                            onClick={() => handleFilterChange("newArrivals", !newArrivals)}
+                            className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${newArrivals
+                                ? "bg-primary text-white border-primary"
+                                : "bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark border-gray-200 dark:border-gray-700 hover:border-primary"
+                                }`}
+                        >
+                            New Arrival
                         </button>
                     </div>
                 </div>
@@ -246,6 +264,20 @@ export function ShopSidebar({ categories, mobile = false }: ShopSidebarProps) {
                             </svg>
                         </div>
                         <span className="ml-2 text-subtext-light dark:text-subtext-dark group-hover:text-primary transition-colors">Price Offer</span>
+                    </label>
+                    <label className="flex items-center cursor-pointer group">
+                        <div className="relative flex items-center">
+                            <input
+                                className="peer h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-primary focus:ring-primary bg-surface-light dark:bg-surface-dark cursor-pointer appearance-none checked:bg-primary checked:border-primary border transition-all"
+                                type="checkbox"
+                                checked={newArrivals}
+                                onChange={(e) => handleFilterChange("newArrivals", e.target.checked)}
+                            />
+                            <svg className="absolute w-3 h-3 text-white hidden peer-checked:block pointer-events-none left-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <span className="ml-2 text-subtext-light dark:text-subtext-dark group-hover:text-primary transition-colors">New Arrival</span>
                     </label>
                 </div>
             </div>

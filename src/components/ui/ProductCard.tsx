@@ -15,12 +15,16 @@ interface ProductCardProps {
     originalPrice?: number;
     discount?: string;
     image: string;
+    created_at?: string; // Added created_at prop
 }
 
-export function ProductCard({ id, name, weight, price, originalPrice, discount, image }: ProductCardProps) {
+export function ProductCard({ id, name, weight, price, originalPrice, discount, image, created_at }: ProductCardProps) {
     const router = useRouter();
     const pathname = usePathname();
     const { cartItems, addToCart, updateQuantity, isLoading: isCartLoading, addItemWithAuth } = useCart();
+
+    // Calculate isNew
+    const isNew = created_at ? (new Date().getTime() - new Date(created_at).getTime()) / (1000 * 3600 * 24) <= 30 : false;
 
     // Context quantity as source of truth for reactivity
     const cartItem = cartItems.find(item => item.id === id);
@@ -56,6 +60,16 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
                 {discount && (
                     <div className="absolute top-2 left-2 z-10 flex h-6 items-center justify-center rounded-full bg-red-500 px-2.5">
                         <p className="text-xs font-bold text-white">{discount}</p>
+                    </div>
+                )}
+                {isNew && !discount && (
+                    <div className="absolute top-2 left-2 z-10 flex h-6 items-center justify-center rounded-full bg-primary px-2.5">
+                        <p className="text-xs font-bold text-white">New</p>
+                    </div>
+                )}
+                {isNew && discount && (
+                    <div className="absolute top-2 right-2 z-10 flex h-6 items-center justify-center rounded-full bg-primary px-2.5">
+                        <p className="text-xs font-bold text-white">New</p>
                     </div>
                 )}
 

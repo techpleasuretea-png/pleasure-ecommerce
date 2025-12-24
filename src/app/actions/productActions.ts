@@ -12,6 +12,7 @@ interface FetchProductsOptions {
     minPrice?: number;
     maxPrice?: number;
     sort?: string;
+    newArrivals?: boolean;
 }
 
 export async function fetchProducts({
@@ -23,7 +24,8 @@ export async function fetchProducts({
     categorySlugs = [],
     minPrice,
     maxPrice,
-    sort
+    sort,
+    newArrivals
 }: FetchProductsOptions) {
     try {
         let query = supabase
@@ -81,6 +83,13 @@ export async function fetchProducts({
             // Wait, previous code: `!!product.discount || (originalPrice && originalPrice > price)`.
             // Let's assume most items with a discount have the discount text.
             query = query.neq('discount', null);
+        }
+
+        // New Arrivals
+        if (newArrivals) {
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            query = query.gte('created_at', thirtyDaysAgo.toISOString());
         }
 
         // Sorting

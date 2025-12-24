@@ -64,7 +64,8 @@ export function ProductInfiniteList({ initialProducts, searchParams }: ProductIn
             // Yes, single slug.
             minPrice: searchParams.min ? Number(searchParams.min) : undefined,
             maxPrice: searchParams.max ? Number(searchParams.max) : undefined,
-            sort: searchParams.sort
+            sort: searchParams.sort,
+            newArrivals: searchParams.newArrivals === 'true'
         };
 
         const res = await fetchProducts(filters);
@@ -116,6 +117,7 @@ export function ProductInfiniteList({ initialProducts, searchParams }: ProductIn
                         originalPrice={product.originalPrice}
                         discount={product.discount}
                         image={product.image}
+                        created_at={product.created_at}
                     />
                 ))}
             </div>

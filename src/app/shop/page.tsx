@@ -19,6 +19,7 @@ interface ShopPageProps {
         max?: string;
         sort?: string;
         q?: string;
+        newArrivals?: string;
     }>;
 }
 
@@ -28,6 +29,7 @@ export default async function ShopPage(props: ShopPageProps) {
     const searchParams = await props.searchParams;
     const showFeatured = searchParams.featured === "true";
     const showOnSale = searchParams.onSale === "true";
+    const showNewArrivals = searchParams.newArrivals === "true";
     const selectedCategories = searchParams.category ? searchParams.category.split(",") : [];
     const minPrice = searchParams.min ? parseFloat(searchParams.min) : null;
     const maxPrice = searchParams.max ? parseFloat(searchParams.max) : null;
@@ -47,6 +49,7 @@ export default async function ShopPage(props: ShopPageProps) {
         search: searchParams.q, // Not used in ShopPage usually but good to have
         featured: showFeatured,
         onSale: showOnSale,
+        newArrivals: showNewArrivals,
         categorySlugs: selectedCategories,
         minPrice: minPrice !== null ? minPrice : undefined,
         maxPrice: maxPrice !== null ? maxPrice : undefined,
