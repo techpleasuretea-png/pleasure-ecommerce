@@ -24,20 +24,24 @@ export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods
 
             if (user) {
                 // Fetch profile
-                const { data: profile } = await supabase.from('profiles').select('full_name, mobile_number').eq('id', user.id).single();
+                const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
                 if (profile) {
                     setFormData(prev => ({
                         ...prev,
                         name: profile.full_name || "",
-                        // If mobile number was stored in profile, use it. Codebase uses 'user_phones' table separately? 
-                        // Let's just stick to profile.full_name for now as mobile might be complex.
                     }));
                 }
 
-                // Fetch mobile if available (optional enhancement)
-                const { data: phoneData } = await supabase.from('user_phones').select('phone_number').eq('user_id', user.id).single();
+                // Fetch mobile
+                const { data: phoneData } = await supabase.from('user_phones').select('phone_number').eq('user_id', user.id).limit(1).maybeSingle();
                 if (phoneData) {
                     setFormData(prev => ({ ...prev, mobile: phoneData.phone_number }));
+                }
+
+                // Fetch address
+                const { data: addressData } = await supabase.from('user_addresses').select('address_line').eq('user_id', user.id).order('is_default', { ascending: false }).limit(1).maybeSingle();
+                if (addressData) {
+                    setFormData(prev => ({ ...prev, address: addressData.address_line }));
                 }
             }
         };
@@ -63,7 +67,7 @@ export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods
                             <input
                                 className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
                                 id="name"
-                                placeholder="John Doe"
+                                placeholder="full name"
                                 type="text"
                                 value={formData.name}
                                 onChange={handleChange}
