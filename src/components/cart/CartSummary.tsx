@@ -56,7 +56,7 @@ export function CartSummary({ subtotal, shipping, discount, total }: CartSummary
                     <span>Shipping Estimate</span>
                     <span className="font-medium text-text-light dark:text-text-dark">
                         {isFreeShipping ? <span className="text-green-600 line-through mr-2">৳{shipping.toFixed(2)}</span> : null}
-                        {isFreeShipping ? <span className="text-green-600">Free</span> : `৳${shipping.toFixed(2)}`}
+                        {isFreeShipping ? <span className="text-green-600">Free</span> : <span><span className="text-xs text-subtext-light font-normal">from</span> ৳{shipping.toFixed(2)}</span>}
                     </span>
                 </div>
                 <div className="flex justify-between text-primary font-semibold">

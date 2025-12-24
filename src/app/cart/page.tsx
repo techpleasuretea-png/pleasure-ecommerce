@@ -8,12 +8,23 @@ import { CartMobileCheckout } from "@/components/cart/CartMobileCheckout";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { useShippingMethods } from "@/hooks/useShippingMethods";
 
 export default function CartPage() {
     const { cartItems, updateQuantity, removeFromCart, isLoading } = useCart();
+    const { shippingMethods } = useShippingMethods();
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const shipping = cartItems.length > 0 ? 50 : 0;
+
+    // Find minimum shipping cost
+    let minShipping = 0;
+    if (shippingMethods.length > 0) {
+        minShipping = Math.min(...shippingMethods.map(m => m.cost));
+    }
+
+    // If cart is empty, shipping is 0. Otherwise use min shipping.
+    const shipping = cartItems.length > 0 ? minShipping : 0;
+
     const discount = 0; // Discount calculation logic can be added later if needed
     const total = subtotal + shipping;
     const count = cartItems.reduce((acc, item) => acc + item.quantity, 0);
