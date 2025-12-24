@@ -11,44 +11,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-// Mock data to match what would come from Cart
-const cartItems = [
-    {
-        id: 1,
-        name: "Organic Avocados",
-        weight: "500g",
-        price: 9.98,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA4AOL0hx5pyRE3HN25hiE7N9icMOhtBtUA_Ho3LGyymtDGplAkrvO2EupuEo6nUBO56DfM0Lye2VfEKEzOFbhaDwnmkacRhApAxlVrIVbeqJfnjTy9HVbpNtLZQNb6x2vGb7o3p1M2AA6cNQuY9a9MI9l-BgSkyGl3-MISLRhkW_Wp9Gy_FXsvmu-yexYhCTJHXeXaO2IVoC0HP6mD8I1RtOdktSszxQIKfkRgX7913wA0t_3ff8Sxh-yTgnjwWOlyXr-O0qwsOqo",
-        quantity: 2
-    },
-    {
-        id: 2,
-        name: "Sourdough Bread",
-        weight: "500g",
-        price: 6.50,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBC3A-a4UULzqh-2SPbYejiaLkHE3RubV6okQS4ojcHCRPhJ_paUEKrXruRD5erHtgxWLXoQfc4z_c5xWUQMkczARbRsyNYdrwnR8j9PGiAxI8d1uBSlKD743u-NkXnxtMB9EnhyXGqbvE35qt7CLdn1-XWOxfulSdRjhidkms4oXRjNzO5r438VVLu10PF_rb2FgIPLvhWiF6r7e09nRXea6m6hUufATKbH-achi-5RFKf6ogP2j35Z7m7prz58IulwJpUyMdVlc4",
-        quantity: 1
-    },
-    {
-        id: 3,
-        name: "Wild-Caught Salmon",
-        weight: "200g",
-        price: 12.99,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAMpbXKMQJF9FLP_tSEiqFMxcBfGIA2thlOXd4f9YcbQT10Wuk2j13tsBCrQyzYrqEZFDCeo-fDUhy6Ujs6l6wG0QL4FeNSkaPQnRRVvD8Htx22Hg5M-ZPu1hUOpgYmJix1z_h5fe5uGTapm77FUCOvWKsEx0SHERUw6XCm7g3WCaWoV126ePVB3NYt0H1jDsq1k881XFGjIzCKD2_Z5Qs6eHJYLJIPs_ivhpQYwTELBBa8Dc90-ILG6vRzWpWqquMtUzgpJq2tZc4",
-        quantity: 1
-    }
-];
+import { useCart } from "@/context/CartContext";
 
 export default function CheckoutPage() {
+    const { cartItems } = useCart();
     const [shippingMethod, setShippingMethod] = useState("inside-dhaka");
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const supabase = createClient();
 
-    const subtotal = 29.47;
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     // Calculate shipping based on selection
     const shipping = shippingMethod === "inside-dhaka" ? 60.00 : 120.00;
-    const discount = 3.50;
+    const discount = 0;
     const total = subtotal + shipping - discount;
 
     const handlePlaceOrder = async () => {

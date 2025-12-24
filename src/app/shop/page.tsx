@@ -17,6 +17,7 @@ interface ShopPageProps {
         min?: string;
         max?: string;
         sort?: string;
+        q?: string;
     }>;
 }
 

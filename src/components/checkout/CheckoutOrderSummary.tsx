@@ -6,7 +6,7 @@ interface CheckoutOrderSummaryProps {
     discount: number;
     total: number;
     items: Array<{
-        id: number;
+        id: string | number;
         name: string;
         weight: string;
         price: number;
