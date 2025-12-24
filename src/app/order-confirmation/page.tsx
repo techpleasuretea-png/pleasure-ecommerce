@@ -164,7 +164,7 @@ export default function OrderConfirmationPage() {
                             <CheckCircle className="w-16 h-16" />
                         </div>
                         <h1 className="text-3xl md:text-4xl font-bold mb-3 font-display">Order Confirmed!</h1>
-                        <p className="text-lg text-subtext-light dark:text-subtext-dark">Thank you for your purchase. Your order <span className="font-semibold text-text-light dark:text-text-dark">#{orderDetails.id.slice(0, 8)}...</span> has been received.</p>
+                        <p className="text-lg text-subtext-light dark:text-subtext-dark">Thank you for your purchase. Your order <span className="font-semibold text-text-light dark:text-text-dark">#{orderDetails?.id?.slice(0, 8)}...</span> has been received.</p>
                     </div>
 
                     {/* Guest: Create Account Prompt */}
@@ -184,7 +184,7 @@ export default function OrderConfirmationPage() {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
                             <div>
                                 <p className="text-subtext-light dark:text-subtext-dark mb-1">Order Number</p>
-                                <p className="font-semibold truncate" title={orderDetails.id}>#{orderDetails.id.slice(0, 8)}</p>
+                                <p className="font-semibold truncate" title={orderDetails?.id}>#{orderDetails?.id?.slice(0, 8)}</p>
                             </div>
                             <div>
                                 <p className="text-subtext-light dark:text-subtext-dark mb-1">Date</p>
@@ -216,7 +216,7 @@ export default function OrderConfirmationPage() {
                             <h3 className="font-bold text-lg">Order Details</h3>
                         </div>
                         <div className="p-6 space-y-6">
-                            {orderDetails.items.map((item) => (
+                            {orderDetails?.items?.map((item) => (
                                 <div key={item.id} className="flex items-center justify-between">
                                     <div className="flex items-center gap-4">
                                         <div className="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex-shrink-0">
