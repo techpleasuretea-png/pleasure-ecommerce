@@ -21,74 +21,11 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const [user, setUser] = useState<any>(null);
-    const [localQuantity, setLocalQuantity] = useState<number | null>(null);
     const { cartItems, addToCart, updateQuantity, isLoading: isCartLoading, addItemWithAuth } = useCart();
-    const supabase = createClient();
 
     // Context quantity as source of truth for reactivity
     const cartItem = cartItems.find(item => item.id === id);
-    const contextQuantity = cartItem?.quantity || 0;
-
-    // Final quantity to display
-    const quantity = localQuantity !== null ? localQuantity : contextQuantity;
-
-    useEffect(() => {
-        const checkUserAndFetchQuantity = async () => {
-            const { data: { user: currentUser } } = await supabase.auth.getUser();
-            setUser(currentUser);
-
-            if (currentUser && !currentUser.is_anonymous) {
-                // Fetch specific item quantity from Supabase
-                try {
-                    const { data: cartData } = await supabase
-                        .from("carts")
-                        .select("id")
-                        .eq("user_id", currentUser.id)
-                        .single();
-
-                    if (cartData) {
-                        const { data: item } = await supabase
-                            .from("cart_items")
-                            .select("quantity")
-                            .eq("cart_id", cartData.id)
-                            .eq("product_id", id)
-                            .single();
-
-                        if (item) {
-                            setLocalQuantity(item.quantity);
-                        } else {
-                            setLocalQuantity(0);
-                        }
-                    } else {
-                        setLocalQuantity(0);
-                    }
-                } catch (error) {
-                    console.error("Error fetching local quantity:", error);
-                    setLocalQuantity(0);
-                }
-            } else {
-                // Guest: check localStorage
-                const savedCart = localStorage.getItem("organico_cart");
-                if (savedCart) {
-                    const savedItems = JSON.parse(savedCart);
-                    const item = savedItems.find((i: any) => i.id === id);
-                    setLocalQuantity(item ? item.quantity : 0);
-                } else {
-                    setLocalQuantity(0);
-                }
-            }
-        };
-
-        checkUserAndFetchQuantity();
-    }, [id, supabase]);
-
-    // Synchronize localQuantity with context once context is loaded or updates
-    useEffect(() => {
-        if (!isCartLoading) {
-            setLocalQuantity(contextQuantity);
-        }
-    }, [contextQuantity, isCartLoading]);
+    const quantity = cartItem?.quantity || 0;
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();

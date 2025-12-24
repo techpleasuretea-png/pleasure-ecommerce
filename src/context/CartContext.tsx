@@ -29,6 +29,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState<any>(null);
+    const [isAuthChecked, setIsAuthChecked] = useState(false);
     const supabase = createClient();
 
     // 1. Listen for auth changes
@@ -36,11 +37,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         const checkUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             setUser(user);
+            setIsAuthChecked(true);
         };
         checkUser();
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);
+            setIsAuthChecked(true);
         });
 
         return () => subscription.unsubscribe();
@@ -48,6 +51,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     // 2. Load initial cart based on user type
     useEffect(() => {
+        if (!isAuthChecked) return;
+
         const loadCart = async () => {
             setIsLoading(true);
             if (user && !user.is_anonymous) {
@@ -60,31 +65,38 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                         .single();
 
                     if (cartData) {
-                        const { data: items } = await supabase
+                        const { data: items, error: itemsError } = await supabase
                             .from("cart_items")
                             .select(`
                                 quantity,
-                                product:products (
+                                products (
                                     id,
                                     name,
                                     weight,
-                                    price,
+                                    selling_price,
                                     product_images (image_url)
                                 )
                             `)
                             .eq("cart_id", cartData.id);
 
+                        if (itemsError) console.error("Error fetching cart items:", itemsError);
+                        console.log("Raw Cart Items Response:", items);
+
                         if (items) {
+                            // Map using 'products' instead of 'product' alias
                             const formattedItems: CartItem[] = items.map((item: any) => ({
-                                id: item.product.id,
-                                name: item.product.name,
-                                weight: item.product.weight,
-                                price: item.product.price,
-                                image: item.product.product_images?.[0]?.image_url || "/placeholder.png",
+                                id: item.products.id,
+                                name: item.products.name,
+                                weight: item.products.weight,
+                                price: item.products.selling_price,
+                                image: item.products.product_images?.[0]?.image_url || "/placeholder.png",
                                 quantity: item.quantity,
                             }));
                             setCartItems(formattedItems);
                         }
+                    } else {
+                        // User has no cart yet, ensure state is empty
+                        setCartItems([]);
                     }
                 } catch (error) {
                     console.error("Error loading cart from Supabase:", error);
@@ -94,13 +106,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 const savedCart = localStorage.getItem("organico_cart");
                 if (savedCart) {
                     setCartItems(JSON.parse(savedCart));
+                } else {
+                    setCartItems([]);
                 }
             }
             setIsLoading(false);
         };
 
         loadCart();
-    }, [user, supabase]);
+    }, [user, supabase, isAuthChecked]);
 
     // 3. Persist cart changes
     useEffect(() => {
