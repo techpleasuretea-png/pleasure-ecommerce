@@ -26,6 +26,8 @@ interface CheckoutFormProps {
     onPhoneUpdate?: (id: string, val: string) => void;
     onAddressSetDefault?: (id: string, e: React.MouseEvent) => void;
     onPhoneSetDefault?: (id: string, e: React.MouseEvent) => void;
+    onAddressAdd?: (val: string) => void;
+    onPhoneAdd?: (val: string) => void;
 }
 
 export function CheckoutForm({
@@ -47,7 +49,9 @@ export function CheckoutForm({
     onAddressUpdate,
     onPhoneUpdate,
     onAddressSetDefault,
-    onPhoneSetDefault
+    onPhoneSetDefault,
+    onAddressAdd,
+    onPhoneAdd
 }: CheckoutFormProps) {
 
     // Local state for editing
@@ -180,14 +184,34 @@ export function CheckoutForm({
                                         </span>
                                     </label>
                                     {selectedPhoneId === 'new' && (
-                                        <input
-                                            className="w-full mt-2 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
-                                            id="mobile"
-                                            placeholder="+880 1XXX XXXXXX"
-                                            type="tel"
-                                            value={formData.mobile}
-                                            onChange={onFormDataChange}
-                                        />
+                                        <div className="flex items-center gap-2 mt-2">
+                                            <input
+                                                className="flex-1 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                                                id="mobile"
+                                                placeholder="+880 1XXX XXXXXX"
+                                                type="tel"
+                                                value={formData.mobile}
+                                                onChange={onFormDataChange}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault();
+                                                        onPhoneAdd?.(formData.mobile);
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                onClick={(e) => { e.preventDefault(); onPhoneAdd?.(formData.mobile); }}
+                                                className="bg-primary text-white p-3 rounded-lg hover:bg-primary-dark transition-colors text-sm font-medium"
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                onClick={(e) => { e.preventDefault(); onPhoneSelect?.(phones.length > 0 ? phones[0].id : ''); }}
+                                                className="bg-gray-100 dark:bg-gray-800 text-text-light dark:text-text-dark p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
                             ) : (
@@ -277,14 +301,30 @@ export function CheckoutForm({
                                     </span>
                                 </label>
                                 {selectedAddressId === 'new' && (
-                                    <textarea
-                                        className="w-full mt-2 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
-                                        id="address"
-                                        placeholder="House no, Road no, Area, City"
-                                        rows={3}
-                                        value={formData.address}
-                                        onChange={onFormDataChange}
-                                    ></textarea>
+                                    <div className=" space-y-2 mt-2">
+                                        <textarea
+                                            className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                                            id="address"
+                                            placeholder="House no, Road no, Area, City"
+                                            rows={3}
+                                            value={formData.address}
+                                            onChange={onFormDataChange}
+                                        ></textarea>
+                                        <div className="flex justify-end gap-2">
+                                            <button
+                                                onClick={(e) => { e.preventDefault(); onAddressSelect?.(addresses.length > 0 ? addresses[0].id : ''); }}
+                                                className="bg-gray-100 dark:bg-gray-800 text-text-light dark:text-text-dark px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={(e) => { e.preventDefault(); onAddressAdd?.(formData.address); }}
+                                                className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors text-sm font-medium"
+                                            >
+                                                Save
+                                            </button>
+                                        </div>
+                                    </div>
                                 )}
                             </div>
                         ) : (

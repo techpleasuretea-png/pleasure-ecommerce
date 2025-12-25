@@ -15,6 +15,7 @@ export async function getDeliveryDetails() {
         .from('user_addresses')
         .select('*')
         .eq('user_id', user.id)
+        .eq('is_deleted', false)
         .order('is_default', { ascending: false })
         .order('created_at', { ascending: false });
 
@@ -22,6 +23,7 @@ export async function getDeliveryDetails() {
         .from('user_phones')
         .select('*')
         .eq('user_id', user.id)
+        .eq('is_deleted', false)
         .order('is_default', { ascending: false })
         .order('created_at', { ascending: false });
 
@@ -46,17 +48,20 @@ export async function addAddress(address: string) {
 
     const isDefault = count === 0;
 
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from('user_addresses')
         .insert({
             user_id: user.id,
             address_line: address,
             is_default: isDefault
-        });
+        })
+        .select()
+        .single();
 
     if (error) return { error: error.message };
     revalidatePath("/dashboard/delivery-details");
-    return { success: true };
+    revalidatePath("/checkout");
+    return { success: true, id: data.id };
 }
 
 export async function updateAddress(id: string, address: string) {
@@ -72,6 +77,7 @@ export async function updateAddress(id: string, address: string) {
 
     if (error) return { error: error.message };
     revalidatePath("/dashboard/delivery-details");
+    revalidatePath("/checkout");
     return { success: true };
 }
 
@@ -82,12 +88,13 @@ export async function deleteAddress(id: string) {
 
     const { error } = await supabase
         .from('user_addresses')
-        .delete()
+        .update({ is_deleted: true })
         .eq('id', id)
         .eq('user_id', user.id);
 
     if (error) return { error: error.message };
     revalidatePath("/dashboard/delivery-details");
+    revalidatePath("/checkout");
     return { success: true };
 }
 
@@ -114,6 +121,7 @@ export async function setDefaultAddress(id: string) {
 
     if (error) return { error: error.message };
     revalidatePath("/dashboard/delivery-details");
+    revalidatePath("/checkout");
     return { success: true };
 }
 
@@ -131,17 +139,20 @@ export async function addPhone(phone: string) {
 
     const isDefault = count === 0;
 
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from('user_phones')
         .insert({
             user_id: user.id,
             phone_number: phone,
             is_default: isDefault
-        });
+        })
+        .select()
+        .single();
 
     if (error) return { error: error.message };
     revalidatePath("/dashboard/delivery-details");
-    return { success: true };
+    revalidatePath("/checkout");
+    return { success: true, id: data.id };
 }
 
 export async function updatePhone(id: string, phone: string) {
@@ -157,6 +168,7 @@ export async function updatePhone(id: string, phone: string) {
 
     if (error) return { error: error.message };
     revalidatePath("/dashboard/delivery-details");
+    revalidatePath("/checkout");
     return { success: true };
 }
 
@@ -167,12 +179,13 @@ export async function deletePhone(id: string) {
 
     const { error } = await supabase
         .from('user_phones')
-        .delete()
+        .update({ is_deleted: true })
         .eq('id', id)
         .eq('user_id', user.id);
 
     if (error) return { error: error.message };
     revalidatePath("/dashboard/delivery-details");
+    revalidatePath("/checkout");
     return { success: true };
 }
 
@@ -194,5 +207,6 @@ export async function setDefaultPhone(id: string) {
 
     if (error) return { error: error.message };
     revalidatePath("/dashboard/delivery-details");
+    revalidatePath("/checkout");
     return { success: true };
 }

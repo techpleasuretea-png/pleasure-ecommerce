@@ -131,13 +131,42 @@ export default function CheckoutPage() {
         setSavedAddresses(addresses);
         setSavedPhones(phones);
     };
+    const handleAddressAdd = async (address: string) => {
+        const { addAddress } = await import("@/app/actions/deliveryActions");
+        const result = await addAddress(address);
+        if (result.success && result.id) {
+            setSelectedAddressId(result.id);
+            setFormData(prev => ({ ...prev, address: "" })); // Clear because we selected the new one which fills strictly from saved data usually?
+            // Actually handleAddressSelect logic: if id!=new, it fills formData. So we should re-fetch and find it.
+            await refreshDeliveryDetails();
+            // After refresh, we need to find the address and set formData
+        } else {
+            alert(result.error || "Failed to add address");
+        }
+    };
+
+    const handlePhoneAdd = async (phone: string) => {
+        const { addPhone } = await import("@/app/actions/deliveryActions");
+        const result = await addPhone(phone);
+        if (result.success && result.id) {
+            setSelectedPhoneId(result.id);
+            setFormData(prev => ({ ...prev, mobile: "" }));
+            await refreshDeliveryDetails();
+        } else {
+            alert(result.error || "Failed to add phone number");
+        }
+    };
 
     const handleAddressDelete = async (id: string, e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation(); // Prevent selection
         if (confirm("Are you sure you want to delete this address?")) {
             const { deleteAddress } = await import("@/app/actions/deliveryActions");
-            await deleteAddress(id);
+            const result = await deleteAddress(id);
+            if (result.error) {
+                alert(result.error);
+                return;
+            }
             if (selectedAddressId === id) setSelectedAddressId("new");
             await refreshDeliveryDetails();
         }
@@ -148,7 +177,11 @@ export default function CheckoutPage() {
         e.stopPropagation();
         if (confirm("Are you sure you want to delete this phone number?")) {
             const { deletePhone } = await import("@/app/actions/deliveryActions");
-            await deletePhone(id);
+            const result = await deletePhone(id);
+            if (result.error) {
+                alert(result.error);
+                return;
+            }
             if (selectedPhoneId === id) setSelectedPhoneId("new");
             await refreshDeliveryDetails();
         }
@@ -289,6 +322,8 @@ export default function CheckoutPage() {
                                 onPhoneSelect={handlePhoneSelect}
                                 onAddressDelete={handleAddressDelete}
                                 onPhoneDelete={handlePhoneDelete}
+                                onAddressAdd={handleAddressAdd}
+                                onPhoneAdd={handlePhoneAdd}
                                 onAddressUpdate={handleAddressUpdate}
                                 onPhoneUpdate={handlePhoneUpdate}
                                 onAddressSetDefault={handleAddressSetDefault}

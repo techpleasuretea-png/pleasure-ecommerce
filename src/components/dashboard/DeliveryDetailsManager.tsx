@@ -217,52 +217,68 @@ export default function DeliveryDetailsManager({
     // --- Address Handlers ---
     const handleSaveAddress = async (value: string) => {
         setIsLoading(true);
+        let result;
         if (editingAddressId) {
-            await updateAddress(editingAddressId, value);
+            result = await updateAddress(editingAddressId, value);
         } else {
-            await addAddress(value);
+            result = await addAddress(value);
+        }
+
+        if (result.error) {
+            alert(result.error);
+        } else {
+            setIsAddingAddress(false);
+            setEditingAddressId(null);
         }
         setIsLoading(false);
-        setIsAddingAddress(false);
-        setEditingAddressId(null);
     };
 
     const handleDeleteAddress = async (id: string) => {
         if (!confirm("Are you sure?")) return;
         setIsLoading(true);
-        await deleteAddress(id);
+        const result = await deleteAddress(id);
+        if (result.error) alert(result.error);
         setIsLoading(false);
     };
 
     const handleSetDefaultAddress = async (id: string) => {
         setIsLoading(true);
-        await setDefaultAddress(id);
+        const result = await setDefaultAddress(id);
+        if (result.error) alert(result.error);
         setIsLoading(false);
     };
 
     // --- Phone Handlers ---
     const handleSavePhone = async (value: string) => {
         setIsLoading(true);
+        let result;
         if (editingMobileId) {
-            await updatePhone(editingMobileId, value);
+            result = await updatePhone(editingMobileId, value);
         } else {
-            await addPhone(value);
+            result = await addPhone(value);
+        }
+
+        if (result.error) {
+            alert(result.error);
+        } else {
+            setIsAddingMobile(false);
+            setEditingMobileId(null);
         }
         setIsLoading(false);
-        setIsAddingMobile(false);
-        setEditingMobileId(null);
     };
 
     const handleDeletePhone = async (id: string) => {
         if (!confirm("Are you sure?")) return;
         setIsLoading(true);
-        await deletePhone(id);
+        const result = await deletePhone(id);
+        if (result.error) alert(result.error);
         setIsLoading(false);
     };
 
     const handleSetDefaultPhone = async (id: string) => {
         setIsLoading(true);
-        await setDefaultPhone(id);
+        const result = await setDefaultPhone(id);
+        if (result.error) alert(result.error);
         setIsLoading(false);
     };
 
