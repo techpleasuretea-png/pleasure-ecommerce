@@ -9,6 +9,10 @@ import { MobileHeader } from "../mobile/MobileHeader";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 
+
+import { useAuth } from "@/context/AuthContext";
+
+
 export function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -16,7 +20,7 @@ export function Header() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const [user, setUser] = useState<any>(null);
+    const { user, loading } = useAuth(); // Use global auth context
     const { cartItems } = useCart();
     const { wishlistItems } = useWishlist();
 
@@ -27,15 +31,7 @@ export function Header() {
     const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
     const totalPrice = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
-    useEffect(() => {
-        const checkUser = async () => {
-            const { createClient } = await import("@/lib/supabase/client");
-            const supabase = createClient();
-            const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
-        };
-        checkUser();
-    }, [pathname]); // Re-check on route change to catch login/logout updates potentially
+    // Removed local useEffect for user fetching
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -56,7 +52,6 @@ export function Header() {
                         <div className="flex items-center gap-8">
                             <div className="flex items-center gap-2">
                                 <Image src="/logo.svg" alt="Pleasure Logo" width={120} height={40} className="h-10 w-auto" />
-                                {/* <span className="text-2xl font-bold font-display">Organico</span> */}
                             </div>
 
                             <nav className="flex items-center gap-6 text-sm font-medium">
@@ -106,12 +101,27 @@ export function Header() {
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <button
-                                    onClick={() => router.push(user ? '/dashboard' : '/login')}
-                                    className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors"
-                                >
-                                    <User className="w-6 h-6" />
-                                </button>
+                                {loading ? (
+                                    // Loading skeleton or empty space
+                                    <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
+                                ) : user ? (
+                                    <button
+                                        onClick={() => router.push('/dashboard')}
+                                        className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors flex items-center gap-2"
+                                        title="Go to Dashboard"
+                                    >
+                                        <User className="w-6 h-6 text-primary" />
+                                    </button>
+                                ) : (
+                                    <Link
+                                        href="/login"
+                                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary rounded-full hover:bg-primary/90 transition-colors"
+                                    >
+                                        <User className="w-4 h-4" />
+                                        <span>Sign In</span>
+                                    </Link>
+                                )}
+
                                 <Link
                                     href="/dashboard/wishlist"
                                     className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors relative"

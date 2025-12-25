@@ -86,13 +86,39 @@ export async function deleteAddress(id: string) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: "Not authenticated" };
 
-    const { error } = await supabase
-        .from('user_addresses')
-        .update({ is_deleted: true })
-        .eq('id', id)
-        .eq('user_id', user.id);
+    // Check if used in orders
+    const { count, error: countError } = await supabase
+        .from('orders')
+        .select('*', { count: 'exact', head: true })
+        .eq('shipping_address_id', id);
 
-    if (error) return { error: error.message };
+    if (countError) {
+        // If column doesn't exist or other error, fallback to soft delete to be safe? 
+        // Or strictly strictly follow user: if error, fail?
+        // Let's assume safely: if we can't verify, we don't hard delete?
+        // Actually, let's log and try soft delete if checking fails to be safe.
+        console.error("Error checking order usage:", countError);
+        return { error: "Failed to verify usage" };
+    }
+
+    if (count && count > 0) {
+        // Soft delete
+        const { error } = await supabase
+            .from('user_addresses')
+            .update({ is_deleted: true })
+            .eq('id', id)
+            .eq('user_id', user.id);
+        if (error) return { error: error.message };
+    } else {
+        // Hard delete
+        const { error } = await supabase
+            .from('user_addresses')
+            .delete()
+            .eq('id', id)
+            .eq('user_id', user.id);
+        if (error) return { error: error.message };
+    }
+
     revalidatePath("/dashboard/delivery-details");
     revalidatePath("/checkout");
     return { success: true };
@@ -177,13 +203,45 @@ export async function deletePhone(id: string) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: "Not authenticated" };
 
-    const { error } = await supabase
+    // Get phone number first
+    const { data: phone, error: fetchError } = await supabase
         .from('user_phones')
-        .update({ is_deleted: true })
+        .select('phone_number')
         .eq('id', id)
-        .eq('user_id', user.id);
+        .eq('user_id', user.id)
+        .single();
 
-    if (error) return { error: error.message };
+    if (fetchError || !phone) return { error: "Phone not found" };
+
+    // Check if used in orders (recipient_mobile)
+    const { count, error: countError } = await supabase
+        .from('orders')
+        .select('*', { count: 'exact', head: true })
+        .eq('recipient_mobile', phone.phone_number);
+
+    if (countError) {
+        console.error("Error checking phone usage:", countError);
+        return { error: "Failed to verify usage" };
+    }
+
+    if (count && count > 0) {
+        // Soft delete
+        const { error } = await supabase
+            .from('user_phones')
+            .update({ is_deleted: true })
+            .eq('id', id)
+            .eq('user_id', user.id);
+        if (error) return { error: error.message };
+    } else {
+        // Hard delete
+        const { error } = await supabase
+            .from('user_phones')
+            .delete()
+            .eq('id', id)
+            .eq('user_id', user.id);
+        if (error) return { error: error.message };
+    }
+
     revalidatePath("/dashboard/delivery-details");
     revalidatePath("/checkout");
     return { success: true };

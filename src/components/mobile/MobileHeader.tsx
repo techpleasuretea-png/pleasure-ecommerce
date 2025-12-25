@@ -8,8 +8,13 @@ import { Search, ShoppingBag, Menu, User, Phone } from "lucide-react";
 import { useState } from "react";
 import { MobileMenuSidebar } from "./MobileMenuSidebar";
 
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+
 export function MobileHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { user, loading } = useAuth();
+    const router = useRouter();
 
     return (
         <>
@@ -37,9 +42,24 @@ export function MobileHeader() {
                             <span className="text-xs font-bold">Order</span>
                             <ShoppingBag className="w-4 h-4 ml-0.5" />
                         </a>
-                        <button className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-[#333333] dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
-                            <User className="w-6 h-6" />
-                        </button>
+
+                        {loading ? (
+                            <div className="w-12 h-12 rounded-lg bg-gray-200 animate-pulse" />
+                        ) : user ? (
+                            <button
+                                onClick={() => router.push('/dashboard')}
+                                className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-[#333333] dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0"
+                            >
+                                <User className="w-6 h-6" />
+                            </button>
+                        ) : (
+                            <Link
+                                href="/login"
+                                className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-[#333333] dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0"
+                            >
+                                <User className="w-6 h-6" />
+                            </Link>
+                        )}
                     </div>
                 </div>
             </header>
