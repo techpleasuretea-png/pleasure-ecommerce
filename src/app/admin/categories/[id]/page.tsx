@@ -1,14 +1,28 @@
 import { CategoryForm } from "@/components/admin/CategoryForm";
 import { updateCategory } from "@/app/actions/adminActions";
 import { createClient } from "@/lib/supabase/server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
-export default async function EditCategoryPage({ params }: { params: { id: string } }) {
+export default async function EditCategoryPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const supabase = await createClient();
+
+    // Check admin role
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect('/login');
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+    if (profile?.role !== 'admin') redirect('/');
+
     const { data: category } = await supabase
         .from('categories')
         .select('*')
-        .eq('id', params.id)
+        .eq('id', id)
         .single();
 
     if (!category) {

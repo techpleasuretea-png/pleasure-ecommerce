@@ -20,6 +20,13 @@ export default function CheckoutPage() {
     const [selectedShippingId, setSelectedShippingId] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
 
+    // New state for saved details
+    const [savedAddresses, setSavedAddresses] = useState<any[]>([]);
+    const [savedPhones, setSavedPhones] = useState<any[]>([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [selectedAddressId, setSelectedAddressId] = useState<string>("new");
+    const [selectedPhoneId, setSelectedPhoneId] = useState<string>("new");
+
     const [formData, setFormData] = useState({
         name: "",
         mobile: "",
@@ -36,25 +43,37 @@ export default function CheckoutPage() {
         }
     }, [shippingMethods, selectedShippingId]);
 
-    // Pre-fill user data
+    // Pre-fill user data & fetch saved details
     useEffect(() => {
         const loadUserData = async () => {
             const { data: { user } } = await supabase.auth.getUser();
+
             if (user) {
+                setIsLoggedIn(true);
+
+                // Fetch saved details
+                const { getDeliveryDetails } = await import("@/app/actions/deliveryActions");
+                const { addresses, phones } = await getDeliveryDetails();
+                setSavedAddresses(addresses);
+                setSavedPhones(phones);
+
+                // Set defaults if available
+                const defaultAddress = addresses.find((a: any) => a.is_default) || addresses[0];
+                if (defaultAddress) {
+                    setSelectedAddressId(defaultAddress.id);
+                    setFormData(prev => ({ ...prev, address: defaultAddress.address_line }));
+                }
+
+                const defaultPhone = phones.find((p: any) => p.is_default) || phones[0];
+                if (defaultPhone) {
+                    setSelectedPhoneId(defaultPhone.id);
+                    setFormData(prev => ({ ...prev, mobile: defaultPhone.phone_number }));
+                }
+
+                // Profile name
                 const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
                 if (profile) {
-                    setFormData(prev => ({
-                        ...prev,
-                        name: profile.full_name || "",
-                    }));
-                }
-                const { data: phoneData } = await supabase.from('user_phones').select('phone_number').eq('user_id', user.id).limit(1).maybeSingle();
-                if (phoneData) {
-                    setFormData(prev => ({ ...prev, mobile: phoneData.phone_number }));
-                }
-                const { data: addressData } = await supabase.from('user_addresses').select('address_line').eq('user_id', user.id).order('is_default', { ascending: false }).limit(1).maybeSingle();
-                if (addressData) {
-                    setFormData(prev => ({ ...prev, address: addressData.address_line }));
+                    setFormData(prev => ({ ...prev, name: profile.full_name || "" }));
                 }
             }
         };
@@ -83,6 +102,100 @@ export default function CheckoutPage() {
         setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
     };
 
+    const handleAddressSelect = (id: string) => {
+        setSelectedAddressId(id);
+        if (id !== 'new') {
+            const addr = savedAddresses.find(a => a.id === id);
+            if (addr) setFormData(prev => ({ ...prev, address: addr.address_line }));
+        } else {
+            setFormData(prev => ({ ...prev, address: "" }));
+        }
+    };
+
+    const handlePhoneSelect = (id: string) => {
+        setSelectedPhoneId(id);
+        if (id !== 'new') {
+            const phone = savedPhones.find(p => p.id === id);
+            if (phone) setFormData(prev => ({ ...prev, mobile: phone.phone_number }));
+        } else {
+            setFormData(prev => ({ ...prev, mobile: "" }));
+        }
+    };
+
+
+
+    // Helper to refresh data
+    const refreshDeliveryDetails = async () => {
+        const { getDeliveryDetails } = await import("@/app/actions/deliveryActions");
+        const { addresses, phones } = await getDeliveryDetails();
+        setSavedAddresses(addresses);
+        setSavedPhones(phones);
+    };
+
+    const handleAddressDelete = async (id: string, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation(); // Prevent selection
+        if (confirm("Are you sure you want to delete this address?")) {
+            const { deleteAddress } = await import("@/app/actions/deliveryActions");
+            await deleteAddress(id);
+            if (selectedAddressId === id) setSelectedAddressId("new");
+            await refreshDeliveryDetails();
+        }
+    };
+
+    const handlePhoneDelete = async (id: string, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (confirm("Are you sure you want to delete this phone number?")) {
+            const { deletePhone } = await import("@/app/actions/deliveryActions");
+            await deletePhone(id);
+            if (selectedPhoneId === id) setSelectedPhoneId("new");
+            await refreshDeliveryDetails();
+        }
+    };
+
+    // For editing, we might just expose the update function, 
+    // but the UI needs to handle the input state. 
+    // We can pass the update action to the component or handle it here via a specialized handler
+    // that accepts ID and new Value.
+
+    const handleAddressUpdate = async (id: string, newAddress: string) => {
+        const { updateAddress } = await import("@/app/actions/deliveryActions");
+        const result = await updateAddress(id, newAddress);
+        if (result.success) {
+            await refreshDeliveryDetails();
+        } else {
+            alert("Failed to update address");
+        }
+    };
+
+    const handlePhoneUpdate = async (id: string, newPhone: string) => {
+        const { updatePhone } = await import("@/app/actions/deliveryActions");
+        const result = await updatePhone(id, newPhone);
+        if (result.success) {
+            await refreshDeliveryDetails();
+        } else {
+            alert("Failed to update phone number");
+        }
+    };
+
+    const handleAddressSetDefault = async (id: string, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const { setDefaultAddress } = await import("@/app/actions/deliveryActions");
+        await setDefaultAddress(id);
+        await refreshDeliveryDetails();
+    };
+
+    const handlePhoneSetDefault = async (id: string, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const { setDefaultPhone } = await import("@/app/actions/deliveryActions");
+        await setDefaultPhone(id);
+        await refreshDeliveryDetails();
+    };
+
+
     const handlePlaceOrder = async () => {
         if (!formData.name || !formData.mobile || !formData.address) {
             alert("Please fill in all delivery details.");
@@ -92,20 +205,13 @@ export default function CheckoutPage() {
         setIsLoading(true);
         try {
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) {
-                console.error("No user found");
-                return;
-            }
 
-            // Import dynamically or at top. Since this is client component, we import server action?
-            // Next.js allows importing server actions in client components.
-            // But we need to make sure the import path is correct and it's treated as a module.
             const { createOrder } = await import("@/app/actions/orderActions");
 
             const orderInput = {
-                userId: user.id,
+                userId: user?.id || "",
                 items: cartItems.map(item => ({
-                    product_id: item.id, // Assuming item.id is the UUID from products table. CAREFUL: Cart might use different ID?
+                    product_id: item.id,
                     quantity: item.quantity,
                     price: item.price
                 })),
@@ -114,17 +220,17 @@ export default function CheckoutPage() {
                 discount,
                 total,
                 shippingMethodId: selectedShippingId,
-                paymentMethod: "cod", // Hardcoded for now as per UI
+                paymentMethod: "cod",
                 name: formData.name,
                 mobile: formData.mobile,
                 address: formData.address,
-                isAnonymous: !!user.is_anonymous
+                isAnonymous: !user,
+                existingAddressId: selectedAddressId !== 'new' ? selectedAddressId : undefined
             };
 
             const result = await createOrder(orderInput);
 
             if (result.success && result.orderId) {
-                // Clear cart (if function available)
                 await clearCart();
                 router.push(`/order-confirmation?id=${result.orderId}`);
             } else {
@@ -174,6 +280,19 @@ export default function CheckoutPage() {
                                 subtotal={subtotal}
                                 formData={formData}
                                 onFormDataChange={handleFormDataChange}
+                                isLoggedIn={isLoggedIn}
+                                addresses={savedAddresses}
+                                phones={savedPhones}
+                                selectedAddressId={selectedAddressId}
+                                selectedPhoneId={selectedPhoneId}
+                                onAddressSelect={handleAddressSelect}
+                                onPhoneSelect={handlePhoneSelect}
+                                onAddressDelete={handleAddressDelete}
+                                onPhoneDelete={handlePhoneDelete}
+                                onAddressUpdate={handleAddressUpdate}
+                                onPhoneUpdate={handlePhoneUpdate}
+                                onAddressSetDefault={handleAddressSetDefault}
+                                onPhoneSetDefault={handlePhoneSetDefault}
                             />
                         )}
                     </div>

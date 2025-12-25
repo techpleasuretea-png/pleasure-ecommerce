@@ -36,6 +36,10 @@ export function CategoryForm({ initialData, action }: CategoryFormProps) {
         try {
             await action(formData);
         } catch (error) {
+            // Ignore redirect errors which are actually success signals
+            if ((error as any).digest?.startsWith('NEXT_REDIRECT')) {
+                throw error;
+            }
             console.error("Error saving category:", error);
             alert("Failed to save category. Please try again.");
         } finally {

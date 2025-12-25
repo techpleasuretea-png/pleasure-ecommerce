@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, ShoppingBag, Layers, Truck, Image, LogOut, Settings } from "lucide-react";
 import { logout } from "@/app/actions/authActions";
-import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 
 const sidebarItems = [
     {
@@ -40,27 +38,19 @@ const sidebarItems = [
     // },
 ];
 
-export function AdminSidebar({ onClose }: { onClose?: () => void }) {
+interface AdminSidebarProps {
+    onClose?: () => void;
+    user: {
+        full_name: string;
+        role: string;
+        email: string;
+    } | null;
+}
+
+export function AdminSidebar({ onClose, user }: AdminSidebarProps) {
     const pathname = usePathname();
-    const [profile, setProfile] = useState<any>(null);
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            const supabase = createClient();
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                const { data } = await supabase
-                    .from('profiles')
-                    .select('full_name, role')
-                    .eq('id', user.id)
-                    .single();
-                setProfile(data);
-            }
-        };
-        fetchProfile();
-    }, []);
-
-    const displayName = profile?.full_name || "Admin User";
+    const displayName = user?.full_name || "Admin User";
     const initial = displayName.charAt(0).toUpperCase();
 
     return (

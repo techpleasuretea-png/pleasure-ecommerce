@@ -22,39 +22,37 @@ interface CreateOrderInput {
     mobile: string;
     address: string;
     isAnonymous: boolean;
+    existingAddressId?: string; // New optional field
 }
 
 export async function createOrder(data: CreateOrderInput) {
     const supabase = await createClient();
 
     try {
-        // 1. Create or Update Address
-        // For simplicity, we'll create a new address record for now if it doesn't match an existing one strictly,
-        // or just insert it as a new record linked to the user.
-        // If it's an anonymous user, we still might want to store the address with the order directly, 
-        // but our schema has `shipping_address_id`. Let's create an address record first.
-
         let addressId: string;
 
-        // Note: For anonymous users, we might not have a distinct user_id in `user_addresses` if RLS forbids it,
-        // but here we assume the passed `userId` (which might be the anon ID) works if RLS allows.
-        // If `user_addresses.user_id` references `auth.users`, it should be fine.
+        // 1. Determine Address ID
+        if (data.existingAddressId) {
+            // Use existing address
+            addressId = data.existingAddressId;
+        } else {
+            // Create new address
+            const { data: addressData, error: addressError } = await supabase
+                .from('user_addresses')
+                .insert({
+                    user_id: data.userId,
+                    address_line: data.address,
+                    is_default: false
+                })
+                .select('id')
+                .single();
 
-        const { data: addressData, error: addressError } = await supabase
-            .from('user_addresses')
-            .insert({
-                user_id: data.userId,
-                address_line: data.address,
-                is_default: false
-            })
-            .select('id')
-            .single();
-
-        if (addressError) {
-            console.error("Error creating address:", addressError);
-            throw new Error(`Failed to create address: ${addressError.message}`);
+            if (addressError) {
+                console.error("Error creating address:", addressError);
+                throw new Error(`Failed to create address: ${addressError.message}`);
+            }
+            addressId = addressData.id;
         }
-        addressId = addressData.id;
 
         // 2. Create Order
         const { data: orderData, error: orderError } = await supabase

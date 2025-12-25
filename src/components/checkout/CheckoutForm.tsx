@@ -1,5 +1,5 @@
-import { MapPin, Truck, CreditCard, CheckCircle, Circle, Check } from "lucide-react";
-import { useState, useEffect } from "react";
+import { MapPin, Truck, CreditCard, CheckCircle, Circle, Phone, Plus, Pencil, Trash2, Star } from "lucide-react";
+import { useState } from "react";
 import { ShippingMethod } from "@/hooks/useShippingMethods";
 
 interface CheckoutFormProps {
@@ -13,9 +13,75 @@ interface CheckoutFormProps {
         address: string;
     };
     onFormDataChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    isLoggedIn?: boolean;
+    addresses?: any[];
+    phones?: any[];
+    selectedAddressId?: string;
+    selectedPhoneId?: string;
+    onAddressSelect?: (id: string) => void;
+    onPhoneSelect?: (id: string) => void;
+    onAddressDelete?: (id: string, e: React.MouseEvent) => void;
+    onPhoneDelete?: (id: string, e: React.MouseEvent) => void;
+    onAddressUpdate?: (id: string, val: string) => void;
+    onPhoneUpdate?: (id: string, val: string) => void;
+    onAddressSetDefault?: (id: string, e: React.MouseEvent) => void;
+    onPhoneSetDefault?: (id: string, e: React.MouseEvent) => void;
 }
 
-export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods, subtotal, formData, onFormDataChange }: CheckoutFormProps) {
+export function CheckoutForm({
+    shippingMethod,
+    onShippingChange,
+    shippingMethods,
+    subtotal,
+    formData,
+    onFormDataChange,
+    isLoggedIn,
+    addresses = [],
+    phones = [],
+    selectedAddressId,
+    selectedPhoneId,
+    onAddressSelect,
+    onPhoneSelect,
+    onAddressDelete,
+    onPhoneDelete,
+    onAddressUpdate,
+    onPhoneUpdate,
+    onAddressSetDefault,
+    onPhoneSetDefault
+}: CheckoutFormProps) {
+
+    // Local state for editing
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editValue, setEditValue] = useState("");
+
+    const startEditing = (id: string, currentValue: string, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setEditingId(id);
+        setEditValue(currentValue);
+    };
+
+    const cancelEditing = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setEditingId(null);
+        setEditValue("");
+    };
+
+    const saveEditing = (id: string, type: 'address' | 'phone', e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (type === 'address' && onAddressUpdate) onAddressUpdate(id, editValue);
+        if (type === 'phone' && onPhoneUpdate) onPhoneUpdate(id, editValue);
+        setEditingId(null);
+    };
+
+    const handleKeyDown = (id: string, type: 'address' | 'phone', e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            saveEditing(id, type, e as unknown as React.MouseEvent);
+        }
+    };
 
     return (
         <div className="space-y-8">
@@ -25,8 +91,9 @@ export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods
                     <Truck className="text-primary w-6 h-6" />
                     Delivery Information
                 </h2>
-                <form className="space-y-6">
+                <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Name Input - Always Manual */}
                         <div>
                             <label className="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-2" htmlFor="name">Full Name</label>
                             <input
@@ -38,28 +105,198 @@ export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods
                                 onChange={onFormDataChange}
                             />
                         </div>
+
+                        {/* Mobile - Selection or Input */}
                         <div>
                             <label className="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-2" htmlFor="mobile">Mobile Number</label>
-                            <input
-                                className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
-                                id="mobile"
-                                placeholder="+880 1XXX XXXXXX"
-                                type="tel"
-                                value={formData.mobile}
-                                onChange={onFormDataChange}
-                            />
+                            {isLoggedIn ? (
+                                <div className="space-y-3">
+                                    {phones.map((phone) => (
+                                        <div key={phone.id} className={`flex items-center justify-between p-3 rounded-lg border ${selectedPhoneId === phone.id ? 'border-primary bg-primary/5' : 'border-gray-200 dark:border-gray-700'}`}>
+                                            <label className="flex items-center gap-3 cursor-pointer flex-1">
+                                                <input
+                                                    type="radio"
+                                                    name="mobile_select"
+                                                    className="text-primary focus:ring-primary"
+                                                    checked={selectedPhoneId === phone.id}
+                                                    onChange={() => onPhoneSelect?.(phone.id)}
+                                                    disabled={editingId === phone.id}
+                                                />
+                                                {editingId === phone.id ? (
+                                                    <input
+                                                        type="text"
+                                                        value={editValue}
+                                                        onChange={(e) => setEditValue(e.target.value)}
+                                                        onKeyDown={(e) => handleKeyDown(phone.id, 'phone', e)}
+                                                        className="w-full text-sm p-1 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark focus:ring-2 focus:ring-primary focus:border-transparent"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                        autoFocus
+                                                    />
+                                                ) : (
+                                                    <span className="text-sm text-text-light dark:text-text-dark">
+                                                        {phone.phone_number}
+                                                        {phone.is_default && <span className="ml-2 text-xs bg-gray-100 dark:bg-gray-800 text-gray-500 px-2 py-0.5 rounded">Default</span>}
+                                                    </span>
+                                                )}
+                                            </label>
+                                            <div className="flex items-center gap-1 ml-2">
+                                                {editingId === phone.id ? (
+                                                    <>
+                                                        <button onClick={(e) => saveEditing(phone.id, 'phone', e)} className="text-green-600 hover:text-green-700 text-xs font-medium px-2 py-1">Save</button>
+                                                        <button onClick={cancelEditing} className="text-gray-500 hover:text-gray-600 text-xs font-medium px-2 py-1">Cancel</button>
+                                                    </>
+                                                ) : (
+                                                    <div className="flex items-center gap-1">
+                                                        {!phone.is_default && (
+                                                            <button
+                                                                onClick={(e) => onPhoneSetDefault?.(phone.id, e)}
+                                                                className="text-gray-400 hover:text-yellow-500 font-medium p-1 hover:bg-yellow-50 rounded-full transition-colors"
+                                                                title="Make Default"
+                                                            >
+                                                                <Star className="w-4 h-4" />
+                                                            </button>
+                                                        )}
+                                                        <button onClick={(e) => startEditing(phone.id, phone.phone_number, e)} className="text-blue-500 hover:text-blue-600 font-medium p-1 hover:bg-blue-50 rounded-full transition-colors" title="Edit">
+                                                            <Pencil className="w-4 h-4" />
+                                                        </button>
+                                                        <button onClick={(e) => onPhoneDelete?.(phone.id, e)} className="text-red-500 hover:text-red-600 font-medium p-1 hover:bg-red-50 rounded-full transition-colors" title="Delete">
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer ${selectedPhoneId === 'new' ? 'border-primary bg-primary/5' : 'border-gray-200 dark:border-gray-700'}`}>
+                                        <input
+                                            type="radio"
+                                            name="mobile_select"
+                                            className="text-primary focus:ring-primary"
+                                            checked={selectedPhoneId === 'new'}
+                                            onChange={() => onPhoneSelect?.('new')}
+                                        />
+                                        <span className="flex items-center gap-2 text-sm text-text-light dark:text-text-dark">
+                                            <Plus className="w-4 h-4" /> Add New Mobile Number
+                                        </span>
+                                    </label>
+                                    {selectedPhoneId === 'new' && (
+                                        <input
+                                            className="w-full mt-2 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                                            id="mobile"
+                                            placeholder="+880 1XXX XXXXXX"
+                                            type="tel"
+                                            value={formData.mobile}
+                                            onChange={onFormDataChange}
+                                        />
+                                    )}
+                                </div>
+                            ) : (
+                                <input
+                                    className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    id="mobile"
+                                    placeholder="+880 1XXX XXXXXX"
+                                    type="tel"
+                                    value={formData.mobile}
+                                    onChange={onFormDataChange}
+                                />
+                            )}
                         </div>
                     </div>
+
+                    {/* Address - Selection or Input */}
                     <div>
                         <label className="block text-sm font-medium text-subtext-light dark:text-subtext-dark mb-2" htmlFor="address">Delivery Address</label>
-                        <textarea
-                            className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
-                            id="address"
-                            placeholder="House no, Road no, Area, City"
-                            rows={3}
-                            value={formData.address}
-                            onChange={onFormDataChange}
-                        ></textarea>
+                        {isLoggedIn ? (
+                            <div className="space-y-3">
+                                {addresses.map((addr) => (
+                                    <div key={addr.id} className={`flex items-center justify-between p-3 rounded-lg border ${selectedAddressId === addr.id ? 'border-primary bg-primary/5' : 'border-gray-200 dark:border-gray-700'}`}>
+                                        <label className="flex items-center gap-3 cursor-pointer flex-1 items-start">
+                                            <input
+                                                type="radio"
+                                                name="address_select"
+                                                className="text-primary focus:ring-primary mt-1"
+                                                checked={selectedAddressId === addr.id}
+                                                onChange={() => onAddressSelect?.(addr.id)}
+                                                disabled={editingId === addr.id}
+                                            />
+                                            {editingId === addr.id ? (
+                                                <textarea
+                                                    value={editValue}
+                                                    onChange={(e) => setEditValue(e.target.value)}
+                                                    onKeyDown={(e) => handleKeyDown(addr.id, 'address', e)}
+                                                    className="w-full text-sm p-2 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                                                    rows={2}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    autoFocus
+                                                />
+                                            ) : (
+                                                <span className="text-sm text-text-light dark:text-text-dark flex-1">
+                                                    {addr.address_line}
+                                                    {addr.is_default && <span className="ml-2 text-xs bg-gray-100 dark:bg-gray-800 text-gray-500 px-2 py-0.5 rounded">Default</span>}
+                                                </span>
+                                            )}
+                                        </label>
+                                        <div className="flex items-start gap-1 ml-2 mt-0.5">
+                                            {editingId === addr.id ? (
+                                                <>
+                                                    <button onClick={(e) => saveEditing(addr.id, 'address', e)} className="text-green-600 hover:text-green-700 text-xs font-medium px-2 py-1">Save</button>
+                                                    <button onClick={cancelEditing} className="text-gray-500 hover:text-gray-600 text-xs font-medium px-2 py-1">Cancel</button>
+                                                </>
+                                            ) : (
+                                                <div className="flex items-center gap-1">
+                                                    {!addr.is_default && (
+                                                        <button
+                                                            onClick={(e) => onAddressSetDefault?.(addr.id, e)}
+                                                            className="text-gray-400 hover:text-yellow-500 font-medium p-1 hover:bg-yellow-50 rounded-full transition-colors"
+                                                            title="Make Default"
+                                                        >
+                                                            <Star className="w-4 h-4" />
+                                                        </button>
+                                                    )}
+                                                    <button onClick={(e) => startEditing(addr.id, addr.address_line, e)} className="text-blue-500 hover:text-blue-600 font-medium p-1 hover:bg-blue-50 rounded-full transition-colors" title="Edit">
+                                                        <Pencil className="w-4 h-4" />
+                                                    </button>
+                                                    <button onClick={(e) => onAddressDelete?.(addr.id, e)} className="text-red-500 hover:text-red-600 font-medium p-1 hover:bg-red-50 rounded-full transition-colors" title="Delete">
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                                <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer ${selectedAddressId === 'new' ? 'border-primary bg-primary/5' : 'border-gray-200 dark:border-gray-700'}`}>
+                                    <input
+                                        type="radio"
+                                        name="address_select"
+                                        className="text-primary focus:ring-primary"
+                                        checked={selectedAddressId === 'new'}
+                                        onChange={() => onAddressSelect?.('new')}
+                                    />
+                                    <span className="flex items-center gap-2 text-sm text-text-light dark:text-text-dark">
+                                        <Plus className="w-4 h-4" /> Add New Address
+                                    </span>
+                                </label>
+                                {selectedAddressId === 'new' && (
+                                    <textarea
+                                        className="w-full mt-2 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        id="address"
+                                        placeholder="House no, Road no, Area, City"
+                                        rows={3}
+                                        value={formData.address}
+                                        onChange={onFormDataChange}
+                                    ></textarea>
+                                )}
+                            </div>
+                        ) : (
+                            <textarea
+                                className="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                                id="address"
+                                placeholder="House no, Road no, Area, City"
+                                rows={3}
+                                value={formData.address}
+                                onChange={onFormDataChange}
+                            ></textarea>
+                        )}
                     </div>
 
                     {/* Shipping Method - Desktop Friendly Structure but Responsive */}
@@ -106,7 +343,7 @@ export function CheckoutForm({ shippingMethod, onShippingChange, shippingMethods
                             })}
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
 
             {/* Payment Method */}
