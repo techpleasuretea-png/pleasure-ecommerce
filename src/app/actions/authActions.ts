@@ -131,6 +131,21 @@ export async function login(formData: FormData) {
         error = signInError;
     }
 
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (user && !error) {
+        // Check if user is admin
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+        if (profile?.role === 'admin') {
+            redirect("/admin");
+        }
+    }
+
     const returnTo = formData.get("returnTo") as string;
 
     if (error) {

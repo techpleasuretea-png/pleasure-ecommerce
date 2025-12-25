@@ -158,6 +158,7 @@ export type Database = {
                 Row: {
                     created_at: string | null
                     id: string
+                    order_number: number
                     status: string
                     total: number
                     user_id: string | null
@@ -165,6 +166,7 @@ export type Database = {
                 Insert: {
                     created_at?: string | null
                     id?: string
+                    order_number?: number
                     status: string
                     total: number
                     user_id?: string | null
@@ -172,6 +174,7 @@ export type Database = {
                 Update: {
                     created_at?: string | null
                     id?: string
+                    order_number?: number
                     status?: string
                     total?: number
                     user_id?: string | null
@@ -240,6 +243,7 @@ export type Database = {
                     email: string | null
                     full_name: string | null
                     id: string
+                    role: string
                 }
                 Insert: {
                     avatar_url?: string | null
@@ -247,6 +251,7 @@ export type Database = {
                     email?: string | null
                     full_name?: string | null
                     id: string
+                    role?: string
                 }
                 Update: {
                     avatar_url?: string | null
@@ -254,6 +259,7 @@ export type Database = {
                     email?: string | null
                     full_name?: string | null
                     id?: string
+                    role?: string
                 }
                 Relationships: []
             }
@@ -298,6 +304,36 @@ export type Database = {
                         referencedColumns: ["id"]
                     },
                 ]
+            }
+            shipping_rules: {
+                Row: {
+                    cost: number
+                    created_at: string | null
+                    id: string
+                    is_active: boolean | null
+                    max_order_value: number | null
+                    min_order_value: number | null
+                    name: string
+                }
+                Insert: {
+                    cost: number
+                    created_at?: string | null
+                    id?: string
+                    is_active?: boolean | null
+                    max_order_value?: number | null
+                    min_order_value?: number | null
+                    name: string
+                }
+                Update: {
+                    cost?: number
+                    created_at?: string | null
+                    id?: string
+                    is_active?: boolean | null
+                    max_order_value?: number | null
+                    min_order_value?: number | null
+                    name?: string
+                }
+                Relationships: []
             }
             slideshow: {
                 Row: {
@@ -351,20 +387,17 @@ export type Database = {
     }
 }
 
-
 type PublicSchema = Database[Extract<keyof Database, "public">]
-
-type SchemaName = Exclude<keyof Database, "__InternalSupabase">
 
 export type Tables<
     PublicTableNameOrOptions extends
     | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    | { schema: SchemaName },
-    TableName extends PublicTableNameOrOptions extends { schema: SchemaName }
+    | { schema: keyof Database },
+    TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = PublicTableNameOrOptions extends { schema: SchemaName }
+> = PublicTableNameOrOptions extends { schema: keyof Database }
     ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
             Row: infer R
@@ -384,11 +417,11 @@ export type Tables<
 export type TablesInsert<
     PublicTableNameOrOptions extends
     | keyof PublicSchema["Tables"]
-    | { schema: SchemaName },
-    TableName extends PublicTableNameOrOptions extends { schema: SchemaName }
+    | { schema: keyof Database },
+    TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = PublicTableNameOrOptions extends { schema: SchemaName }
+> = PublicTableNameOrOptions extends { schema: keyof Database }
     ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
         Insert: infer I
     }
@@ -405,11 +438,11 @@ export type TablesInsert<
 export type TablesUpdate<
     PublicTableNameOrOptions extends
     | keyof PublicSchema["Tables"]
-    | { schema: SchemaName },
-    TableName extends PublicTableNameOrOptions extends { schema: SchemaName }
+    | { schema: keyof Database },
+    TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = PublicTableNameOrOptions extends { schema: SchemaName }
+> = PublicTableNameOrOptions extends { schema: keyof Database }
     ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
         Update: infer U
     }
@@ -426,11 +459,11 @@ export type TablesUpdate<
 export type Enums<
     PublicEnumNameOrOptions extends
     | keyof PublicSchema["Enums"]
-    | { schema: SchemaName },
-    EnumName extends PublicEnumNameOrOptions extends { schema: SchemaName }
+    | { schema: keyof Database },
+    EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = PublicEnumNameOrOptions extends { schema: SchemaName }
+> = PublicEnumNameOrOptions extends { schema: keyof Database }
     ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
     : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
@@ -439,13 +472,13 @@ export type Enums<
 export type CompositeTypes<
     PublicCompositeTypeNameOrOptions extends
     | keyof PublicSchema["CompositeTypes"]
-    | { schema: SchemaName },
+    | { schema: keyof Database },
     CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-        schema: SchemaName
+        schema: keyof Database
     }
     ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: SchemaName }
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
     ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
     : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
