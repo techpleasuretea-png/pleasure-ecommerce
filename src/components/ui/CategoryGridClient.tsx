@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Fallback/Mapping for colors based on category name
 // Moved here from Server Component since rendering happens here
@@ -44,30 +45,44 @@ export function CategoryGridClient({ categories }: CategoryGridClientProps) {
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold font-display">Shop by Category</h2>
             </div>
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 md:gap-12">
-                {displayCategories.map((cat) => {
-                    const colorClass = CATEGORY_STYLES[cat.name] || DEFAULT_STYLE;
+            <motion.div layout className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 md:gap-12">
+                <AnimatePresence mode="popLayout">
+                    {displayCategories.map((cat) => {
+                        const colorClass = CATEGORY_STYLES[cat.name] || DEFAULT_STYLE;
 
-                    return (
-                        <Link key={cat.id} href={`/shop?category=${cat.slug}`} className="text-center group block">
-                            <div className={`${colorClass} w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-2 transition-transform duration-300 shadow-sm group-hover:shadow-md`}>
-                                <img
-                                    src={cat.image_url || ''}
-                                    alt={`${cat.name} category icon`}
-                                    className="w-12 h-12 md:w-20 md:h-20 object-contain drop-shadow-sm"
-                                />
-                            </div>
-                            <p className="mt-3 md:mt-4 text-sm md:text-base font-medium group-hover:text-primary transition-colors">{cat.name}</p>
-                        </Link>
-                    );
-                })}
+                        return (
+                            <motion.div
+                                layout
+                                key={cat.id}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <Link href={`/shop?category=${cat.slug}`} className="text-center group block">
+                                    <div className={`${colorClass} w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-2 transition-transform duration-300 shadow-sm group-hover:shadow-md`}>
+                                        <img
+                                            src={cat.image_url || ''}
+                                            alt={`${cat.name} category icon`}
+                                            className="w-12 h-12 md:w-20 md:h-20 object-contain drop-shadow-sm"
+                                        />
+                                    </div>
+                                    <p className="mt-3 md:mt-4 text-sm md:text-base font-medium group-hover:text-primary transition-colors">{cat.name}</p>
+                                </Link>
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
 
                 {/* Toggle Button */}
-                <button
+                <motion.button
+                    layout
                     onClick={() => setIsExpanded(!isExpanded)}
                     className="text-center group flex flex-col items-center cursor-pointer focus:outline-none"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                    <div className="bg-gray-100 dark:bg-gray-800 w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform group-hover:-translate-y-2 transition-all duration-300 group-hover:bg-primary/10 dark:group-hover:bg-primary/20 group-hover:shadow-md">
+                    <div className="bg-gray-100 dark:bg-gray-800 w-24 h-24 md:w-36 md:h-36 mx-auto rounded-full flex items-center justify-center transform transition-all duration-300 group-hover:bg-primary/10 dark:group-hover:bg-primary/20 group-hover:shadow-md">
                         {isExpanded ? (
                             <ChevronUp className="w-8 h-8 md:w-12 md:h-12 text-gray-400 group-hover:text-primary transition-colors" />
                         ) : (
@@ -77,8 +92,8 @@ export function CategoryGridClient({ categories }: CategoryGridClientProps) {
                     <p className="mt-3 md:mt-4 text-sm md:text-base font-medium group-hover:text-primary transition-colors">
                         {isExpanded ? "Show Less" : "See All"}
                     </p>
-                </button>
-            </div>
+                </motion.button>
+            </motion.div>
         </section>
     );
 }

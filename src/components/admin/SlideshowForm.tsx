@@ -40,6 +40,12 @@ export function SlideshowForm({ initialData, action }: SlideshowFormProps) {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!previewUrl) {
+            alert("Please select an image for the slide.");
+            return;
+        }
+
         setIsLoading(true);
         const formData = new FormData(e.currentTarget);
 
@@ -53,6 +59,8 @@ export function SlideshowForm({ initialData, action }: SlideshowFormProps) {
 
         try {
             await action(formData);
+            router.refresh();
+            router.push('/admin/slideshow');
         } catch (error) {
             console.error("Error saving slideshow:", error);
             alert("Failed to save slideshow. Please try again.");

@@ -66,7 +66,7 @@ export default async function AdminOrdersPage() {
                                                 </span>
                                             </td>
                                             <td className="p-4 text-right font-mono font-bold text-sm text-text-light dark:text-text-dark">
-                                                ${order.total_amount.toFixed(2)}
+                                                ৳{order.total_amount.toFixed(2)}
                                             </td>
                                             <td className="p-4 text-right">
                                                 <Link

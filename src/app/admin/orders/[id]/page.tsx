@@ -68,11 +68,11 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                                                 {item.products?.name}
                                             </h3>
                                             <p className="text-xs text-subtext-light dark:text-subtext-dark mt-1">
-                                                {item.quantity} x ${item.price.toFixed(2)}
+                                                {item.quantity} x ৳{item.price.toFixed(2)}
                                             </p>
                                         </div>
                                         <div className="text-left sm:text-right">
-                                            <p className="font-bold text-text-light dark:text-text-dark text-sm">${(item.price * item.quantity).toFixed(2)}</p>
+                                            <p className="font-bold text-text-light dark:text-text-dark text-sm">৳{(item.price * item.quantity).toFixed(2)}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -136,21 +136,21 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-subtext-light dark:text-subtext-dark">Subtotal</span>
-                                <span className="font-bold text-text-light dark:text-text-dark">${(order.total_amount - order.shipping_cost + (order.total_discount || 0)).toFixed(2)}</span>
+                                <span className="font-bold text-text-light dark:text-text-dark">৳{(order.total_amount - order.shipping_cost + (order.total_discount || 0)).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-subtext-light dark:text-subtext-dark">Shipping</span>
-                                <span className="font-bold text-text-light dark:text-text-dark">${order.shipping_cost?.toFixed(2) || "0.00"}</span>
+                                <span className="font-bold text-text-light dark:text-text-dark">৳{order.shipping_cost?.toFixed(2) || "0.00"}</span>
                             </div>
                             {order.total_discount > 0 && (
                                 <div className="flex justify-between text-sm text-green-600">
                                     <span>Discount</span>
-                                    <span className="font-bold">-${order.total_discount.toFixed(2)}</span>
+                                    <span className="font-bold">-৳{order.total_discount.toFixed(2)}</span>
                                 </div>
                             )}
                             <div className="pt-3 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
                                 <span className="font-bold text-text-light dark:text-text-dark">Total</span>
-                                <span className="font-bold text-xl text-primary">${order.total_amount.toFixed(2)}</span>
+                                <span className="font-bold text-xl text-primary">৳{order.total_amount.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>

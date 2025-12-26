@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { AnimatedButton } from "@/components/ui/AnimatedButton";
 
 interface ProductCardProps {
     id: string; // Added ID to props
@@ -89,7 +90,8 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
                 {/* Desktop Buttons */}
                 <div className="hidden md:flex gap-3 mt-4">
                     {stock !== undefined && stock <= 0 ? (
-                        <button
+                        <AnimatedButton
+                            variant={isInWishlist(id) ? "danger" : "outline"}
                             onClick={() => {
                                 if (isInWishlist(id)) {
                                     removeFromWishlist(id);
@@ -97,41 +99,44 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
                                     addToWishlist({ id, name, weight, price, image, stock });
                                 }
                             }}
-                            className={`w-full font-bold py-2.5 rounded-lg text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 ${isInWishlist(id)
-                                ? "bg-red-500 text-white border border-red-500 hover:bg-red-600"
-                                : "bg-surface-light dark:bg-surface-dark border border-primary text-primary hover:bg-primary hover:text-white"
-                                }`}
+                            className="w-full"
                         >
-                            <Heart className={`w-4 h-4 ${isInWishlist(id) ? 'fill-current' : ''}`} />
+                            <Heart className={`w-4 h-4 mr-2 ${isInWishlist(id) ? 'fill-current' : ''}`} />
                             {isInWishlist(id) ? "Remove from Wishlist" : "Add to Wishlist"}
-                        </button>
+                        </AnimatedButton>
                     ) : quantity === 0 ? (
                         <>
-                            <button
+                            <AnimatedButton
                                 onClick={handleAddToCart}
-                                className="w-full bg-primary text-white font-bold py-2.5 rounded-lg text-sm hover:bg-green-600 shadow-md shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2"
+                                isLoading={isCartLoading}
+                                className="w-full"
                             >
-                                <ShoppingCart className="w-4 h-4" /> Add to Cart
-                            </button>
-                            <button className="w-full bg-white dark:bg-transparent border border-gray-200 dark:border-gray-700 text-text-light dark:text-text-dark font-semibold py-2.5 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-all active:scale-95">
+                                <ShoppingCart className="w-4 h-4 mr-2" /> Add to Cart
+                            </AnimatedButton>
+                            <AnimatedButton variant="secondary" className="w-full">
                                 Buy Now
-                            </button>
+                            </AnimatedButton>
                         </>
                     ) : (
                         <div className="w-full flex items-center justify-between bg-primary/10 dark:bg-primary/20 rounded-lg p-1 animate-in zoom-in-95 duration-200 overflow-hidden">
-                            <button
+                            <AnimatedButton
                                 onClick={handleDecrement}
-                                className="w-10 h-10 flex items-center justify-center rounded-md bg-white dark:bg-surface-dark text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
+                                variant="ghost"
+                                size="sm"
+                                disabled={isCartLoading}
+                                className="w-10 h-10 bg-white dark:bg-surface-dark text-primary hover:bg-primary hover:text-white shadow-sm rounded-md p-0"
                             >
                                 <Minus className="w-4 h-4" />
-                            </button>
+                            </AnimatedButton>
                             <span className="font-bold text-primary px-4 tabular-nums">{quantity}</span>
-                            <button
+                            <AnimatedButton
                                 onClick={handleIncrement}
-                                className="w-10 h-10 flex items-center justify-center rounded-md bg-primary text-white hover:bg-green-600 transition-all shadow-md shadow-primary/20"
+                                size="sm"
+                                disabled={isCartLoading}
+                                className="w-10 h-10 shadow-md shadow-primary/20 rounded-md p-0"
                             >
                                 <Plus className="w-4 h-4" />
-                            </button>
+                            </AnimatedButton>
                         </div>
                     )}
                 </div>
@@ -139,7 +144,8 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
                 {/* Mobile Buttons */}
                 <div className="flex md:hidden items-center gap-2 mt-3">
                     {stock !== undefined && stock <= 0 ? (
-                        <button
+                        <AnimatedButton
+                            variant={isInWishlist(id) ? "danger" : "outline"}
                             onClick={() => {
                                 if (isInWishlist(id)) {
                                     removeFromWishlist(id);
@@ -147,39 +153,43 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
                                     addToWishlist({ id, name, weight, price, image, stock });
                                 }
                             }}
-                            className={`flex-1 font-bold h-10 rounded-lg text-sm transition-all active:scale-95 flex items-center justify-center gap-2 ${isInWishlist(id)
-                                ? "bg-red-500 text-white border border-red-500 hover:bg-red-600"
-                                : "bg-surface-light dark:bg-surface-dark border border-primary text-primary hover:bg-primary hover:text-white"
-                                }`}
+                            className="flex-1 h-10 text-sm"
                         >
-                            <Heart className={`w-5 h-5 ${isInWishlist(id) ? 'fill-current' : ''}`} />
+                            <Heart className={`w-5 h-5 mr-2 ${isInWishlist(id) ? 'fill-current' : ''}`} />
                             {isInWishlist(id) ? "Remove" : "Add to Wishlist"}
-                        </button>
+                        </AnimatedButton>
                     ) : quantity === 0 ? (
                         <>
-                            <button className="flex-1 bg-primary text-white font-bold h-10 rounded-lg text-sm hover:bg-opacity-90 active:scale-95 transition-all">Buy</button>
-                            <button
+                            <AnimatedButton className="flex-1 h-10 text-sm">Buy</AnimatedButton>
+                            <AnimatedButton
+                                variant="outline"
                                 onClick={handleAddToCart}
-                                className="h-10 w-10 flex items-center justify-center rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+                                isLoading={isCartLoading}
+                                className="h-10 w-10 p-0 flex items-center justify-center"
                             >
                                 <ShoppingCart className="w-5 h-5" />
-                            </button>
+                            </AnimatedButton>
                         </>
                     ) : (
                         <div className="flex-1 flex items-center justify-between bg-primary/10 dark:bg-primary/20 rounded-lg p-1 animate-in slide-in-from-right-2 duration-300">
-                            <button
+                            <AnimatedButton
                                 onClick={handleDecrement}
-                                className="w-8 h-8 flex items-center justify-center rounded-md bg-white dark:bg-surface-dark text-primary shadow-sm"
+                                variant="ghost"
+                                size="sm"
+                                disabled={isCartLoading}
+                                className="w-8 h-8 bg-white dark:bg-surface-dark text-primary shadow-sm rounded-md p-0"
                             >
                                 <Minus className="w-4 h-4" />
-                            </button>
+                            </AnimatedButton>
                             <span className="font-bold text-primary tabular-nums">{quantity}</span>
-                            <button
+                            <AnimatedButton
                                 onClick={handleIncrement}
-                                className="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-white shadow-md"
+                                size="sm"
+                                disabled={isCartLoading}
+                                className="w-8 h-8 shadow-md rounded-md p-0"
                             >
                                 <Plus className="w-4 h-4" />
-                            </button>
+                            </AnimatedButton>
                         </div>
                     )}
                 </div>

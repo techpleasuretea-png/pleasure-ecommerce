@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { AnimatedButton } from "@/components/ui/AnimatedButton";
 
 export interface Slide {
     id: string;
@@ -22,7 +24,6 @@ interface HeroSlideshowProps {
 export function HeroSlideshow({ slides }: HeroSlideshowProps) {
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    // Filter out dummy or invalid slides if necessary
     const validSlides = slides && slides.length > 0 ? slides : [];
 
     useEffect(() => {
@@ -36,7 +37,6 @@ export function HeroSlideshow({ slides }: HeroSlideshowProps) {
     }, [validSlides.length]);
 
     if (validSlides.length === 0) {
-        // Fallback or empty state
         return null;
     }
 
@@ -45,24 +45,44 @@ export function HeroSlideshow({ slides }: HeroSlideshowProps) {
     return (
         <div className="relative group w-full">
 
-            {/* --- Mobile View (container query style from original MobileHero) --- */}
+            {/* --- Mobile View --- */}
+            {/* Keeping mobile simple but adding basic key animation for content refresh */}
             <div className="md:hidden pt-4 pb-2 px-4">
-                <div
-                    className="relative bg-cover bg-center flex flex-col justify-end overflow-hidden rounded-xl min-h-[220px] transition-all duration-500 ease-in-out"
+                <motion.div
+                    key={slide.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative bg-cover bg-center flex flex-col justify-end overflow-hidden rounded-xl min-h-[220px]"
                     style={{
                         backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 60%), url("${slide.image_url}")`,
                     }}
                 >
                     <div className="relative z-10 p-5 text-white">
-                        <h2 className="text-xl font-bold mb-1">{slide.title}</h2>
-                        <p className="text-sm opacity-90 line-clamp-2">{slide.subtitle}</p>
+                        <motion.h2
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-xl font-bold mb-1"
+                        >
+                            {slide.title}
+                        </motion.h2>
+                        <motion.p
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-sm opacity-90 line-clamp-2"
+                        >
+                            {slide.subtitle}
+                        </motion.p>
                         {slide.button_text && (
-                            <Link
-                                href={slide.button_link || '/shop'}
-                                className="mt-3 inline-block rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-primary active:scale-95 transition-transform"
-                            >
-                                {slide.button_text}
-                            </Link>
+                            <div className="mt-3">
+                                <Link href={slide.button_link || '/shop'}>
+                                    <AnimatedButton size="sm" variant="secondary" className="bg-white text-primary border-none hover:bg-gray-100">
+                                        {slide.button_text}
+                                    </AnimatedButton>
+                                </Link>
+                            </div>
                         )}
                     </div>
 
@@ -78,51 +98,72 @@ export function HeroSlideshow({ slides }: HeroSlideshowProps) {
                             />
                         ))}
                     </div>
-                </div>
+                </motion.div>
             </div>
 
 
             {/* --- Desktop View --- */}
             <div className="hidden md:flex justify-center w-full mx-auto max-w-[1600px] px-4 md:px-8 mt-4">
-                <div className="relative h-[500px] w-full rounded-2xl overflow-hidden items-center justify-center text-center">
-                    {validSlides.map((s, index) => (
-                        <div
-                            key={s.id}
-                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-                                }`}
+                <div className="relative h-[500px] w-full rounded-2xl overflow-hidden items-center justify-center text-center bg-gray-900">
+                    <AnimatePresence mode="popLayout">
+                        <motion.div
+                            key={slide.id}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="absolute inset-0 w-full h-full"
                         >
                             {/* Image */}
                             <div className="absolute inset-0 w-full h-full">
                                 <Image
-                                    src={s.image_url}
-                                    alt={s.title}
+                                    src={slide.image_url}
+                                    alt={slide.title}
                                     fill
                                     className="object-cover"
-                                    priority={index === 0}
+                                    priority
                                 />
                                 <div className="absolute inset-0 bg-black/40"></div>
                             </div>
 
                             {/* Content */}
                             <div className="relative z-20 flex flex-col items-center justify-center h-full text-white px-4">
-                                <h1 className="text-4xl md:text-6xl font-bold font-display leading-tight drop-shadow-md">
-                                    {s.title}
-                                </h1>
-                                <p className="mt-4 max-w-xl mx-auto text-lg text-gray-200 drop-shadow-sm">
-                                    {s.subtitle}
-                                </p>
-
-                                {s.button_text && (
-                                    <Link
-                                        href={s.button_link || '/shop'}
-                                        className="mt-8 inline-flex items-center gap-2 bg-primary text-white font-semibold py-3 px-8 rounded-lg hover:opacity-90 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/30"
+                                <div className="overflow-hidden">
+                                    <motion.h1
+                                        initial={{ y: 50, opacity: 0 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+                                        className="text-4xl md:text-6xl font-bold font-display leading-tight drop-shadow-md"
                                     >
-                                        {s.button_text}
-                                    </Link>
+                                        {slide.title}
+                                    </motion.h1>
+                                </div>
+                                <motion.p
+                                    initial={{ y: 30, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ duration: 0.6, delay: 0.4 }}
+                                    className="mt-4 max-w-xl mx-auto text-lg text-gray-200 drop-shadow-sm"
+                                >
+                                    {slide.subtitle}
+                                </motion.p>
+
+                                {slide.button_text && (
+                                    <motion.div
+                                        initial={{ scale: 0.8, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        transition={{ duration: 0.5, delay: 0.6 }}
+                                        className="mt-8"
+                                    >
+                                        <Link href={slide.button_link || '/shop'}>
+                                            <AnimatedButton size="lg" className="px-8 py-3 text-lg shadow-lg shadow-primary/30">
+                                                {slide.button_text}
+                                            </AnimatedButton>
+                                        </Link>
+                                    </motion.div>
                                 )}
                             </div>
-                        </div>
-                    ))}
+                        </motion.div>
+                    </AnimatePresence>
 
                     {/* Desktop Navigation Arrows */}
                     {validSlides.length > 1 && (

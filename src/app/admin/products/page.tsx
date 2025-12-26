@@ -72,7 +72,7 @@ export default async function AdminProductsPage({
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right font-medium text-text-light dark:text-text-dark">
-                                            Tk {product.selling_price}
+                                            ৳{product.selling_price}
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${product.stock > 10

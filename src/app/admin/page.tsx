@@ -30,7 +30,7 @@ export default async function AdminDashboardPage() {
                     </div>
                     <div className="relative z-10">
                         <h3 className="text-sm font-bold text-subtext-light dark:text-subtext-dark uppercase tracking-wider mb-2">Total Revenue</h3>
-                        <p className="text-3xl font-black text-green-600 dark:text-green-500">${stats.totalRevenue.toFixed(2)}</p>
+                        <p className="text-3xl font-black text-green-600 dark:text-green-500">৳{stats.totalRevenue.toFixed(2)}</p>
                     </div>
                 </div>
                 <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden group">
@@ -80,15 +80,15 @@ export default async function AdminDashboardPage() {
                                         </td>
                                         <td className="p-4">
                                             <span className={`inline-flex px-2 py-1 rounded text-xs font-bold capitalize ${order.status === 'delivered' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                                                    order.status === 'shipping' || order.status === 'shipped' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
-                                                        order.status === 'cancelled' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
-                                                            'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                                                order.status === 'shipping' || order.status === 'shipped' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
+                                                    order.status === 'cancelled' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
+                                                        'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
                                                 }`}>
                                                 {order.status}
                                             </span>
                                         </td>
                                         <td className="p-4 text-right font-mono font-bold text-sm text-text-light dark:text-text-dark">
-                                            ${order.total_amount.toFixed(2)}
+                                            ৳{order.total_amount.toFixed(2)}
                                         </td>
                                     </tr>
                                 ))}

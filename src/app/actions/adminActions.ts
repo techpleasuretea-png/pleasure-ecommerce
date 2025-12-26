@@ -81,7 +81,7 @@ export async function createSlideshow(formData: FormData) {
 
     revalidatePath('/admin/slideshow');
     revalidatePath('/'); // Homepage
-    redirect('/admin/slideshow');
+    // redirect('/admin/slideshow'); // Handled in client
 }
 
 export async function updateSlideshow(id: string, formData: FormData) {
@@ -133,7 +133,7 @@ export async function updateSlideshow(id: string, formData: FormData) {
 
     revalidatePath('/admin/slideshow');
     revalidatePath('/');
-    redirect('/admin/slideshow');
+    // redirect('/admin/slideshow'); // Handled in client
 }
 
 export async function deleteSlideshow(id: string) {
