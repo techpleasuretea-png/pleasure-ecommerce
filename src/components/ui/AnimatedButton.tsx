@@ -2,13 +2,14 @@
 
 import { motion, HTMLMotionProps } from "framer-motion";
 import { Loader2 } from "lucide-react";
-import { forwardRef } from "react";
+import { forwardRef, ReactNode } from "react";
 import { cn } from "@/lib/utils"; // Assuming cn is in lib/utils, if not I will use clsx/tailwind-merge directly or check utils location
 
 interface AnimatedButtonProps extends HTMLMotionProps<"button"> {
     isLoading?: boolean;
     variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
     size?: "sm" | "md" | "lg";
+    children?: ReactNode;
 }
 
 export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
