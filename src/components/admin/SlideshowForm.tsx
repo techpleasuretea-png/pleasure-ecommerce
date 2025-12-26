@@ -20,14 +20,39 @@ interface SlideshowFormProps {
 export function SlideshowForm({ initialData, action }: SlideshowFormProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.image_url || null);
+    const [removeImage, setRemoveImage] = useState(false);
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setRemoveImage(false);
+            const url = URL.createObjectURL(file);
+            setPreviewUrl(url);
+        }
+    };
+
+    const handleRemoveImage = () => {
+        setPreviewUrl(null);
+        setRemoveImage(true);
+        // Reset file input if needed (usually by key or ref, but simple state works for preview)
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
         const formData = new FormData(e.currentTarget);
+
+        if (removeImage) {
+            formData.set('remove_image', 'true');
+        }
+        // existing_image_url is needed to keep the old image if no new file is chosen and not removed
+        if (initialData?.image_url) {
+            formData.set('existing_image_url', initialData.image_url);
+        }
+
         try {
             await action(formData);
-            // router.push("/admin/slideshow"); // Action should handle redirect
         } catch (error) {
             console.error("Error saving slideshow:", error);
             alert("Failed to save slideshow. Please try again.");
@@ -60,15 +85,43 @@ export function SlideshowForm({ initialData, action }: SlideshowFormProps) {
                 </div>
 
                 <div className="space-y-2 md:col-span-2">
-                    <label className="text-sm font-bold text-text-light dark:text-text-dark">Image URL <span className="text-red-500">*</span></label>
-                    <input
-                        name="image_url"
-                        defaultValue={initialData?.image_url || ""}
-                        required
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                        placeholder="https://example.com/image.jpg"
-                    />
-                    <p className="text-xs text-subtext-light dark:text-subtext-dark">Provide a direct link to the image.</p>
+                    <label className="text-sm font-bold text-text-light dark:text-text-dark">Image</label>
+
+                    {/* Hidden inputs to maintain state for server action */}
+                    {/* We don't strictly need image_url input anymore if we rely on file upload, but keeping a fallback or just file input is fine. 
+                        The server action checks for 'image_file'. 
+                        To handle 'keep existing' vs 'remove', we use helper state.
+                    */}
+
+                    <div className="flex flex-col gap-4">
+                        {previewUrl ? (
+                            <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 group">
+                                <img src={previewUrl} alt="Slide preview" className="w-full h-full object-cover" />
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <button
+                                        type="button"
+                                        onClick={handleRemoveImage}
+                                        className="px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
+                                    >
+                                        Remove Image
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center text-subtext-light dark:text-subtext-dark hover:border-primary/50 transition-colors bg-gray-50 dark:bg-gray-800/50">
+                                <span className="mb-2 text-sm">No image selected</span>
+                            </div>
+                        )}
+
+                        <input
+                            type="file"
+                            name="image_file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="block w-full text-sm text-subtext-light dark:text-subtext-dark file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
+                        />
+                        <p className="text-xs text-subtext-light dark:text-subtext-dark">Recommended size: 1920x1080px (16:9)</p>
+                    </div>
                 </div>
 
                 <div className="space-y-2">

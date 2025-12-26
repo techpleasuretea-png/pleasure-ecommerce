@@ -8,9 +8,8 @@ interface ShippingFormProps {
     initialData?: {
         name: string;
         cost: number;
-        min_order_value: number | null;
-        max_order_value: number | null;
-        is_active: boolean | null;
+        discount_threshold?: number | null;
+        discounted_cost?: number | null;
     };
     action: (formData: FormData) => Promise<void>;
 }
@@ -26,8 +25,8 @@ export function ShippingForm({ initialData, action }: ShippingFormProps) {
         try {
             await action(formData);
         } catch (error) {
-            console.error("Error saving shipping rule:", error);
-            alert("Failed to save shipping rule. Please try again.");
+            console.error("Error saving shipping method:", error);
+            alert("Failed to save shipping method. Please try again.");
         } finally {
             setIsLoading(false);
         }
@@ -37,7 +36,7 @@ export function ShippingForm({ initialData, action }: ShippingFormProps) {
         <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2 md:col-span-2">
-                    <label className="text-sm font-bold text-text-light dark:text-text-dark">Rule Name <span className="text-red-500">*</span></label>
+                    <label className="text-sm font-bold text-text-light dark:text-text-dark">Method Name <span className="text-red-500">*</span></label>
                     <input
                         name="name"
                         defaultValue={initialData?.name || ""}
@@ -60,45 +59,29 @@ export function ShippingForm({ initialData, action }: ShippingFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-bold text-text-light dark:text-text-dark">Min Order Value</label>
+                    <label className="text-sm font-bold text-text-light dark:text-text-dark">Free/Discount Threshold</label>
                     <input
                         type="number"
                         step="0.01"
-                        name="min_order_value"
-                        defaultValue={initialData?.min_order_value || ""}
+                        name="discount_threshold"
+                        defaultValue={initialData?.discount_threshold || ""}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                        placeholder="Optional"
+                        placeholder="Order value for discount"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-bold text-text-light dark:text-text-dark">Max Order Value</label>
+                    <label className="text-sm font-bold text-text-light dark:text-text-dark">Discounted Cost</label>
                     <input
                         type="number"
                         step="0.01"
-                        name="max_order_value"
-                        defaultValue={initialData?.max_order_value || ""}
+                        name="discounted_cost"
+                        defaultValue={initialData?.discounted_cost || ""}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent text-text-light dark:text-text-dark focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                        placeholder="Optional"
+                        placeholder="Cost after threshold (e.g. 0)"
                     />
                 </div>
 
-                <div className="space-y-2 flex items-center justify-between md:col-span-2 p-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
-                    <div>
-                        <span className="block text-sm font-bold text-text-light dark:text-text-dark">Active Status</span>
-                        <span className="text-xs text-subtext-light dark:text-subtext-dark">Enable this shipping option</span>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                            type="checkbox"
-                            name="is_active"
-                            value="true"
-                            defaultChecked={initialData?.is_active ?? true}
-                            className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
-                    </label>
-                </div>
             </div>
 
             <div className="flex gap-4 pt-4 border-t border-gray-100 dark:border-gray-800">
@@ -115,7 +98,7 @@ export function ShippingForm({ initialData, action }: ShippingFormProps) {
                     className="flex-1 px-6 py-3 rounded-xl font-bold bg-primary text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                     {isLoading && <Loader2 className="w-5 h-5 animate-spin" />}
-                    Save Rule
+                    Save Method
                 </button>
             </div>
         </form>
