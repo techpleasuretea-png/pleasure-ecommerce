@@ -1,11 +1,17 @@
 import { getAdminProducts } from "@/app/actions/adminActions";
+import AdminProductSearch from "@/components/admin/AdminProductSearch";
 import DeleteProductButton from "@/components/admin/DeleteProductButton";
 import Image from "next/image";
 import Link from "next/link";
-import { Plus, Search, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2 } from "lucide-react";
 
-export default async function AdminProductsPage() {
-    const products = await getAdminProducts();
+export default async function AdminProductsPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ search?: string }>;
+}) {
+    const { search } = await searchParams;
+    const products = await getAdminProducts(search);
 
     return (
         <div className="space-y-8">
@@ -27,13 +33,7 @@ export default async function AdminProductsPage() {
             {/* List */}
             <div className="bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
                 <div className="p-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 flex gap-4">
-                    <div className="relative flex-1 max-w-md">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-subtext-light dark:text-subtext-dark" />
-                        <input
-                            placeholder="Search products..."
-                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                        />
-                    </div>
+                    <AdminProductSearch />
                 </div>
 
                 <div className="overflow-x-auto">

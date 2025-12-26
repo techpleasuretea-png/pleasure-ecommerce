@@ -413,12 +413,11 @@ export async function getAdminStats() {
 }
 
 // --- Products ---
-export async function getAdminProducts() {
+export async function getAdminProducts(query?: string) {
     await requireAdmin();
     const supabase = await createClient();
-    // Select * to be safe with column names like selling_price vs price
-    // and explicitly fetch relation for images and category
-    const { data, error } = await supabase
+
+    let dbQuery = supabase
         .from('products')
         .select(`
             *,
@@ -429,6 +428,12 @@ export async function getAdminProducts() {
             category:categories(name)
         `)
         .order('created_at', { ascending: false });
+
+    if (query) {
+        dbQuery = dbQuery.ilike('name', `%${query}%`);
+    }
+
+    const { data, error } = await dbQuery;
 
     if (error) {
         console.error("Error fetching admin products:", error);
