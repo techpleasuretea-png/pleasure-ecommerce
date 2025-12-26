@@ -5,8 +5,9 @@ import { getAdminOrderById, updateOrderStatus } from "@/app/actions/adminActions
 import { notFound } from "next/navigation";
 import { OrderStatusUpdate } from "@/components/admin/OrderStatusUpdate";
 
-export default async function AdminOrderDetailPage({ params }: { params: { id: string } }) {
-    const order = await getAdminOrderById(params.id);
+export default async function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const order = await getAdminOrderById(id);
 
     if (!order) {
         notFound();
@@ -28,11 +29,11 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
                 <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
                     <div>
                         <h1 className="text-2xl font-bold font-display text-text-light dark:text-text-dark flex items-center gap-3">
-                            Order #{order.order_number || order.id.slice(0, 8)}
+                            Order #{order.order_number || order.id?.slice(0, 8)}
                         </h1>
                         <p className="text-sm text-subtext-light dark:text-subtext-dark mt-1 flex items-center gap-2">
                             <Calendar className="w-4 h-4" />
-                            Placed on {new Date(order.created_at).toLocaleString()}
+                            Placed on {order.created_at ? new Date(order.created_at).toLocaleString() : 'N/A'}
                         </p>
                     </div>
 

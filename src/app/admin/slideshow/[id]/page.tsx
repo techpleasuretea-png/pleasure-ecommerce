@@ -3,12 +3,13 @@ import { updateSlideshow } from "@/app/actions/adminActions";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 
-export default async function EditSlideshowPage({ params }: { params: { id: string } }) {
+export default async function EditSlideshowPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const supabase = await createClient();
     const { data: slide } = await supabase
         .from('slideshow')
         .select('*')
-        .eq('id', params.id)
+        .eq('id', id)
         .single();
 
     if (!slide) {

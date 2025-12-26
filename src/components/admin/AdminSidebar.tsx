@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, Layers, Truck, Image, LogOut, Settings } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Layers, Truck, Image, LogOut, Settings, Package } from "lucide-react";
 import { logout } from "@/app/actions/authActions";
 
 const sidebarItems = [
@@ -15,6 +15,11 @@ const sidebarItems = [
         title: "Orders",
         href: "/admin/orders",
         icon: ShoppingBag,
+    },
+    {
+        title: "Products",
+        href: "/admin/products",
+        icon: Package,
     },
     {
         title: "Categories",
