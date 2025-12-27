@@ -23,7 +23,7 @@ export function ProductImageGallery({ images, discount }: ProductImageGalleryPro
     return (
         <div className="w-full">
             {/* Main Image Container */}
-            <div className="relative aspect-square bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden mb-4 group">
+            <div className="relative aspect-video md:aspect-square bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden mb-4 group">
                 <Image
                     src={images[selectedImage]}
                     alt="Product Image"
