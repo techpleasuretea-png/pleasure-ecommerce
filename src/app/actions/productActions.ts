@@ -126,6 +126,7 @@ export async function fetchProducts({
             return {
                 id: product.id,
                 name: product.name,
+                slug: product.slug, // Added slug
                 weight: product.weight,
                 price: Number(product.selling_price),
                 originalPrice: product.mrp ? Number(product.mrp) : undefined,
@@ -149,6 +150,62 @@ export async function fetchProducts({
     }
 }
 
+export async function getProductBySlug(slug: string) {
+    try {
+        const { data: product, error } = await supabase
+            .from('products')
+            .select(`
+                *,
+                product_images (
+                    image_url,
+                    is_primary
+                ),
+                category:categories (
+                    name,
+                    slug
+                )
+            `)
+            .eq('slug', slug)
+            .single();
+
+        if (error) throw error;
+        if (!product) return null;
+
+        const images = product.product_images?.map((img: any) => img.image_url) || ["/placeholder.png"];
+        // Ensure primary image is first if possible, or just pass array. 
+        // Logic: if mapped correctly, frontend handles it. 
+        // Let's sort images so primary is first.
+        const sortedImages = product.product_images?.sort((a: any, b: any) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0)).map((img: any) => img.image_url) || ["/placeholder.png"];
+
+        return {
+            id: product.id,
+            name: product.name,
+            slug: product.slug,
+            weight: product.weight,
+            price: Number(product.selling_price),
+            originalPrice: product.mrp ? Number(product.mrp) : undefined,
+            discount: product.discount,
+            images: sortedImages,
+            description: product.description,
+            rating: 4.5, // Mock rating usually, or fetch from reviews table
+            reviews: 0, // Mock reviews count or fetch
+            sku: product.sku || product.id.slice(0, 8).toUpperCase(),
+            category: product.category ? [product.category.name] : [],
+            tags: product.tags || [],
+            nutrition: product.nutrition_info || {}, // Assuming nutrition_info column exists JSONB
+            origin: {
+                location: "Bangladesh",
+                description: product.origin_description || "Sourced locally."
+            },
+            stock: product.stock
+        };
+
+    } catch (error) {
+        console.error("Error fetching product by slug:", error);
+        return null;
+    }
+}
+
 export async function getSearchSuggestions(query: string) {
     if (!query || query.length < 2) return [];
 
@@ -159,6 +216,7 @@ export async function getSearchSuggestions(query: string) {
                 id,
                 name,
                 selling_price,
+                slug,
                 product_images (
                     image_url,
                     is_primary
@@ -174,12 +232,60 @@ export async function getSearchSuggestions(query: string) {
             return {
                 id: product.id,
                 name: product.name,
+                slug: product.slug,
                 price: Number(product.selling_price),
                 image: primaryImage?.image_url || "/placeholder.png",
             };
         });
     } catch (error) {
         console.error("Error fetching suggestions:", error);
+        return [];
+    }
+}
+
+export async function saveSearchQuery(query: string) {
+    if (!query || query.trim().length === 0) return;
+
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const user_id = session?.user?.id;
+
+        await supabase.from('search_history').insert({
+            query: query.trim(),
+            user_id: user_id || null
+        });
+
+    } catch (error) {
+        console.error("Error saving search query:", error);
+    }
+}
+
+export async function getRecentSearches() {
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const user_id = session?.user?.id;
+
+        let query = supabase
+            .from('search_history')
+            .select('query, created_at')
+            .order('created_at', { ascending: false });
+
+        if (user_id) {
+            query = query.eq('user_id', user_id);
+        } else {
+            return [];
+        }
+
+        const { data, error } = await query.limit(10);
+
+        if (error) throw error;
+
+        const uniqueQueries = Array.from(new Set((data || []).map(item => item.query)));
+
+        return uniqueQueries.slice(0, 5);
+
+    } catch (error) {
+        console.error("Error fetching recent searches:", error);
         return [];
     }
 }

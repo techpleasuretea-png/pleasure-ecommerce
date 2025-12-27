@@ -17,8 +17,8 @@ export function ProductDetailsTabs({ product }: ProductDetailsTabsProps) {
                 <button
                     onClick={() => setActiveTab("description")}
                     className={`pb-4 border-b-2 font-semibold text-lg transition-colors ${activeTab === "description"
-                            ? "border-primary text-primary"
-                            : "border-transparent text-subtext-light dark:text-subtext-dark hover:text-primary"
+                        ? "border-primary text-primary"
+                        : "border-transparent text-subtext-light dark:text-subtext-dark hover:text-primary"
                         }`}
                 >
                     Description
@@ -26,8 +26,8 @@ export function ProductDetailsTabs({ product }: ProductDetailsTabsProps) {
                 <button
                     onClick={() => setActiveTab("reviews")}
                     className={`pb-4 border-b-2 font-semibold text-lg transition-colors ${activeTab === "reviews"
-                            ? "border-primary text-primary"
-                            : "border-transparent text-subtext-light dark:text-subtext-dark hover:text-primary"
+                        ? "border-primary text-primary"
+                        : "border-transparent text-subtext-light dark:text-subtext-dark hover:text-primary"
                         }`}
                 >
                     Reviews ({product.reviews})
@@ -55,8 +55,8 @@ export function ProductDetailsTabs({ product }: ProductDetailsTabsProps) {
                                         <Globe className="w-8 h-8" />
                                     </div>
                                     <div>
-                                        <p className="font-bold text-text-light dark:text-text-dark text-lg">{product.origin.location}</p>
-                                        <p className="text-sm mt-1">{product.origin.description}</p>
+                                        <p className="font-bold text-text-light dark:text-text-dark text-lg">{product.origin?.location || "Unknown"}</p>
+                                        <p className="text-sm mt-1">{product.origin?.description || "No origin description available."}</p>
                                     </div>
                                 </div>
                             </div>
@@ -66,13 +66,13 @@ export function ProductDetailsTabs({ product }: ProductDetailsTabsProps) {
                             <h3 className="font-bold text-lg mb-4">Nutrition Facts</h3>
                             <p className="text-xs text-subtext-light dark:text-subtext-dark mb-4">Per 100g serving</p>
                             <div className="space-y-3 text-sm">
-                                <NutritionRow label="Calories" value={product.nutrition.calories} bold />
-                                <NutritionRow label="Total Fat" value={product.nutrition.fat} bold />
-                                <NutritionRow label="Cholesterol" value={product.nutrition.cholesterol} bold />
-                                <NutritionRow label="Sodium" value={product.nutrition.sodium} bold />
-                                <NutritionRow label="Total Carbohydrates" value={product.nutrition.carbohydrates} bold />
-                                <NutritionRow label="Dietary Fiber" value={product.nutrition.fiber} indent />
-                                <NutritionRow label="Protein" value={product.nutrition.protein} bold />
+                                <NutritionRow label="Calories" value={product.nutrition?.calories} bold />
+                                <NutritionRow label="Total Fat" value={product.nutrition?.fat} bold />
+                                <NutritionRow label="Cholesterol" value={product.nutrition?.cholesterol} bold />
+                                <NutritionRow label="Sodium" value={product.nutrition?.sodium} bold />
+                                <NutritionRow label="Total Carbohydrates" value={product.nutrition?.carbohydrates} bold />
+                                <NutritionRow label="Dietary Fiber" value={product.nutrition?.fiber} indent />
+                                <NutritionRow label="Protein" value={product.nutrition?.protein} bold />
                             </div>
                         </div>
                     </>
@@ -90,7 +90,8 @@ export function ProductDetailsTabs({ product }: ProductDetailsTabsProps) {
     );
 }
 
-function NutritionRow({ label, value, bold, indent }: { label: string; value: string | number; bold?: boolean; indent?: boolean }) {
+function NutritionRow({ label, value, bold, indent }: { label: string; value: string | number | undefined; bold?: boolean; indent?: boolean }) {
+    if (!value) return null; // Hide if no value
     return (
         <div className={`flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2 ${indent ? "pl-4 text-subtext-light dark:text-subtext-dark" : ""}`}>
             <span>{label}</span>

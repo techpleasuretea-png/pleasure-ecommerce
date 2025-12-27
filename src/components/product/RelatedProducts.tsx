@@ -7,6 +7,7 @@ export function RelatedProducts() {
         {
             id: "related-1",
             name: "Sourdough Bread",
+            slug: "sourdough-bread",
             weight: "500g",
             price: 6.50,
             originalPrice: 7.65,
@@ -16,6 +17,7 @@ export function RelatedProducts() {
         {
             id: "related-2",
             name: "Free-Range Eggs",
+            slug: "free-range-eggs",
             weight: "1 dozen",
             price: 7.99,
             originalPrice: 8.88,
@@ -26,6 +28,7 @@ export function RelatedProducts() {
         {
             id: "related-3",
             name: "Juicy Strawberries",
+            slug: "juicy-strawberries",
             weight: "500g",
             price: 5.50,
             originalPrice: 7.33,
@@ -35,6 +38,7 @@ export function RelatedProducts() {
         {
             id: "related-4",
             name: "Organic Whole Milk",
+            slug: "organic-whole-milk",
             weight: "1L",
             price: 3.99,
             image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCtUIriRHMO78Lha6iwa0djf40KrA7NUKzm65pZn7NmyUTbERKiDAsYeidSD_j3nyKWQf3KGxcIQQfDrA7BsrbKfzORwZUv8Gz4H9tY3FFL489kPbsurGIdMPxYiVbcsW3UiuFAcVOvpK1nAWgGTdg0mXv1YFHQMpZADGc0yqyhaO4w1vcPGg0xjrGrFUxS-B84PNsvXB7P1l-_MQ17WFgbZEK7YoKYGSwmWQyqKHLqHKjJZsPfTe6HwEchNm8M6d864DJGIUFmfJ8",

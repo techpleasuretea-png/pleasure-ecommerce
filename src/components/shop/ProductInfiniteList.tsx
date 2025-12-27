@@ -6,8 +6,9 @@ import { fetchProducts } from "@/app/actions/productActions";
 import { Loader2 } from "lucide-react";
 
 interface Product {
-    id: string; // or number, depends on DB but server action maps to what? Server action output had id.
+    id: string;
     name: string;
+    slug: string; // Added slug
     weight: string;
     price: number;
     originalPrice?: number;
@@ -26,12 +27,7 @@ interface ProductInfiniteListProps {
 export function ProductInfiniteList({ initialProducts, searchParams }: ProductInfiniteListProps) {
     const [products, setProducts] = useState<Product[]>(initialProducts);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true); // Assume true initially or check count? 
-    // Actually server action returns hasMore.
-    // Ideally initial load should also give hasMore. 
-    // But page component fetches initial list directly or via server action? 
-    // If page fetches via server action, great. If manually, we might guess.
-    // Let's assume initially we have more unless < 12 items.
+    const [hasMore, setHasMore] = useState(true);
 
     const [loading, setLoading] = useState(false);
     const observerTarget = useRef<HTMLDivElement>(null);
@@ -50,19 +46,13 @@ export function ProductInfiniteList({ initialProducts, searchParams }: ProductIn
         const nextPage = page + 1;
 
         // Prepare filters from searchParams
-        // Note: searchParams values are strings usually.
-        // We need to match FetchProductsOptions interface
         const filters = {
             page: nextPage,
             limit: 12,
             search: searchParams.q,
             featured: searchParams.featured === 'true',
             onSale: searchParams.onSale === 'true',
-            categorySlugs: searchParams.category ? [searchParams.category] : [], // Currently single category supported in UI? Or array? Sidebar uses array logic but URL usually ?category=slug. 
-            // Sidebar modification: "Filters" usually accumulate? 
-            // Looking at ShopPage previously:
-            // const categorySlug = searchParams.category;
-            // Yes, single slug.
+            categorySlugs: searchParams.category ? [searchParams.category] : [],
             minPrice: searchParams.min ? Number(searchParams.min) : undefined,
             maxPrice: searchParams.max ? Number(searchParams.max) : undefined,
             sort: searchParams.sort,
@@ -113,6 +103,7 @@ export function ProductInfiniteList({ initialProducts, searchParams }: ProductIn
                         key={product.id}
                         id={product.id}
                         name={product.name}
+                        slug={product.slug}
                         weight={product.weight}
                         price={product.price}
                         originalPrice={product.originalPrice}

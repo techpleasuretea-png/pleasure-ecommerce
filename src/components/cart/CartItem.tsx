@@ -1,9 +1,11 @@
 import { Trash2, Plus, Minus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link"; // Added Link import
 
 interface CartItemProps {
     id: string;
     name: string;
+    slug: string; // Added slug
     weight: string;
     price: number;
     originalPrice?: number;
@@ -15,17 +17,21 @@ interface CartItemProps {
     onRemove: () => void;
 }
 
-export function CartItem({ id, name, weight, price, originalPrice, savings, image, quantity, onIncrement, onDecrement, onRemove }: CartItemProps) {
+export function CartItem({ id, name, slug, weight, price, originalPrice, savings, image, quantity, onIncrement, onDecrement, onRemove }: CartItemProps) {
     return (
         <div className="group relative">
             {/* Desktop View (Grid Row) */}
             <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-gray-200 dark:border-gray-700 items-center last:border-0 bg-surface-light dark:bg-surface-dark">
                 <div className="col-span-6 flex items-center gap-4">
                     <div className="relative w-20 h-20 flex-shrink-0 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                        <Image src={image} alt={name} fill className="object-cover" />
+                        <Link href={`/shop/${slug}`}>
+                            <Image src={image} alt={name} fill className="object-cover" />
+                        </Link>
                     </div>
                     <div>
-                        <h3 className="font-semibold text-text-light dark:text-text-dark">{name} - {weight}</h3>
+                        <Link href={`/shop/${slug}`} className="hover:text-primary transition-colors">
+                            <h3 className="font-semibold text-text-light dark:text-text-dark">{name} - {weight}</h3>
+                        </Link>
                         {savings && (
                             <div className="mt-1">
                                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
@@ -60,12 +66,16 @@ export function CartItem({ id, name, weight, price, originalPrice, savings, imag
             {/* Mobile View (Card) */}
             <div className="md:hidden bg-surface-light dark:bg-surface-dark rounded-xl p-3 shadow-sm flex gap-4 items-center mb-4">
                 <div className="relative w-20 h-20 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-                    <Image src={image} alt={name} fill className="object-cover" />
+                    <Link href={`/shop/${slug}`}>
+                        <Image src={image} alt={name} fill className="object-cover" />
+                    </Link>
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h3 className="font-medium text-text-light dark:text-text-dark truncate">{name}</h3>
+                            <Link href={`/shop/${slug}`}>
+                                <h3 className="font-medium text-text-light dark:text-text-dark truncate">{name}</h3>
+                            </Link>
                             <div className="flex items-baseline gap-2 mt-1">
                                 <span className="text-primary font-semibold text-lg">৳{price.toFixed(2)}</span>
                                 {savings && <span className="text-subtext-light dark:text-subtext-dark text-xs">(Save ৳{savings})</span>}

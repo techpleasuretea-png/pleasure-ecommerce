@@ -104,7 +104,7 @@ export function SearchInput({ className = "", placeholder = "Search products..."
                             {suggestions.map((product) => (
                                 <li key={product.id} className="border-b border-gray-50 dark:border-gray-800 last:border-0">
                                     <Link
-                                        href={`/product/${product.id}`} // Or name->slug if available. ID is safest for now.
+                                        href={`/shop/${product.slug || product.id}`}
                                         className="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                                         onClick={() => setShowSuggestions(false)}
                                     >

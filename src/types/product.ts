@@ -5,6 +5,7 @@ export interface Product {
     price: number;
     originalPrice?: number;
     discount?: string;
+    slug: string;
     images: string[];
     description: string;
     rating: number;
@@ -12,19 +13,20 @@ export interface Product {
     sku: string;
     category: string[];
     tags: string[];
-    nutrition: {
-        calories: number;
-        fat: string;
+    nutrition?: {
+        calories?: number;
+        fat?: string;
         saturatedFat?: string;
-        cholesterol: string;
-        sodium: string;
-        carbohydrates: string;
-        fiber: string;
+        cholesterol?: string;
+        sodium?: string;
+        carbohydrates?: string;
+        fiber?: string;
         sugar?: string;
-        protein: string;
+        protein?: string;
     };
-    origin: {
+    origin?: {
         location: string;
         description: string;
     };
+    stock?: number; // Added stock
 }

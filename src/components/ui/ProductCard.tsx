@@ -2,6 +2,7 @@
 
 import { Plus, ShoppingCart, Minus, Heart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link"; // Added Link import
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -12,6 +13,7 @@ import { AnimatedButton } from "@/components/ui/AnimatedButton";
 interface ProductCardProps {
     id: string; // Added ID to props
     name: string;
+    slug: string; // Added slug prop
     weight: string;
     price: number;
     originalPrice?: number;
@@ -21,7 +23,7 @@ interface ProductCardProps {
     created_at?: string; // Added created_at prop
 }
 
-export function ProductCard({ id, name, weight, price, originalPrice, discount, image, created_at, stock }: ProductCardProps) {
+export function ProductCard({ id, name, slug, weight, price, originalPrice, discount, image, created_at, stock }: ProductCardProps) {
     const router = useRouter();
     const pathname = usePathname();
     const { cartItems, addToCart, updateQuantity, isLoading: isCartLoading, addItemWithAuth } = useCart();
@@ -38,7 +40,7 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
         e.preventDefault();
         e.stopPropagation();
 
-        addItemWithAuth({ id, name, weight, price, image });
+        addItemWithAuth({ id, name, slug, weight, price, image });
     };
 
     const handleIncrement = (e: React.MouseEvent) => {
@@ -55,28 +57,29 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
     return (
         <div className="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group border border-transparent hover:border-gray-100 dark:hover:border-gray-800 hover:shadow-lg transition-all duration-300">
             <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
-                <Image
-                    src={image}
-                    alt={name}
-                    fill
-                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                />
-                {discount && (
-                    <div className="absolute top-2 left-2 z-10 flex h-6 items-center justify-center rounded-full bg-red-500 px-2.5">
-                        <p className="text-xs font-bold text-white">{discount}</p>
-                    </div>
-                )}
-                {isNew && !discount && (
-                    <div className="absolute top-2 left-2 z-10 flex h-6 items-center justify-center rounded-full bg-primary px-2.5">
-                        <p className="text-xs font-bold text-white">New</p>
-                    </div>
-                )}
-                {isNew && discount && (
-                    <div className="absolute top-2 right-2 z-10 flex h-6 items-center justify-center rounded-full bg-primary px-2.5">
-                        <p className="text-xs font-bold text-white">New</p>
-                    </div>
-                )}
-
+                <Link href={`/shop/${slug}`} className="block w-full h-full relative">
+                    <Image
+                        src={image}
+                        alt={name}
+                        fill
+                        className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                    />
+                    {discount && (
+                        <div className="absolute top-2 left-2 z-10 flex h-6 items-center justify-center rounded-full bg-red-500 px-2.5">
+                            <p className="text-xs font-bold text-white">{discount}</p>
+                        </div>
+                    )}
+                    {isNew && !discount && (
+                        <div className="absolute top-2 left-2 z-10 flex h-6 items-center justify-center rounded-full bg-primary px-2.5">
+                            <p className="text-xs font-bold text-white">New</p>
+                        </div>
+                    )}
+                    {isNew && discount && (
+                        <div className="absolute top-2 right-2 z-10 flex h-6 items-center justify-center rounded-full bg-primary px-2.5">
+                            <p className="text-xs font-bold text-white">New</p>
+                        </div>
+                    )}
+                </Link>
             </div>
             <div className="p-4">
                 <h3 className="font-semibold text-lg leading-tight mb-1">{name} - <span className="text-subtext-light dark:text-subtext-dark font-normal">{weight}</span></h3>

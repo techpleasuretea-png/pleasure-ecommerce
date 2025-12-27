@@ -24,8 +24,8 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
                             <Globe className="w-5 h-5" />
                         </div>
                         <div>
-                            <p className="text-base font-bold text-[#333333] dark:text-white">{product.origin.location}</p>
-                            <p className="text-sm text-gray-500">{product.origin.description}</p>
+                            <p className="text-base font-bold text-[#333333] dark:text-white">{product.origin?.location || "Unknown"}</p>
+                            <p className="text-sm text-gray-500">{product.origin?.description || "No origin description available."}</p>
                         </div>
                     </div>
                 </div>
@@ -34,10 +34,10 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
             <AccordionItem title="Nutrition Info">
                 <div className="pb-4 pt-0">
                     <div className="space-y-2">
-                        <NutritionRow label="Calories" value={product.nutrition.calories} />
-                        <NutritionRow label="Total Fat" value={product.nutrition.fat} />
-                        <NutritionRow label="Dietary Fiber" value={product.nutrition.fiber} />
-                        <NutritionRow label="Protein" value={product.nutrition.protein} />
+                        <NutritionRow label="Calories" value={product.nutrition?.calories} />
+                        <NutritionRow label="Total Fat" value={product.nutrition?.fat} />
+                        <NutritionRow label="Dietary Fiber" value={product.nutrition?.fiber} />
+                        <NutritionRow label="Protein" value={product.nutrition?.protein} />
                     </div>
                     <div className="mt-3 flex items-center gap-2">
                         <Leaf className="w-4 h-4 text-primary" />
@@ -75,7 +75,8 @@ function AccordionItem({ title, children, defaultOpen }: { title: string; childr
     );
 }
 
-function NutritionRow({ label, value }: { label: string; value: string | number }) {
+function NutritionRow({ label, value }: { label: string; value: string | number | undefined }) {
+    if (!value && value !== 0) return null;
     return (
         <div className="flex justify-between items-center text-base border-b border-dashed border-gray-100 dark:border-gray-700 pb-2">
             <span className="text-gray-500 dark:text-gray-400">{label}</span>

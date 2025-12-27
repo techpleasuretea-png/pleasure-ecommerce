@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 export interface CartItem {
     id: string; // Product UUID
     name: string;
+    slug: string; // Added slug
     weight: string;
     price: number;
     image: string;
@@ -88,6 +89,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                                 products (
                                     id,
                                     name,
+                                    slug,
                                     weight,
                                     selling_price,
                                     product_images (image_url)
@@ -102,6 +104,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                             const formattedItems: CartItem[] = items.map((item: any) => ({
                                 id: item.products.id,
                                 name: item.products.name,
+                                slug: item.products.slug,
                                 weight: item.products.weight,
                                 price: item.products.selling_price,
                                 image: item.products.product_images?.[0]?.image_url || "/placeholder.png",

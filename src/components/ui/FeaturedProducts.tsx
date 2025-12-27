@@ -29,6 +29,7 @@ export async function FeaturedProducts() {
                         key={product.id}
                         id={product.id}
                         name={product.name}
+                        slug={product.slug} // Added slug
                         weight={product.weight}
                         price={Number(product.selling_price)}
                         originalPrice={product.mrp ? Number(product.mrp) : undefined}

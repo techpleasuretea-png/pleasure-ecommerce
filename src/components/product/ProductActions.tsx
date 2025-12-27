@@ -1,13 +1,14 @@
 import { Minus, Plus, ShoppingBag, Heart } from "lucide-react";
 
 interface ProductActionsProps {
+    product: any; // Using any to avoid type complexity for now, or use Product interface
     quantity: number;
     setQuantity: (q: number) => void;
     onAddToCart: () => void;
     onBuyNow: () => void;
 }
 
-export function ProductActions({ quantity, setQuantity, onAddToCart, onBuyNow }: ProductActionsProps) {
+export function ProductActions({ product, quantity, setQuantity, onAddToCart, onBuyNow }: ProductActionsProps) {
     return (
         <div className="flex flex-col gap-6 py-4 md:py-6 border-t border-b border-gray-100 dark:border-gray-800 my-6">
             <div className="flex items-center justify-between">
@@ -57,17 +58,22 @@ export function ProductActions({ quantity, setQuantity, onAddToCart, onBuyNow }:
             <div className="space-y-3 text-sm text-subtext-light dark:text-subtext-dark border-gray-100 dark:border-gray-800">
                 <div className="flex gap-2">
                     <span className="font-semibold text-text-light dark:text-text-dark min-w-[80px]">SKU:</span>
-                    <span>AVO-500-ORG</span>
+                    <span>{product.sku || "N/A"}</span>
                 </div>
-                <div className="flex gap-2">
-                    <span className="font-semibold text-text-light dark:text-text-dark min-w-[80px]">Category:</span>
-                    <a href="#" className="hover:text-primary transition-colors">Fruits</a>,
-                    <a href="#" className="hover:text-primary transition-colors">Organic</a>
-                </div>
-                <div className="flex gap-2">
-                    <span className="font-semibold text-text-light dark:text-text-dark min-w-[80px]">Tags:</span>
-                    <span>Fresh, Healthy, Keto, Vegan</span>
-                </div>
+                {product.category && product.category.length > 0 && (
+                    <div className="flex gap-2">
+                        <span className="font-semibold text-text-light dark:text-text-dark min-w-[80px]">Category:</span>
+                        {product.category.map((cat: string, idx: number) => (
+                            <a key={idx} href="#" className="hover:text-primary transition-colors">{cat}{idx < product.category.length - 1 ? ", " : ""}</a>
+                        ))}
+                    </div>
+                )}
+                {product.tags && product.tags.length > 0 && (
+                    <div className="flex gap-2">
+                        <span className="font-semibold text-text-light dark:text-text-dark min-w-[80px]">Tags:</span>
+                        <span>{product.tags.join(", ")}</span>
+                    </div>
+                )}
             </div>
         </div>
     );
