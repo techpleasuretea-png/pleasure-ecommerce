@@ -34,6 +34,13 @@ export function MobileHeader() {
                         <Image src="/logo.svg" alt="Pleasure Logo" width={100} height={32} className="h-8 w-auto" />
                     </Link>
                     <div className="flex shrink-0 items-center justify-end gap-3">
+                        <Link
+                            href="/search"
+                            className="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-[#333333] dark:text-white"
+                        >
+                            <Search className="w-6 h-6" />
+                        </Link>
+
                         <a
                             className="flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-white shadow-sm transition-transform active:scale-95"
                             href="tel:+8801914532441"

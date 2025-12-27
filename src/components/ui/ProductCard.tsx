@@ -109,7 +109,7 @@ export function ProductCard({ id, name, weight, price, originalPrice, discount, 
                             <AnimatedButton
                                 onClick={handleAddToCart}
                                 isLoading={isCartLoading}
-                                className="w-full"
+                                className="w-full whitespace-nowrap"
                             >
                                 <ShoppingCart className="w-4 h-4 mr-2" /> Add to Cart
                             </AnimatedButton>

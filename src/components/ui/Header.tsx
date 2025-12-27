@@ -6,6 +6,7 @@ import { Search, User, Heart, ShoppingBag, Menu } from "lucide-react";
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { MobileHeader } from "../mobile/MobileHeader";
+import { SearchInput } from "@/components/ui/SearchInput";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 
@@ -15,7 +16,7 @@ import { useAuth } from "@/context/AuthContext";
 function HeaderContent() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    const [searchQuery, setSearchQuery] = useState("");
+    // const [searchQuery, setSearchQuery] = useState(""); // Removed as it's now internal to SearchInput
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -32,12 +33,7 @@ function HeaderContent() {
 
     // Removed local useEffect for user fetching
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (searchQuery.trim()) {
-            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-        }
-    };
+    // Removed handleSearch as it's now handled by SearchInput
 
     return (
         <header className="hidden md:block py-4 px-4 md:px-8 bg-background-light dark:bg-background-dark sticky top-0 z-50 shadow-sm md:shadow-none">
@@ -78,16 +74,9 @@ function HeaderContent() {
 
                     {/* Desktop Actions */}
                     <div className="flex items-center gap-4">
-                        <form onSubmit={handleSearch} className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark w-5 h-5 pointer-events-none" />
-                            <input
-                                className="w-64 rounded-lg border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-shadow"
-                                placeholder="Search products..."
-                                type="text"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                        </form>
+                        <div className="relative">
+                            <SearchInput className="w-64" placeholder="Search products..." />
+                        </div>
 
                         <div className="flex flex-col items-end text-sm">
                             <span className="text-subtext-light dark:text-subtext-dark text-xs">Call for Order</span>

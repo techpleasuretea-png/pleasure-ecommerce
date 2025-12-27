@@ -148,3 +148,38 @@ export async function fetchProducts({
         return { products: [], hasMore: false, total: 0 };
     }
 }
+
+export async function getSearchSuggestions(query: string) {
+    if (!query || query.length < 2) return [];
+
+    try {
+        const { data: products, error } = await supabase
+            .from('products')
+            .select(`
+                id,
+                name,
+                selling_price,
+                product_images (
+                    image_url,
+                    is_primary
+                )
+            `)
+            .ilike('name', `%${query}%`)
+            .limit(5);
+
+        if (error) throw error;
+
+        return (products || []).map((product: any) => {
+            const primaryImage = product.product_images?.find((img: any) => img.is_primary) || product.product_images?.[0];
+            return {
+                id: product.id,
+                name: product.name,
+                price: Number(product.selling_price),
+                image: primaryImage?.image_url || "/placeholder.png",
+            };
+        });
+    } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        return [];
+    }
+}

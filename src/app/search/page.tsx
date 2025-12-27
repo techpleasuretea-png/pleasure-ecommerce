@@ -1,5 +1,6 @@
 
 import { Header } from "@/components/ui/Header";
+import { SearchInput } from "@/components/ui/SearchInput";
 import { Suspense } from "react";
 import { Footer } from "@/components/ui/Footer";
 import { ProductCard } from "@/components/ui/ProductCard";
@@ -108,6 +109,11 @@ export default async function SearchPage(props: SearchPageProps) {
                     <ShopMobileBar categories={categories} />
 
                     <div className="mx-auto max-w-screen-xl px-4 md:px-8 py-4 md:py-8">
+                        {/* Search Input for Mobile/Tablet or Refinement */}
+                        <div className="mb-6 md:hidden">
+                            <SearchInput className="w-full" placeholder="Search again..." />
+                        </div>
+
                         <div className="flex flex-col md:flex-row gap-8">
                             {/* Desktop Sidebar - Reused from Shop */}
                             <div className="hidden md:block w-80 shrink-0">
