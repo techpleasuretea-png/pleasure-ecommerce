@@ -42,13 +42,13 @@ export default async function ShippingListPage() {
                                             <p className="font-bold text-text-light dark:text-text-dark text-sm">{method.name}</p>
                                         </td>
                                         <td className="p-4 font-mono text-sm">
-                                            ${method.cost}
+                                            ৳{method.cost}
                                         </td>
                                         <td className="p-4 font-mono text-sm">
-                                            {method.discount_threshold ? `$${method.discount_threshold}` : '-'}
+                                            {method.discount_threshold ? `৳${method.discount_threshold}` : '-'}
                                         </td>
                                         <td className="p-4 font-mono text-sm">
-                                            {method.discount_threshold ? `$${method.discounted_cost ?? 0}` : '-'}
+                                            {method.discount_threshold ? `৳${method.discounted_cost ?? 0}` : '-'}
                                         </td>
                                         <td className="p-4 text-right">
                                             <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">

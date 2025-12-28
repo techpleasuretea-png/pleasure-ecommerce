@@ -262,12 +262,16 @@ export async function createShippingMethod(formData: FormData) {
         discounted_cost: formData.get('discounted_cost') ? parseFloat(formData.get('discounted_cost') as string) : null,
     };
     const { error } = await supabase.from('shipping_method').insert(rawData);
-    if (error) throw error;
+    if (error) {
+        console.error("Create error:", error);
+        throw error;
+    }
     revalidatePath('/admin/shipping');
-    redirect('/admin/shipping');
+    // redirect('/admin/shipping');
 }
 
 export async function updateShippingMethod(id: string, formData: FormData) {
+    console.log("Server Action: updateShippingMethod called for ID:", id);
     const supabase = await requireAdmin();
     const rawData = {
         name: formData.get('name') as string,
@@ -275,10 +279,20 @@ export async function updateShippingMethod(id: string, formData: FormData) {
         discount_threshold: formData.get('discount_threshold') ? parseFloat(formData.get('discount_threshold') as string) : null,
         discounted_cost: formData.get('discounted_cost') ? parseFloat(formData.get('discounted_cost') as string) : null,
     };
-    const { error } = await supabase.from('shipping_method').update(rawData).eq('id', id);
-    if (error) throw error;
+
+    console.log("Server Action: Data to update:", rawData);
+
+    const { error, data } = await supabase.from('shipping_method').update(rawData).eq('id', id).select();
+
+    if (error) {
+        console.error("Update error:", error);
+        throw error;
+    }
+
+    console.log("Server Action: Update successful. Returned data:", data);
+
     revalidatePath('/admin/shipping');
-    redirect('/admin/shipping');
+    // redirect('/admin/shipping');
 }
 
 export async function deleteShippingMethod(id: string) {

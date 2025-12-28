@@ -47,10 +47,10 @@ export function RelatedProducts() {
     ];
 
     return (
-        <section className="mt-16">
-            <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold font-display text-[#333333] dark:text-white">You May Also Like</h2>
-                <a href="#" className="text-primary font-semibold hover:underline flex items-center gap-1">
+        <section className="mt-8 md:mt-16">
+            <div className="flex items-center justify-between mb-4 md:mb-8">
+                <h2 className="text-xl md:text-2xl font-bold font-display text-[#333333] dark:text-white">You May Also Like</h2>
+                <a href="#" className="text-primary text-sm md:text-base font-semibold hover:underline flex items-center gap-1">
                     View All <ArrowRight className="w-4 h-4" />
                 </a>
             </div>
@@ -63,7 +63,7 @@ export function RelatedProducts() {
             </div>
 
             {/* Mobile Horizontal Scroll */}
-            <div className="flex lg:hidden gap-4 overflow-x-auto pb-4 -mx-4 px-4 snap-x [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: "none" }}>
+            <div className="flex lg:hidden gap-3 md:gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: "none" }}>
                 {relatedProducts.map((p, i) => (
                     <div key={i} className="min-w-[220px] w-[220px] snap-start">
                         <ProductCard {...p} />

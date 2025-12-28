@@ -12,27 +12,27 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
     return (
         <div className="mt-2 space-y-1">
             <AccordionItem title="Description" defaultOpen>
-                <div className="pb-4 pt-0 text-gray-600 dark:text-gray-300 text-base leading-relaxed">
+                <div className="pb-2 md:pb-4 pt-0 text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed">
                     {product.description}
                 </div>
             </AccordionItem>
 
             <AccordionItem title="Origin">
-                <div className="pb-4 pt-0">
+                <div className="pb-2 md:pb-4 pt-0">
                     <div className="flex items-center gap-3">
                         <div className="size-8 rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-primary shadow-sm">
                             <Globe className="w-5 h-5" />
                         </div>
                         <div>
-                            <p className="text-base font-bold text-[#333333] dark:text-white">{product.origin?.location || "Unknown"}</p>
-                            <p className="text-sm text-gray-500">{product.origin?.description || "No origin description available."}</p>
+                            <p className="text-sm md:text-base font-bold text-[#333333] dark:text-white">{product.origin?.location || "Unknown"}</p>
+                            <p className="text-xs md:text-sm text-gray-500">{product.origin?.description || "No origin description available."}</p>
                         </div>
                     </div>
                 </div>
             </AccordionItem>
 
             <AccordionItem title="Nutrition Info">
-                <div className="pb-4 pt-0">
+                <div className="pb-2 md:pb-4 pt-0">
                     <div className="space-y-2">
                         <NutritionRow label="Calories" value={product.nutrition?.calories} />
                         <NutritionRow label="Total Fat" value={product.nutrition?.fat} />
@@ -47,7 +47,7 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
             </AccordionItem>
 
             <AccordionItem title="Customer Reviews">
-                <div className="pb-4 pt-0">
+                <div className="pb-2 md:pb-4 pt-0">
                     <div className="flex justify-between items-center mb-4">
                         <h4 className="text-base font-bold text-gray-500">Recent Feedback</h4>
                         <button className="text-primary text-sm font-bold">See All ({product.reviews})</button>
@@ -66,7 +66,7 @@ function AccordionItem({ title, children, defaultOpen }: { title: string; childr
 
     return (
         <details className="group border-b border-gray-100 dark:border-gray-800" open={isOpen} onToggle={(e) => setIsOpen(e.currentTarget.open)}>
-            <summary className="flex w-full items-center justify-between py-4 font-bold text-[#333333] dark:text-white cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">
+            <summary className="flex w-full items-center justify-between py-2 md:py-4 font-bold text-sm md:text-base text-[#333333] dark:text-white cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">
                 {title}
                 <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
             </summary>
@@ -78,7 +78,7 @@ function AccordionItem({ title, children, defaultOpen }: { title: string; childr
 function NutritionRow({ label, value }: { label: string; value: string | number | undefined }) {
     if (!value && value !== 0) return null;
     return (
-        <div className="flex justify-between items-center text-base border-b border-dashed border-gray-100 dark:border-gray-700 pb-2">
+        <div className="flex justify-between items-center text-sm md:text-base border-b border-dashed border-gray-100 dark:border-gray-700 pb-2">
             <span className="text-gray-500 dark:text-gray-400">{label}</span>
             <span className="font-bold text-[#333333] dark:text-white">{value}</span>
         </div>

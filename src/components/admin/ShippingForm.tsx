@@ -22,11 +22,14 @@ export function ShippingForm({ initialData, action }: ShippingFormProps) {
         e.preventDefault();
         setIsLoading(true);
         const formData = new FormData(e.currentTarget);
+        console.log("Client: Submitting shipping form data:", Object.fromEntries(formData.entries()));
         try {
             await action(formData);
+            router.refresh(); // Refresh server data
+            router.push("/admin/shipping");
         } catch (error) {
             console.error("Error saving shipping method:", error);
-            alert("Failed to save shipping method. Please try again.");
+            alert(`Failed to save shipping method: ${(error as Error).message}`);
         } finally {
             setIsLoading(false);
         }

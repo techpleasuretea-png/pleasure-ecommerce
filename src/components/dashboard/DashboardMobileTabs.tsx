@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, MapPin, User, Heart } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, MapPin, User, Heart, LogOut } from "lucide-react";
+import { logout } from "@/app/actions/authActions";
 
 const tabs = [
     {
@@ -60,6 +61,13 @@ export function DashboardMobileTabs() {
                         </Link>
                     );
                 })}
+                <button
+                    onClick={() => logout()}
+                    className="flex items-center gap-2 px-4 py-3 border-b-2 border-transparent transition-colors whitespace-nowrap text-subtext-light dark:text-subtext-dark hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10"
+                >
+                    <LogOut className="w-4 h-4" />
+                    <span className="text-sm font-bold">Log Out</span>
+                </button>
             </div>
         </div>
     );
