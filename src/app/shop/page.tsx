@@ -72,7 +72,7 @@ export default async function ShopPage(props: ShopPageProps) {
                     {/* Mobile Filters Bar */}
                     <ShopMobileBar categories={categories} />
 
-                    <div className="mx-auto max-w-screen-xl px-4 md:px-8 py-4 md:py-8">
+                    <div className="mx-auto max-w-screen-xl px-2 md:px-8 py-4 md:py-8">
                         <div className="flex flex-col md:flex-row gap-8">
                             {/* Desktop Sidebar */}
                             <div className="hidden md:block w-80 shrink-0">

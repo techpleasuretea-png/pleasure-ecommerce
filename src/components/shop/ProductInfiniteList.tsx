@@ -97,7 +97,7 @@ export function ProductInfiniteList({ initialProducts, searchParams }: ProductIn
     return (
         <div>
             {/* Product Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 md:gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                 {products.map((product) => (
                     <ProductCard
                         key={product.id}

@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/providers/theme-provider";
+import NextTopLoader from "nextjs-toploader";
 
 export default function RootLayout({
     children,
@@ -26,6 +27,17 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={`${poppins.variable} font-display antialiased`}>
+                <NextTopLoader
+                    color="#20c533"
+                    initialPosition={0.08}
+                    crawlSpeed={200}
+                    height={3}
+                    crawl={true}
+                    showSpinner={false}
+                    easing="ease"
+                    speed={200}
+                    shadow="0 0 10px #20c533,0 0 5px #20c533"
+                />
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"

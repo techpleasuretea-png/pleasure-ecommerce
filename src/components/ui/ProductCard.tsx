@@ -89,12 +89,12 @@ export function ProductCard({ id, name, slug, weight, price, originalPrice, disc
                     )}
                 </Link>
             </div>
-            <div className="p-4">
-                <h3 className="font-semibold text-lg leading-tight mb-1">{name} - <span className="text-subtext-light dark:text-subtext-dark font-normal">{weight}</span></h3>
-                <div className="flex items-baseline gap-2 mt-2">
-                    <p className="text-primary font-bold text-xl">৳{price.toFixed(2)}</p>
+            <div className="p-2 md:p-4">
+                <h3 className="font-semibold text-sm md:text-lg leading-tight mb-1">{name} - <span className="text-subtext-light dark:text-subtext-dark font-normal text-xs md:text-base">{weight}</span></h3>
+                <div className="flex items-baseline gap-2 mt-1 md:mt-2">
+                    <p className="text-primary font-bold text-base md:text-xl">৳{price.toFixed(2)}</p>
                     {originalPrice && (
-                        <p className="text-subtext-light dark:text-subtext-dark text-sm line-through">৳{originalPrice.toFixed(2)}</p>
+                        <p className="text-subtext-light dark:text-subtext-dark text-xs md:text-sm line-through">৳{originalPrice.toFixed(2)}</p>
                     )}
                 </div>
 

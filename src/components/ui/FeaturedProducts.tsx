@@ -16,14 +16,14 @@ export async function FeaturedProducts() {
     };
 
     return (
-        <section className="py-16 pb-28 md:pb-16 px-4 md:px-8 max-w-[1600px] mx-auto">
+        <section className="py-16 pb-28 md:pb-16 px-2 md:px-8 max-w-[1600px] mx-auto">
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold font-display">Featured Products</h2>
                 <Link href="/shop?featured=true" className="bg-primary/10 text-primary font-semibold py-2 px-4 rounded-lg text-sm hover:bg-primary/20 transition-colors">
                     See All
                 </Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
                 {products?.map((product: any) => (
                     <ProductCard
                         key={product.id}
