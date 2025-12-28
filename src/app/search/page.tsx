@@ -93,6 +93,7 @@ export default async function SearchPage(props: SearchPageProps) {
             featured: product.is_featured,
             created_at: product.created_at,
             stock: product.stock,
+            slug: product.slug,
         };
     });
 

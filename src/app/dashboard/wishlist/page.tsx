@@ -30,6 +30,7 @@ export default function WishlistPage() {
                             key={item.id}
                             id={item.product_id}
                             name={item.product.name}
+                            slug={item.product.slug}
                             weight=""
                             price={item.product.price}
                             image={item.product.image}
