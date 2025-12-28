@@ -7,7 +7,7 @@ import { Features } from "@/components/ui/Features";
 
 export default function Home() {
   return (
-    <div className="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
+    <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
         <Hero />

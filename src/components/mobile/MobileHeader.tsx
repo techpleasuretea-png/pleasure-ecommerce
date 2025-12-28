@@ -31,7 +31,7 @@ export function MobileHeader() {
                         </button>
                     </div>
                     <Link href="/" className="flex-1 flex justify-center">
-                        <Image src="/logo.svg" alt="Pleasure Logo" width={100} height={32} className="h-8 w-auto" />
+                        <Image src="/logo.svg" alt="Pleasure Logo" width={100} height={32} className="h-8 w-auto dark:invert" />
                     </Link>
                     <div className="flex shrink-0 items-center justify-end gap-3">
 

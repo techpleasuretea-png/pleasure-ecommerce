@@ -16,7 +16,7 @@ export function Footer() {
                         {/* Brand Column */}
                         <div className="col-span-1">
                             <div className="flex items-center gap-2 mb-4">
-                                <Image src="/icon.svg" alt="Pleasure Logo" width={32} height={32} className="w-8 h-8" />
+                                <Image src="/icon.svg" alt="Pleasure Logo" width={32} height={32} className="w-8 h-8 dark:invert" />
                                 <span className="text-2xl font-bold font-display">Pleasure</span>
                             </div>
                             <p className="text-sm text-subtext-light dark:text-subtext-dark mb-6 leading-relaxed">

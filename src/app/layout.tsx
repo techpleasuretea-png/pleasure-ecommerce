@@ -26,7 +26,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={`${poppins.variable} font-display antialiased`}>
+            <body className={`${poppins.variable} font-display antialiased bg-background text-foreground`}>
                 <NextTopLoader
                     color="#20c533"
                     initialPosition={0.08}
