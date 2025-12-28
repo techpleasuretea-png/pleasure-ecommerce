@@ -159,7 +159,7 @@ export function MobileMenuSidebar({ isOpen, onClose }: MobileMenuSidebarProps) {
                 <div className="p-4 border-t border-gray-50 dark:border-gray-800/50 bg-white dark:bg-[#122013] shrink-0 z-10">
                     <div className="grid grid-cols-2 gap-3 mb-1">
                         <Link
-                            href="/orders"
+                            href="/dashboard/orders"
                             className="flex flex-col items-center justify-center gap-2 rounded-xl bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 p-3 transition-all border border-transparent hover:border-primary/20 text-[#333333] dark:text-white group"
                             onClick={onClose}
                         >
