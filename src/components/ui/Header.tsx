@@ -9,6 +9,7 @@ import { MobileHeader } from "../mobile/MobileHeader";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 
 import { useAuth } from "@/context/AuthContext";
@@ -77,6 +78,8 @@ function HeaderContent() {
                         <div className="relative">
                             <SearchInput className="w-64" placeholder="Search products..." />
                         </div>
+
+                        <ThemeToggle />
 
                         <div className="flex flex-col items-end text-sm">
                             <span className="text-subtext-light dark:text-subtext-dark text-xs">Call for Order</span>

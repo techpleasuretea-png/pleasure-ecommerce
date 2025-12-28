@@ -4,6 +4,7 @@ import { X, User, ChevronRight, FileText, Phone, Home, ShoppingBag, Sparkles, Ta
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "../ThemeToggle";
 
 interface MobileMenuSidebarProps {
     isOpen: boolean;
@@ -147,6 +148,12 @@ export function MobileMenuSidebar({ isOpen, onClose }: MobileMenuSidebarProps) {
                         </div>
                     </div>
                 </nav>
+
+                {/* Appearance Section */}
+                <div className="px-5 pb-4 shrink-0">
+                    <p className="px-1 text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Appearance</p>
+                    <ThemeToggle />
+                </div>
 
                 {/* Footer Actions */}
                 <div className="p-4 border-t border-gray-50 dark:border-gray-800/50 bg-white dark:bg-[#122013] shrink-0 z-10">

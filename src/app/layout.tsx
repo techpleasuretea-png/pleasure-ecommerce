@@ -16,21 +16,30 @@ export const metadata: Metadata = {
     description: "Daily Dose of Nature",
 };
 
+import { ThemeProvider } from "@/providers/theme-provider";
+
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body className={`${poppins.variable} font-display antialiased`}>
-                <AuthProvider>
-                    <WishlistProvider>
-                        <CartProvider>
-                            {children}
-                        </CartProvider>
-                    </WishlistProvider>
-                </AuthProvider>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <AuthProvider>
+                        <WishlistProvider>
+                            <CartProvider>
+                                {children}
+                            </CartProvider>
+                        </WishlistProvider>
+                    </AuthProvider>
+                </ThemeProvider>
             </body>
         </html>
     );

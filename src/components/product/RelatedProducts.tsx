@@ -63,9 +63,9 @@ export function RelatedProducts() {
             </div>
 
             {/* Mobile Horizontal Scroll */}
-            <div className="flex lg:hidden gap-4 overflow-x-auto pb-4 -mx-5 px-5 snap-x [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: "none" }}>
+            <div className="flex lg:hidden gap-4 overflow-x-auto pb-4 -mx-4 px-4 snap-x [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: "none" }}>
                 {relatedProducts.map((p, i) => (
-                    <div key={i} className="min-w-[160px] w-[160px] snap-start">
+                    <div key={i} className="min-w-[220px] w-[220px] snap-start">
                         <ProductCard {...p} />
                     </div>
                 ))}

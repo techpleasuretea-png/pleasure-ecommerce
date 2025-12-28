@@ -41,7 +41,7 @@ export function DashboardMobileTabs() {
     }
 
     return (
-        <div className="md:hidden w-full overflow-x-auto border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-surface-dark mb-6 -mx-4 px-4 sticky top-0 z-10 no-scrollbar">
+        <div className="md:hidden w-full overflow-x-auto border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-background-dark mb-6 -mx-4 px-4 sticky top-0 z-10 no-scrollbar">
             <div className="flex min-w-full">
                 {tabs.map((tab) => {
                     const isActive = pathname === tab.href;

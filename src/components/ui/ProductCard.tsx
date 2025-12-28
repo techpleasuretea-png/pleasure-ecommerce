@@ -43,6 +43,14 @@ export function ProductCard({ id, name, slug, weight, price, originalPrice, disc
         addItemWithAuth({ id, name, slug, weight, price, image });
     };
 
+    const handleBuyNow = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        addItemWithAuth({ id, name, slug, weight, price, image });
+        router.push("/checkout");
+    };
+
     const handleIncrement = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -116,7 +124,11 @@ export function ProductCard({ id, name, slug, weight, price, originalPrice, disc
                             >
                                 <ShoppingCart className="w-4 h-4 mr-2" /> Add to Cart
                             </AnimatedButton>
-                            <AnimatedButton variant="secondary" className="w-full">
+                            <AnimatedButton
+                                variant="secondary"
+                                className="w-full"
+                                onClick={handleBuyNow}
+                            >
                                 Buy Now
                             </AnimatedButton>
                         </>
@@ -163,7 +175,12 @@ export function ProductCard({ id, name, slug, weight, price, originalPrice, disc
                         </AnimatedButton>
                     ) : quantity === 0 ? (
                         <>
-                            <AnimatedButton className="flex-1 h-10 text-sm">Buy</AnimatedButton>
+                            <AnimatedButton
+                                className="flex-1 h-10 text-sm"
+                                onClick={handleBuyNow}
+                            >
+                                Buy
+                            </AnimatedButton>
                             <AnimatedButton
                                 variant="outline"
                                 onClick={handleAddToCart}

@@ -33,7 +33,7 @@ export default async function OrderHistoryPage() {
 
             <div className="space-y-4">
                 {orders.map((order: any) => (
-                    <div key={order.id} className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row gap-6">
+                    <div key={order.id} className="bg-white dark:bg-background-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row gap-6">
                         <div className="flex-1 space-y-4">
                             <div className="flex items-center justify-between">
                                 <div>
