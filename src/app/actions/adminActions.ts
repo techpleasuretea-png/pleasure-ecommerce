@@ -529,7 +529,14 @@ export async function createProduct(formData: FormData) {
         },
         tags: (formData.get('tags') as string)?.split(',').map(t => t.trim()).filter(Boolean) || [],
 
-        category_id: formData.get('category_id') ? formData.get('category_id') as string : null,
+        category_id: formData.get('category_id') as string, // Primary category? Or assume logic for multiple?
+        // product.ts says `category: string[]`.
+        // DB types says `category_id: string`.
+        // If DB has `category_id`, it's single. If `products_categories` junction table exists, it's multiple.
+        // `productActions.ts` did `category:categories!inner`. This usually implies specific relation. 
+        // If `products` has `category_id` FK, then it's one-to-many.
+        // Let's stick to single category_id for now as per DB types hint, or try to handle array if UI allows.
+        // ProductForm will probably send one ID for now.
     };
 
     // Remove undefined/nulls if needed? Supabase handles nulls.
@@ -569,7 +576,7 @@ export async function createProduct(formData: FormData) {
                 product_id: newProduct.id,
                 image_url: publicUrl,
                 is_primary: index === primaryIndex,
-
+                is_primary: index === primaryIndex
             };
         });
 
@@ -622,20 +629,15 @@ export async function updateProduct(id: string, formData: FormData) {
             description: formData.get('origin.description'),
         },
         tags: (formData.get('tags') as string)?.split(',').map(t => t.trim()).filter(Boolean) || [],
-        category_id: formData.get('category_id') ? formData.get('category_id') as string : null,
+        category_id: formData.get('category_id') as string,
     };
-
-    console.log("Update Product Payload:", { id, ...productData });
 
     const { error: updateError } = await supabase
         .from('products')
         .update(productData)
         .eq('id', id);
 
-    if (updateError) {
-        console.error("Update Product Error:", updateError);
-        throw updateError;
-    }
+    if (updateError) throw updateError;
 
     // Handle Image Updates
     // 1. Delete removed images
@@ -670,7 +672,7 @@ export async function updateProduct(id: string, formData: FormData) {
                 product_id: id,
                 image_url: publicUrl,
                 is_primary: false, // Default to false for new adds? Or check UI?
-
+                is_primary: false, // Default to false for new adds? Or check UI?
             };
         });
 
