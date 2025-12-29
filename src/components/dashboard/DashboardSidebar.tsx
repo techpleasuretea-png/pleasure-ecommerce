@@ -34,28 +34,30 @@ const sidebarItems = [
     },
 ];
 
-export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
+export function DashboardSidebar({ onClose, user }: { onClose?: () => void, user?: any }) {
     const pathname = usePathname();
 
-    const [profile, setProfile] = useState<any>(null);
+    const [profile, setProfile] = useState<any>(user || null);
 
     useEffect(() => {
+        if (user) return;
+
         const fetchProfile = async () => {
             const { createClient } = await import("@/lib/supabase/client");
             const supabase = createClient();
 
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
+            const { data: { user: authUser } } = await supabase.auth.getUser();
+            if (authUser) {
                 const { data } = await supabase
                     .from('profiles')
                     .select('full_name')
-                    .eq('id', user.id)
+                    .eq('id', authUser.id)
                     .single();
                 setProfile(data);
             }
         };
         fetchProfile();
-    }, []);
+    }, [user]);
 
     const displayName = profile?.full_name || "Guest User";
     const initial = displayName.charAt(0).toUpperCase();

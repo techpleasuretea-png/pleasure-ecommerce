@@ -5,19 +5,41 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface EditProductPageProps {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 export default async function EditProductPage({ params }: EditProductPageProps) {
-    const { id } = params;
+    const { id } = await params;
 
     // Fetch parallel
-    const [product, categories] = await Promise.all([
-        getAdminProductById(id).catch(() => null),
-        getAdminCategories()
-    ]);
+    let product = null;
+    let categories = [];
+    let error = null;
+
+    try {
+        const results = await Promise.all([
+            getAdminProductById(id),
+            getAdminCategories()
+        ]);
+        product = results[0];
+        categories = results[1];
+    } catch (e: any) {
+        console.error("Error loading edit page:", e);
+        error = e;
+    }
+
+    if (error) {
+        return (
+            <div className="p-8 text-center text-red-500">
+                <h2 className="text-xl font-bold mb-2">Error Loading Product</h2>
+                <p className="font-mono text-sm bg-red-100 p-4 rounded dark:text-red-900 border border-red-200">
+                    {error.message || JSON.stringify(error)}
+                </p>
+            </div>
+        );
+    }
 
     if (!product) {
         notFound();
