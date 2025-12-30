@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 
 import { ThemeProvider } from "@/providers/theme-provider";
 import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
     children,
@@ -51,6 +52,7 @@ export default function RootLayout({
                             </CartProvider>
                         </WishlistProvider>
                     </AuthProvider>
+                    <Toaster position="bottom-right" reverseOrder={false} />
                 </ThemeProvider>
             </body>
         </html>

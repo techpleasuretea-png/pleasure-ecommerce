@@ -22,7 +22,8 @@ export default async function CategoriesListPage() {
                 </Link>
             </div>
 
-            <div className="bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+            {/* Desktop View */}
+            <div className="hidden md:block bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -81,6 +82,49 @@ export default async function CategoriesListPage() {
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            {/* Mobile View */}
+            <div className="md:hidden space-y-4">
+                {categories && categories.length > 0 ? (
+                    categories.map((category) => (
+                        <div key={category.id} className="bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-4 min-w-0">
+                                <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                                    {category.image_url ? (
+                                        <img
+                                            src={category.image_url}
+                                            alt={category.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-xs text-gray-500">
+                                            No Img
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="min-w-0">
+                                    <h3 className="font-bold text-text-light dark:text-text-dark text-sm truncate">{category.name}</h3>
+                                    <code className="text-xs text-subtext-light dark:text-subtext-dark font-mono truncate block">{category.slug}</code>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-1 flex-shrink-0">
+                                <Link
+                                    href={`/admin/categories/${category.id}`}
+                                    className="p-2 text-subtext-light dark:text-subtext-dark hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                                >
+                                    <Edit className="w-5 h-5" />
+                                </Link>
+                                <DeleteButton id={category.id} action={deleteCategory} />
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="p-8 text-center text-subtext-light dark:text-subtext-dark bg-white dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800">
+                        No categories found.
+                    </div>
+                )}
             </div>
         </div>
     );

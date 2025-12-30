@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Package, User, MapPin, Phone, CreditCard, Calendar } from "lucide-react";
-import { getAdminOrderById, updateOrderStatus } from "@/app/actions/adminActions";
+import { startTransition } from "react";
+import { getAdminOrderById, updateOrderStatus, updateOrderDeliveryDetails } from "@/app/actions/adminActions";
 import { notFound } from "next/navigation";
 import { OrderStatusUpdate } from "@/components/admin/OrderStatusUpdate";
+import { AssignDeliveryBoy } from "@/components/admin/AssignDeliveryBoy";
 
 export default async function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -83,6 +85,14 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
 
                 {/* Right Column: Customer & Payment Info */}
                 <div className="space-y-6">
+                    {/* Delivery Boy Assignment */}
+                    <AssignDeliveryBoy
+                        orderId={order.id}
+                        deliveryBoyName={order.delivery_boy_name}
+                        deliveryBoyPhone={order.delivery_boy_phone}
+                        action={updateOrderDeliveryDetails}
+                    />
+
                     {/* Customer Details */}
                     <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                         <h2 className="text-lg font-bold text-text-light dark:text-text-dark mb-4 flex items-center gap-2">

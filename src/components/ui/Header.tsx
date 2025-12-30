@@ -47,25 +47,25 @@ function HeaderContent() {
 
                         <nav className="flex items-center gap-6 text-sm font-medium">
                             <Link
-                                className={`${pathname === "/" ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                className={`${pathname === "/" ? "text-primary font-semibold" : "text-gray-700 dark:text-gray-200 hover:text-primary"} transition-colors`}
                                 href="/"
                             >
                                 Home
                             </Link>
                             <Link
-                                className={`${isShop ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                className={`${isShop ? "text-primary font-semibold" : "text-gray-700 dark:text-gray-200 hover:text-primary"} transition-colors`}
                                 href="/shop"
                             >
                                 Shop
                             </Link>
                             <Link
-                                className={`${isNewArrivals ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                className={`${isNewArrivals ? "text-primary font-semibold" : "text-gray-700 dark:text-gray-200 hover:text-primary"} transition-colors`}
                                 href="/shop?newArrivals=true"
                             >
                                 New Arrivals
                             </Link>
                             <Link
-                                className={`${isOnSale ? "text-primary font-semibold" : "hover:text-primary"} transition-colors`}
+                                className={`${isOnSale ? "text-primary font-semibold" : "text-gray-700 dark:text-gray-200 hover:text-primary"} transition-colors`}
                                 href="/shop?onSale=true"
                             >
                                 Offers
@@ -112,7 +112,7 @@ function HeaderContent() {
                                 href="/dashboard/wishlist"
                                 className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors relative"
                             >
-                                <Heart className="w-6 h-6" />
+                                <Heart className="w-6 h-6 text-gray-700 dark:text-white" />
                                 {wishlistItems.length > 0 && (
                                     <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                                         {wishlistItems.length}
@@ -125,7 +125,7 @@ function HeaderContent() {
                                 onClick={() => router.push('/cart')}
                             >
                                 <div className="relative">
-                                    <ShoppingBag className="w-6 h-6" />
+                                    <ShoppingBag className="w-6 h-6 text-gray-700 dark:text-white" />
                                     {totalItems > 0 && (
                                         <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                                             {totalItems}

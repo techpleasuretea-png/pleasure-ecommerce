@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, Layers, Truck, Image } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Layers, Truck, Image, LogOut } from "lucide-react";
+import { logout } from "@/app/actions/authActions";
 
 const tabs = [
     {
@@ -55,6 +56,14 @@ export function AdminMobileTabs() {
                         </Link>
                     );
                 })}
+
+                <button
+                    onClick={() => logout()}
+                    className="flex items-center gap-2 px-4 py-3 border-b-2 border-transparent text-subtext-light dark:text-subtext-dark hover:text-red-500 whitespace-nowrap"
+                >
+                    <LogOut className="w-4 h-4" />
+                    <span className="text-sm font-bold">Log Out</span>
+                </button>
             </div>
         </div>
     );

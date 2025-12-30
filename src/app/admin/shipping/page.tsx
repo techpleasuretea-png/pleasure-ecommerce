@@ -22,7 +22,8 @@ export default async function ShippingListPage() {
                 </Link>
             </div>
 
-            <div className="bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+            {/* Desktop View */}
+            <div className="hidden md:block bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -73,6 +74,45 @@ export default async function ShippingListPage() {
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            {/* Mobile View */}
+            <div className="md:hidden space-y-4">
+                {methods && methods.length > 0 ? (
+                    methods.map((method) => (
+                        <div key={method.id} className="bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                            <div className="flex justify-between items-start mb-2">
+                                <h3 className="font-bold text-text-light dark:text-text-dark">{method.name}</h3>
+                                <span className="font-mono text-lg font-bold text-primary">৳{method.cost}</span>
+                            </div>
+
+                            {method.discount_threshold && (
+                                <div className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg mb-3 text-sm">
+                                    <div className="flex justify-between text-subtext-light dark:text-subtext-dark mb-1">
+                                        <span>Above ৳{method.discount_threshold}</span>
+                                        <span className="font-bold text-green-600 dark:text-green-400">
+                                            Price: ৳{method.discounted_cost ?? 0}
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+                                <Link
+                                    href={`/admin/shipping/${method.id}`}
+                                    className="p-2 text-subtext-light dark:text-subtext-dark hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                                >
+                                    <Edit className="w-5 h-5" />
+                                </Link>
+                                <DeleteButton id={method.id} action={deleteShippingMethod} />
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="p-8 text-center text-subtext-light dark:text-subtext-dark bg-white dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800">
+                        No shipping methods found.
+                    </div>
+                )}
             </div>
         </div>
     );

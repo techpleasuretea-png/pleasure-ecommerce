@@ -22,7 +22,8 @@ export default async function SlideshowListPage() {
                 </Link>
             </div>
 
-            <div className="bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+            {/* Desktop View */}
+            <div className="hidden md:block bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -56,8 +57,8 @@ export default async function SlideshowListPage() {
                                         </td>
                                         <td className="p-4">
                                             <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${slide.is_active
-                                                    ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                                    : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                                : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                                                 }`}>
                                                 {slide.is_active ? "Active" : "Inactive"}
                                             </span>
@@ -85,6 +86,55 @@ export default async function SlideshowListPage() {
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            {/* Mobile View */}
+            <div className="md:hidden space-y-4">
+                {slideshows && slideshows.length > 0 ? (
+                    slideshows.map((slide) => (
+                        <div key={slide.id} className="bg-white dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+                            <div className="relative h-32 w-full bg-gray-100">
+                                <img
+                                    src={slide.image_url}
+                                    alt={slide.title || "Slide"}
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute top-2 right-2">
+                                    <span className={`inline-flex px-2 py-1 rounded-full text-xs font-bold shadow-sm ${slide.is_active
+                                        ? "bg-green-100 text-green-700 dark:bg-green-900/80 dark:text-green-400"
+                                        : "bg-gray-100 text-gray-600 dark:bg-gray-800/80 dark:text-gray-400"
+                                        }`}>
+                                        {slide.is_active ? "Active" : "Inactive"}
+                                    </span>
+                                </div>
+                                <div className="absolute top-2 left-2 bg-black/50 text-white text-xs font-bold px-2 py-1 rounded-md">
+                                    #{slide.order_index}
+                                </div>
+                            </div>
+
+                            <div className="p-4 flex items-center justify-between gap-4">
+                                <div className="min-w-0">
+                                    <h3 className="font-bold text-text-light dark:text-text-dark text-sm truncate">{slide.title || "No Title"}</h3>
+                                    <p className="text-xs text-subtext-light dark:text-subtext-dark truncate">{slide.subtitle}</p>
+                                </div>
+
+                                <div className="flex items-center gap-1 flex-shrink-0">
+                                    <Link
+                                        href={`/admin/slideshow/${slide.id}`}
+                                        className="p-2 text-subtext-light dark:text-subtext-dark hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                                    >
+                                        <Edit className="w-5 h-5" />
+                                    </Link>
+                                    <DeleteButton id={slide.id} action={deleteSlideshow} />
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="p-8 text-center text-subtext-light dark:text-subtext-dark bg-white dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800">
+                        No slides found.
+                    </div>
+                )}
             </div>
         </div>
     );

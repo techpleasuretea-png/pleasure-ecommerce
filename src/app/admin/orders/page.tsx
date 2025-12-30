@@ -14,7 +14,8 @@ export default async function AdminOrdersPage() {
                 </div>
             </div>
 
-            <div className="bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
+            {/* Desktop View */}
+            <div className="hidden md:block bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -90,6 +91,61 @@ export default async function AdminOrdersPage() {
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            {/* Mobile View */}
+            <div className="md:hidden space-y-4">
+                {orders && orders.length > 0 ? (
+                    orders.map((order: any) => {
+                        const totalItems = order.order_items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
+
+                        return (
+                            <div key={order.id} className="bg-white dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800 p-4 shadow-sm">
+                                <div className="flex justify-between items-start mb-3">
+                                    <div className="flex flex-col">
+                                        <span className="font-mono font-bold text-primary">#{order.order_number || order.id.slice(0, 8)}</span>
+                                        <span className="text-xs text-subtext-light dark:text-subtext-dark">{new Date(order.created_at).toLocaleDateString()}</span>
+                                    </div>
+                                    <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-bold capitalize ${order.status === 'delivered' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                                        order.status === 'shipping' || order.status === 'shipped' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
+                                            order.status === 'cancelled' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
+                                                'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                                        }`}>
+                                        {order.status}
+                                    </span>
+                                </div>
+
+                                <div className="mb-3 space-y-1">
+                                    <div className="font-bold text-text-light dark:text-text-dark">
+                                        {order.recipient_name || order.profiles?.full_name || "Guest"}
+                                    </div>
+                                    <div className="text-xs text-subtext-light dark:text-subtext-dark flex items-center gap-2">
+                                        <span>{totalItems} items</span>
+                                        <span>•</span>
+                                        <span>{order.payment_method?.replace(/_/g, ' ') || 'N/A'}</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between pt-3 border-t border-gray-50 dark:border-gray-800">
+                                    <div className="font-mono font-bold text-lg text-text-light dark:text-text-dark">
+                                        ৳{order.total_amount.toFixed(2)}
+                                    </div>
+                                    <Link
+                                        href={`/admin/orders/${order.id}`}
+                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-bold bg-primary text-white hover:bg-primary-dark transition-colors"
+                                    >
+                                        <Eye className="w-4 h-4" />
+                                        Details
+                                    </Link>
+                                </div>
+                            </div>
+                        )
+                    })
+                ) : (
+                    <div className="p-8 text-center text-subtext-light dark:text-subtext-dark bg-white dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-800">
+                        No orders found.
+                    </div>
+                )}
             </div>
         </div>
     );

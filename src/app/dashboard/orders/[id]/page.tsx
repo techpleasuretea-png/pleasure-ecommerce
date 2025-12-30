@@ -144,6 +144,20 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                                 <p>{address}</p>
                                 <p>{order.recipient_mobile}</p>
                             </div>
+
+                            {/* Delivery Boy Details */}
+                            {order.delivery_boy_name && (
+                                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                                    <p className="text-xs font-bold text-subtext-light dark:text-subtext-dark uppercase tracking-wider mb-2 flex items-center gap-2">
+                                        <Truck className="w-3 h-3" />
+                                        Delivery Agent
+                                    </p>
+                                    <div className="text-sm">
+                                        <p className="font-bold text-text-light dark:text-text-dark">{order.delivery_boy_name}</p>
+                                        <p className="text-subtext-light dark:text-subtext-dark">{order.delivery_boy_phone}</p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">

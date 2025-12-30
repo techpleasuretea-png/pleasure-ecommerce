@@ -395,6 +395,26 @@ export async function updateOrderStatus(id: string, formData: FormData) {
     revalidatePath(`/dashboard/orders/${id}`); // Update user view
 }
 
+export async function updateOrderDeliveryDetails(id: string, formData: FormData) {
+    const supabase = await requireAdmin();
+    const delivery_boy_name = formData.get('delivery_boy_name') as string;
+    const delivery_boy_phone = formData.get('delivery_boy_phone') as string;
+
+    const { error } = await supabase
+        .from('orders')
+        .update({
+            delivery_boy_name: delivery_boy_name || null,
+            delivery_boy_phone: delivery_boy_phone || null
+        })
+        .eq('id', id);
+
+    if (error) throw error;
+
+    revalidatePath('/admin/orders');
+    revalidatePath(`/admin/orders/${id}`);
+    revalidatePath(`/dashboard/orders/${id}`);
+}
+
 // --- Dashboard Stats ---
 export async function getAdminStats() {
     const supabase = await requireAdmin();
@@ -455,10 +475,13 @@ export async function getAdminProducts(query?: string) {
     }
 
     // Map data to ensure image_url is populated from product_images if needed
+    // Also ensuring price mapping if needed
     return data.map((product: any) => {
         const primaryImage = product.product_images?.find((img: any) => img.is_primary) || product.product_images?.[0];
         return {
             ...product,
+            selling_price: product.selling_price, // Correct column name now
+            is_featured: product.is_featured, // Correct column name now
             image_url: primaryImage?.image_url || product.image_url || null
         };
     });
@@ -484,7 +507,13 @@ export async function getAdminProductById(id: string) {
         .single();
 
     if (error) throw error;
-    return product;
+
+    // Map for edit form
+    return {
+        ...product,
+        // selling_price: product.price, // No re-mapping needed if data uses correct column
+        // is_featured: product.featured
+    };
 }
 
 export async function createProduct(formData: FormData) {
@@ -496,22 +525,16 @@ export async function createProduct(formData: FormData) {
     // Basic fields
     const productData = {
         name,
-        slug, // Assuming slug column exists, if not we might trip error. Check product.ts? type doesn't have slug. 
-        // But almost all e-commerce has slug. Let's omit if unsure, or check if database accepts it.
-        // database.types has slug in categories but not products. 
-        // productActions doesn't select slug. 
-        // But wait, `src/app/shop/[slug]/page.tsx` exists! So products MUST have slug or id based routing.
-        // Let's assume slug exists for now.
+        slug, // Database now has slug
         description: formData.get('description') as string,
-        selling_price: parseFloat(formData.get('selling_price') as string),
+        selling_price: parseFloat(formData.get('selling_price') as string), // Correct column
         mrp: formData.get('mrp') ? parseFloat(formData.get('mrp') as string) : null,
         stock: parseInt(formData.get('stock') as string) || 0,
         weight: formData.get('weight') as string,
-        discount: formData.get('discount') as string, // Text like "20% OFF"
-        is_featured: formData.get('is_featured') === 'true',
+        discount: formData.get('discount') as string,
+        is_featured: formData.get('is_featured') === 'true', // Correct column
 
         // JSON fields (nutrition, origin, tags)
-        // We need to construct these objects from form data
         nutrition: {
             calories: formData.get('nutrition.calories') ? Number(formData.get('nutrition.calories')) : 0,
             fat: formData.get('nutrition.fat'),
@@ -529,17 +552,8 @@ export async function createProduct(formData: FormData) {
         },
         tags: (formData.get('tags') as string)?.split(',').map(t => t.trim()).filter(Boolean) || [],
 
-        category_id: formData.get('category_id') as string, // Primary category? Or assume logic for multiple?
-        // product.ts says `category: string[]`.
-        // DB types says `category_id: string`.
-        // If DB has `category_id`, it's single. If `products_categories` junction table exists, it's multiple.
-        // `productActions.ts` did `category:categories!inner`. This usually implies specific relation. 
-        // If `products` has `category_id` FK, then it's one-to-many.
-        // Let's stick to single category_id for now as per DB types hint, or try to handle array if UI allows.
-        // ProductForm will probably send one ID for now.
+        category_id: formData.get('category_id') ? (formData.get('category_id') as string) : null,
     };
-
-    // Remove undefined/nulls if needed? Supabase handles nulls.
 
     // 1. Insert Product
     const { data: newProduct, error: insertError } = await supabase
@@ -548,10 +562,13 @@ export async function createProduct(formData: FormData) {
         .select()
         .single();
 
-    if (insertError) throw insertError;
+    if (insertError) {
+        console.error("Detailed Error creating product:", JSON.stringify(insertError, null, 2));
+        console.error("Product Data being sent:", JSON.stringify(productData, null, 2));
+        throw insertError;
+    }
 
     // 2. Handle Images
-    // We expect `image_files` (multiple) in formData
     const files = formData.getAll('image_files') as File[];
     const primaryIndex = parseInt(formData.get('primary_image_index') as string) || 0;
 
@@ -575,7 +592,6 @@ export async function createProduct(formData: FormData) {
             return {
                 product_id: newProduct.id,
                 image_url: publicUrl,
-                is_primary: index === primaryIndex,
                 is_primary: index === primaryIndex
             };
         });
@@ -599,20 +615,18 @@ export async function createProduct(formData: FormData) {
 export async function updateProduct(id: string, formData: FormData) {
     const supabase = await requireAdmin();
 
-    // ... Implementation similar to create, but with Update.
-    // Logic for images is verifying: usually we have "existing_images" and "new_images".
-    // For MVP/first pass, let's implement basic update logic.
+    const name = formData.get('name') as string;
+    // We do NOT update slug typically to avoid breaking links, unless requested.
 
     const productData = {
-        name: formData.get('name') as string,
-        // slug: ... maybe don't update slug to avoid breaking SEO? or allow with warning.
+        name,
         description: formData.get('description') as string,
-        selling_price: parseFloat(formData.get('selling_price') as string),
+        selling_price: parseFloat(formData.get('selling_price') as string), // Correct column
         mrp: formData.get('mrp') ? parseFloat(formData.get('mrp') as string) : null,
         stock: parseInt(formData.get('stock') as string) || 0,
         weight: formData.get('weight') as string,
         discount: formData.get('discount') as string,
-        is_featured: formData.get('is_featured') === 'true',
+        is_featured: formData.get('is_featured') === 'true', // Correct column
         nutrition: {
             calories: formData.get('nutrition.calories') ? Number(formData.get('nutrition.calories')) : 0,
             fat: formData.get('nutrition.fat'),
@@ -629,7 +643,7 @@ export async function updateProduct(id: string, formData: FormData) {
             description: formData.get('origin.description'),
         },
         tags: (formData.get('tags') as string)?.split(',').map(t => t.trim()).filter(Boolean) || [],
-        category_id: formData.get('category_id') as string,
+        category_id: formData.get('category_id') ? (formData.get('category_id') as string) : null,
     };
 
     const { error: updateError } = await supabase
@@ -637,22 +651,20 @@ export async function updateProduct(id: string, formData: FormData) {
         .update(productData)
         .eq('id', id);
 
-    if (updateError) throw updateError;
+    if (updateError) {
+        console.error("Error updating product:", updateError);
+        throw updateError;
+    }
 
     // Handle Image Updates
     // 1. Delete removed images
     const removedImageIds = formData.getAll('removed_image_ids') as string[];
     if (removedImageIds.length > 0) {
         await supabase.from('product_images').delete().in('id', removedImageIds);
-        // Clean up storage? Ideally yes.
     }
 
     // 2. Add new images
     const files = formData.getAll('new_image_files') as File[];
-    // We need to know where they fit in order. 
-    // Simplified: Append new images at end? 
-    // Or complex UI passing explicit order.
-    // For now: Append.
 
     if (files.length > 0) {
         const uploads = files.map(async (file, index) => {
@@ -671,8 +683,7 @@ export async function updateProduct(id: string, formData: FormData) {
             return {
                 product_id: id,
                 image_url: publicUrl,
-                is_primary: false, // Default to false for new adds? Or check UI?
-                is_primary: false, // Default to false for new adds? Or check UI?
+                is_primary: false,
             };
         });
 
@@ -686,9 +697,7 @@ export async function updateProduct(id: string, formData: FormData) {
     // 3. Update primary image
     const primaryImageId = formData.get('primary_image_id') as string;
     if (primaryImageId) {
-        // Set all to false
         await supabase.from('product_images').update({ is_primary: false }).eq('product_id', id);
-        // Set one to true
         await supabase.from('product_images').update({ is_primary: true }).eq('id', primaryImageId);
     }
 

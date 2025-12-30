@@ -63,8 +63,12 @@ export default async function AdminProductsPage({
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="font-bold text-text-light dark:text-text-dark">{product.name}</div>
-
+                                            <Link
+                                                href={`/admin/products/${product.id}`}
+                                                className="font-bold text-text-light dark:text-text-dark hover:text-primary transition-colors hover:underline"
+                                            >
+                                                {product.name}
+                                            </Link>
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-medium text-subtext-light dark:text-subtext-dark">
@@ -87,7 +91,7 @@ export default async function AdminProductsPage({
                                         <td className="px-6 py-4 text-right">
                                             <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <Link
-                                                    href={`/admin/products/${product.id}`}
+                                                    href={`/admin/products/${product.id}/edit`}
                                                     className="p-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white rounded-lg transition-colors text-subtext-light dark:text-subtext-dark"
                                                     title="Edit"
                                                 >
