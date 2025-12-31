@@ -1,0 +1,19 @@
+.dark {
+    --background: #0d1117;
+    --foreground: #e6edf3;
+
+    --primary: #20c533;
+    --primary-foreground: #ffffff;
+
+    --surface: #161b22;
+    --surface-foreground: #e6edf3;
+
+    --muted: #21262d;
+    --muted-foreground: #8b949e;
+
+    --border: #30363d;
+    --input: #30363d;
+
+    --logo-filter: invert(1);
+    --icon-filter: invert(1);
+}

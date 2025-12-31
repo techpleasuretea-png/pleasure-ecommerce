@@ -1,0 +1,21 @@
+:root {
+    --background: #ffffff;
+    --foreground: #1a1a1a;
+
+    --primary: #20c533;
+    --primary-foreground: #ffffff;
+
+    --surface: #f8f8f8;
+    --surface-foreground: #1a1a1a;
+
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+
+    --radius: 12px;
+
+    --logo-filter: none;
+    --icon-filter: none;
+}

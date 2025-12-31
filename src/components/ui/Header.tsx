@@ -37,35 +37,42 @@ function HeaderContent() {
     // Removed handleSearch as it's now handled by SearchInput
 
     return (
-        <header className="hidden md:block py-4 px-4 md:px-8 bg-background-light dark:bg-background-dark sticky top-0 z-50 shadow-sm md:shadow-none">
+        <header className="hidden md:block py-4 px-4 md:px-8 bg-background sticky top-0 z-50 shadow-sm md:shadow-none">
             <div className="mx-auto max-w-[1600px]">
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-8">
                         <div className="flex items-center gap-2">
-                            <Image src="/logo.svg" alt="Pleasure Logo" width={120} height={40} className="h-10 w-auto dark:invert" />
+                            <Image
+                                src="/logo.svg"
+                                alt="Pleasure Logo"
+                                width={120}
+                                height={40}
+                                className="h-10 w-auto"
+                                style={{ filter: "var(--logo-filter)" }}
+                            />
                         </div>
 
                         <nav className="flex items-center gap-6 text-sm font-medium">
                             <Link
-                                className={`${pathname === "/" ? "text-primary font-semibold" : "text-gray-700 dark:text-gray-200 hover:text-primary"} transition-colors`}
+                                className={`${pathname === "/" ? "text-primary font-semibold" : "text-muted-foreground hover:text-primary"} transition-colors`}
                                 href="/"
                             >
                                 Home
                             </Link>
                             <Link
-                                className={`${isShop ? "text-primary font-semibold" : "text-gray-700 dark:text-gray-200 hover:text-primary"} transition-colors`}
+                                className={`${isShop ? "text-primary font-semibold" : "text-muted-foreground hover:text-primary"} transition-colors`}
                                 href="/shop"
                             >
                                 Shop
                             </Link>
                             <Link
-                                className={`${isNewArrivals ? "text-primary font-semibold" : "text-gray-700 dark:text-gray-200 hover:text-primary"} transition-colors`}
+                                className={`${isNewArrivals ? "text-primary font-semibold" : "text-muted-foreground hover:text-primary"} transition-colors`}
                                 href="/shop?newArrivals=true"
                             >
                                 New Arrivals
                             </Link>
                             <Link
-                                className={`${isOnSale ? "text-primary font-semibold" : "text-gray-700 dark:text-gray-200 hover:text-primary"} transition-colors`}
+                                className={`${isOnSale ? "text-primary font-semibold" : "text-muted-foreground hover:text-primary"} transition-colors`}
                                 href="/shop?onSale=true"
                             >
                                 Offers
@@ -82,7 +89,7 @@ function HeaderContent() {
                         <ThemeToggle />
 
                         <div className="flex flex-col items-end text-sm">
-                            <span className="text-subtext-light dark:text-subtext-dark text-xs">Call for Order</span>
+                            <span className="text-muted-foreground text-xs">Call for Order</span>
                             <span className="font-bold text-primary">01914532441</span>
                         </div>
 
@@ -93,7 +100,7 @@ function HeaderContent() {
                             ) : user ? (
                                 <button
                                     onClick={() => router.push('/dashboard')}
-                                    className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors flex items-center gap-2"
+                                    className="p-2 hover:bg-surface rounded-full transition-colors flex items-center gap-2"
                                     title="Go to Dashboard"
                                 >
                                     <User className="w-6 h-6 text-primary" />
@@ -110,9 +117,9 @@ function HeaderContent() {
 
                             <Link
                                 href="/dashboard/wishlist"
-                                className="p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors relative"
+                                className="p-2 hover:bg-surface rounded-full transition-colors relative"
                             >
-                                <Heart className="w-6 h-6 text-gray-700 dark:text-white" />
+                                <Heart className="w-6 h-6 text-foreground" />
                                 {wishlistItems.length > 0 && (
                                     <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                                         {wishlistItems.length}
@@ -121,11 +128,11 @@ function HeaderContent() {
                             </Link>
 
                             <div
-                                className="flex items-center gap-2 cursor-pointer p-2 hover:bg-surface-light dark:hover:bg-surface-dark rounded-lg transition-colors"
+                                className="flex items-center gap-2 cursor-pointer p-2 hover:bg-surface rounded-lg transition-colors"
                                 onClick={() => router.push('/cart')}
                             >
                                 <div className="relative">
-                                    <ShoppingBag className="w-6 h-6 text-gray-700 dark:text-white" />
+                                    <ShoppingBag className="w-6 h-6 text-foreground" />
                                     {totalItems > 0 && (
                                         <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                                             {totalItems}
@@ -133,7 +140,7 @@ function HeaderContent() {
                                     )}
                                 </div>
                                 <div className="hidden xl:block text-sm">
-                                    <span className="text-xs text-subtext-light dark:text-subtext-dark block">Cart</span>
+                                    <span className="text-xs text-muted-foreground block">Cart</span>
                                     <p className="font-semibold">৳{totalPrice.toFixed(2)}</p>
                                 </div>
                             </div>
@@ -152,7 +159,7 @@ export function Header() {
                 <MobileHeader />
             </div>
 
-            <Suspense fallback={<div className="h-20 bg-background-light dark:bg-background-dark" />}>
+            <Suspense fallback={<div className="h-20 bg-background" />}>
                 <HeaderContent />
             </Suspense>
         </>

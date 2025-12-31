@@ -63,8 +63,8 @@ export function ProductCard({ id, name, slug, weight, price, originalPrice, disc
         updateQuantity(id, -1);
     };
     return (
-        <div className="bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden group border border-transparent hover:border-gray-100 dark:hover:border-gray-800 hover:shadow-lg transition-all duration-300">
-            <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
+        <div className="bg-surface rounded-xl overflow-hidden group border border-transparent hover:border-border hover:shadow-lg transition-all duration-300">
+            <div className="relative h-48 overflow-hidden bg-muted">
                 <Link href={`/shop/${slug}`} className="block w-full h-full relative">
                     <Image
                         src={image}
@@ -90,11 +90,11 @@ export function ProductCard({ id, name, slug, weight, price, originalPrice, disc
                 </Link>
             </div>
             <div className="p-2 md:p-4">
-                <h3 className="font-semibold text-sm md:text-lg leading-tight mb-1">{name} - <span className="text-subtext-light dark:text-subtext-dark font-normal text-xs md:text-base">{weight}</span></h3>
+                <h3 className="font-semibold text-sm md:text-lg leading-tight mb-1">{name} - <span className="text-muted-foreground font-normal text-xs md:text-base">{weight}</span></h3>
                 <div className="flex items-baseline gap-2 mt-1 md:mt-2">
                     <p className="text-primary font-bold text-base md:text-xl">৳{price.toFixed(2)}</p>
                     {originalPrice && (
-                        <p className="text-subtext-light dark:text-subtext-dark text-xs md:text-sm line-through">৳{originalPrice.toFixed(2)}</p>
+                        <p className="text-muted-foreground text-xs md:text-sm line-through">৳{originalPrice.toFixed(2)}</p>
                     )}
                 </div>
 
@@ -133,13 +133,13 @@ export function ProductCard({ id, name, slug, weight, price, originalPrice, disc
                             </AnimatedButton>
                         </>
                     ) : (
-                        <div className="w-full flex items-center justify-between bg-primary/10 dark:bg-primary/20 rounded-lg p-1 animate-in zoom-in-95 duration-200 overflow-hidden">
+                        <div className="w-full flex items-center justify-between bg-primary/10 rounded-lg p-1 animate-in zoom-in-95 duration-200 overflow-hidden">
                             <AnimatedButton
                                 onClick={handleDecrement}
                                 variant="ghost"
                                 size="sm"
                                 disabled={isCartLoading}
-                                className="w-10 h-10 bg-white dark:bg-surface-dark text-primary hover:bg-primary hover:text-white shadow-sm rounded-md p-0"
+                                className="w-10 h-10 bg-background text-primary hover:bg-primary hover:text-white shadow-sm rounded-md p-0"
                             >
                                 <Minus className="w-4 h-4" />
                             </AnimatedButton>
@@ -191,13 +191,13 @@ export function ProductCard({ id, name, slug, weight, price, originalPrice, disc
                             </AnimatedButton>
                         </>
                     ) : (
-                        <div className="flex-1 flex items-center justify-between bg-primary/10 dark:bg-primary/20 rounded-lg p-1 animate-in slide-in-from-right-2 duration-300">
+                        <div className="flex-1 flex items-center justify-between bg-primary/10 rounded-lg p-1 animate-in slide-in-from-right-2 duration-300">
                             <AnimatedButton
                                 onClick={handleDecrement}
                                 variant="ghost"
                                 size="sm"
                                 disabled={isCartLoading}
-                                className="w-8 h-8 bg-white dark:bg-surface-dark text-primary shadow-sm rounded-md p-0"
+                                className="w-8 h-8 bg-background text-primary shadow-sm rounded-md p-0"
                             >
                                 <Minus className="w-4 h-4" />
                             </AnimatedButton>

@@ -32,9 +32,9 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
 
         const variants = {
             primary: "bg-primary text-white hover:bg-green-600 shadow-md shadow-primary/20",
-            secondary: "bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-text-light dark:text-text-dark hover:bg-gray-50 dark:hover:bg-gray-800",
+            secondary: "bg-surface border border-border text-foreground hover:bg-muted",
             outline: "border-2 border-primary text-primary bg-transparent hover:bg-primary/5",
-            ghost: "bg-transparent text-text-light dark:text-text-dark hover:bg-gray-100 dark:hover:bg-gray-800",
+            ghost: "bg-transparent text-foreground hover:bg-muted",
             danger: "bg-red-500 text-white hover:bg-red-600 shadow-md shadow-red-500/20",
         };
 

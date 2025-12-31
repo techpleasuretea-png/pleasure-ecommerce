@@ -65,6 +65,7 @@ export function CategoryGridClient({ categories }: CategoryGridClientProps) {
                                             src={cat.image_url || ''}
                                             alt={`${cat.name} category icon`}
                                             className="w-12 h-12 md:w-20 md:h-20 object-contain drop-shadow-sm"
+                                            style={{ filter: "var(--icon-filter)" }}
                                         />
                                     </div>
                                     <p className="mt-3 md:mt-4 text-sm md:text-base font-medium group-hover:text-primary transition-colors">{cat.name}</p>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminStats } from "@/app/actions/adminActions";
-import { ArrowRight, Package, DollarSign, ShoppingBag } from "lucide-react";
+import { ArrowRight, Truck, CheckCircle, Clock, Loader } from "lucide-react";
 
 export default async function AdminDashboardPage() {
     const stats = await getAdminStats();
@@ -14,32 +14,45 @@ export default async function AdminDashboardPage() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden group">
-                    <div className="absolute right-0 top-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                        <ShoppingBag className="w-16 h-16 text-primary" />
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+                <div className="bg-white dark:bg-surface-dark p-3 md:p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden group">
+                    <div className="absolute right-0 top-0 p-3 md:p-6 opacity-10 group-hover:scale-110 transition-transform">
+                        <Clock className="w-10 h-10 md:w-16 md:h-16 text-yellow-500" />
                     </div>
                     <div className="relative z-10">
-                        <h3 className="text-sm font-bold text-subtext-light dark:text-subtext-dark uppercase tracking-wider mb-2">Total Orders</h3>
-                        <p className="text-3xl font-black text-primary">{stats.totalOrders}</p>
+                        <h3 className="text-xs md:text-sm font-bold text-subtext-light dark:text-subtext-dark uppercase tracking-wider mb-1 md:mb-2">Pending</h3>
+                        <p className="text-xl md:text-3xl font-black text-yellow-600 dark:text-yellow-500">{stats.pendingOrders}</p>
                     </div>
                 </div>
-                <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden group">
-                    <div className="absolute right-0 top-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                        <DollarSign className="w-16 h-16 text-green-500" />
+
+                <div className="bg-white dark:bg-surface-dark p-3 md:p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden group">
+                    <div className="absolute right-0 top-0 p-3 md:p-6 opacity-10 group-hover:scale-110 transition-transform">
+                        <Loader className="w-10 h-10 md:w-16 md:h-16 text-blue-500" />
                     </div>
                     <div className="relative z-10">
-                        <h3 className="text-sm font-bold text-subtext-light dark:text-subtext-dark uppercase tracking-wider mb-2">Total Revenue</h3>
-                        <p className="text-3xl font-black text-green-600 dark:text-green-500">৳{stats.totalRevenue.toFixed(2)}</p>
+                        <h3 className="text-xs md:text-sm font-bold text-subtext-light dark:text-subtext-dark uppercase tracking-wider mb-1 md:mb-2">Processing</h3>
+                        <p className="text-xl md:text-3xl font-black text-blue-600 dark:text-blue-500">{stats.processingOrders}</p>
                     </div>
                 </div>
-                <div className="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden group">
-                    <div className="absolute right-0 top-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                        <Package className="w-16 h-16 text-blue-500" />
+
+                <div className="bg-white dark:bg-surface-dark p-3 md:p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden group">
+                    <div className="absolute right-0 top-0 p-3 md:p-6 opacity-10 group-hover:scale-110 transition-transform">
+                        <Truck className="w-10 h-10 md:w-16 md:h-16 text-purple-500" />
                     </div>
                     <div className="relative z-10">
-                        <h3 className="text-sm font-bold text-subtext-light dark:text-subtext-dark uppercase tracking-wider mb-2">Total Products</h3>
-                        <p className="text-3xl font-black text-blue-600 dark:text-blue-500">{stats.totalProducts}</p>
+                        <h3 className="text-xs md:text-sm font-bold text-subtext-light dark:text-subtext-dark uppercase tracking-wider mb-1 md:mb-2">Shipped</h3>
+                        <p className="text-xl md:text-3xl font-black text-purple-600 dark:text-purple-500">{stats.shippedOrders}</p>
+                    </div>
+                </div>
+
+                <div className="bg-white dark:bg-surface-dark p-3 md:p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden group">
+                    <div className="absolute right-0 top-0 p-3 md:p-6 opacity-10 group-hover:scale-110 transition-transform">
+                        <CheckCircle className="w-10 h-10 md:w-16 md:h-16 text-green-500" />
+                    </div>
+                    <div className="relative z-10">
+                        <h3 className="text-xs md:text-sm font-bold text-subtext-light dark:text-subtext-dark uppercase tracking-wider mb-1 md:mb-2">Delivered</h3>
+                        <p className="text-xl md:text-3xl font-black text-green-600 dark:text-green-500">{stats.deliveredOrders}</p>
                     </div>
                 </div>
             </div>

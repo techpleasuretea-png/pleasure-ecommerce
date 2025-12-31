@@ -420,28 +420,30 @@ export async function getAdminStats() {
     const supabase = await requireAdmin();
 
     const [
-        { count: totalOrders, error: ordersError },
-        { data: revenueData, error: revenueError },
-        { count: totalProducts, error: productsError },
+        { count: pendingOrders, error: pendingError },
+        { count: deliveredOrders, error: deliveredError },
+        { count: processingOrders, error: processingError },
+        { count: shippedOrders, error: shippedError },
         { data: recentOrders, error: recentError }
     ] = await Promise.all([
-        supabase.from('orders').select('*', { count: 'exact', head: true }),
-        supabase.from('orders').select('total_amount'),
-        supabase.from('products').select('*', { count: 'exact', head: true }),
+        supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'delivered'),
+        supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'processing'),
+        supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'shipped'),
         supabase.from('orders').select('*, profiles(full_name)').order('created_at', { ascending: false }).limit(5)
     ]);
 
-    if (ordersError) throw ordersError;
-    if (revenueError) throw revenueError;
-    if (productsError) throw productsError;
+    if (pendingError) throw pendingError;
+    if (deliveredError) throw deliveredError;
+    if (processingError) throw processingError;
+    if (shippedError) throw shippedError;
     if (recentError) throw recentError;
 
-    const totalRevenue = revenueData?.reduce((sum, order) => sum + (order.total_amount || 0), 0) || 0;
-
     return {
-        totalOrders: totalOrders || 0,
-        totalRevenue,
-        totalProducts: totalProducts || 0,
+        pendingOrders: pendingOrders || 0,
+        deliveredOrders: deliveredOrders || 0,
+        processingOrders: processingOrders || 0,
+        shippedOrders: shippedOrders || 0,
         recentOrders: recentOrders || []
     };
 }

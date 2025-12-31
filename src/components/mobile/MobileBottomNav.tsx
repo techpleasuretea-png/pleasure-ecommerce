@@ -13,10 +13,10 @@ export function MobileBottomNav() {
     }
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-t border-gray-100 dark:border-gray-800 pb-safe">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-t border-border pb-safe">
             <div className="flex h-16 items-center justify-between px-6">
                 <Link
-                    className="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors duration-200"
+                    className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors duration-200"
                     href="/shop"
                 >
                     <Store className="w-6 h-6" />
@@ -35,7 +35,7 @@ export function MobileBottomNav() {
                     <div className="text-base font-bold">৳1018</div>
                 </Link>
                 <Link
-                    className="flex flex-col items-center gap-1 text-gray-500 dark:text-gray-400"
+                    className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary"
                     href="/search"
                 >
                     <Search className="w-6 h-6" />

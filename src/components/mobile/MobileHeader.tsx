@@ -20,18 +20,25 @@ export function MobileHeader() {
         <>
             <MobileMenuSidebar isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
-            <header className="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+            <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm">
                 <div className="flex items-center p-4 pb-2 justify-between">
-                    <div className="flex size-12 shrink-0 items-center justify-start text-[#333333] dark:text-white">
+                    <div className="flex size-12 shrink-0 items-center justify-start text-foreground">
                         <button
-                            className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-[#333333] dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0"
+                            className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-foreground gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0"
                             onClick={() => setIsMenuOpen(true)}
                         >
                             <Menu className="w-8 h-8" />
                         </button>
                     </div>
                     <Link href="/" className="flex-1 flex justify-center">
-                        <Image src="/logo.svg" alt="Pleasure Logo" width={100} height={32} className="h-8 w-auto dark:invert" />
+                        <Image
+                            src="/logo.svg"
+                            alt="Pleasure Logo"
+                            width={100}
+                            height={32}
+                            className="h-8 w-auto"
+                            style={{ filter: "var(--logo-filter)" }}
+                        />
                     </Link>
                     <div className="flex shrink-0 items-center justify-end gap-3">
 
@@ -50,14 +57,14 @@ export function MobileHeader() {
                         ) : user ? (
                             <button
                                 onClick={() => router.push('/dashboard')}
-                                className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-[#333333] dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0"
+                                className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-foreground gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0"
                             >
                                 <User className="w-6 h-6" />
                             </button>
                         ) : (
                             <Link
                                 href="/login"
-                                className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-[#333333] dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0"
+                                className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-foreground gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0"
                             >
                                 <User className="w-6 h-6" />
                             </Link>

@@ -43,7 +43,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                     </div>
                 </div>
             </main>
-            <Footer />
+            <div className="hidden md:block">
+                <Footer />
+            </div>
         </div>
     );
 }
